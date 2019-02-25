@@ -1,6 +1,5 @@
 // http://ionicframework.com/docs/theming/
 
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,3 +13,283 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+$primary: color($colors, primary);
+$light: color($colors, light);
+$danger: color($colors, danger);
+$secondary: color($colors, secondary);
+$dark: color($colors, dark);
+$grey: #545454;
+$yellow: #e5c82a;
+$container-margin-top: 12px;
+$iconWidth: 24px;
+
+
+%flex-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-bg-btn {
+  padding: 24px;
+  border-radius: 30px;
+  //background-image: linear-gradient(to left, $primary, $secondary);
+  width: 150px;
+}
+
+.page-loader {
+  @extend %flex-centered;
+  height: calc(100vh - 120px);
+}
+
+.app-bg-btn-lg {
+  padding: 24px;
+  border-radius: 30px;
+  background-image: linear-gradient(to left, $primary, $secondary);
+}
+
+.svg-color-secondary {
+  fill: $secondary;
+  svg {
+    fill: $secondary;
+  }
+}
+
+.svg-color-light {
+  fill: $light;
+  svg {
+    fill: $light;
+  }
+}
+
+.svg-color-primary {
+  fill: $primary;
+  svg {
+    fill: $primary;
+  }
+}
+
+.btn-placeholder {
+  width: 48px;
+  height: 30px;
+}
+
+.float-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 999;
+}
+
+.float-right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 999;
+}
+
+.float-left {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 999;
+}
+
+%border-with-shadow {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  box-shadow: 2px 2px 20px #ddd;
+}
+
+.popover-content {
+  width: 150px !important;
+}
+
+.label {
+  display: flex !important;
+  text-align: start;
+}
+
+.color-primary {
+  color: $primary;
+}
+
+.color-light {
+  color: $light;
+}
+
+.color-danger {
+  color: $danger;
+}
+
+.icon-width-no-padding {
+  font-size: $iconWidth !important;
+  width: 26px;
+}
+
+.icon-width {
+  font-size: $iconWidth !important;
+  padding: 0 0.15em;
+}
+
+.form-control {
+  box-shadow: none;
+}
+
+.color-secondary {
+  color: $secondary;
+}
+.color-grey {
+  color: $grey;
+}
+input {
+  &:focus {
+    outline: none;
+    box-shadow: none !important;
+  }
+}
+
+.row {
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+.toolbar-md {
+  padding: 0 !important;
+}
+
+.header-md::after {
+  background-image: none !important;
+}
+
+.loader {
+  width: 100%;
+  height: 100%;
+  @extend %flex-centered;
+}
+
+.no-border-header {
+  &:after {
+    background-image: none !important;
+  }
+}
+.toolbar-title-padding {
+  padding: 0 4px;
+}
+.app-lin-bg {
+  background-image: linear-gradient(to right, #aa76d4, #1beac7);
+}
+.app-box-shadow {
+  box-shadow: 2px 6px 18px #eee;
+}
+.text-danger {
+  color: $danger;
+}
+.app-block-border {
+  border: 1px solid #eee;
+  border-radius: 10px;
+}
+
+.alert-tappable {
+  padding: 0 16px !important;
+}
+.alert-radio-inner {
+  left: 2px;
+}
+.text-sm {
+  font-size: 1.4rem;
+}
+form {
+  padding: 6px;
+
+  .form-group {
+    margin-bottom: 22px;
+    border-radius: 35px;
+    display: flex;
+    overflow: hidden;
+    //padding: 8px 16px;
+    align-items: center;
+    border: 2px solid $primary;
+    transition: border 0.3s ease-in-out;
+    .form-icon {
+      width: 40px;
+      height: 38px;
+      @extend %flex-centered;
+      margin: 0;
+      border-radius: 35px;
+      background-color: $primary;
+    }
+
+    &.invalid {
+      border: 1px solid #f57b7b;
+    }
+
+    .like-input {
+      font-size: 1.5rem;
+      color: #999;
+      width: 100%;
+      padding: 0 8px;
+      text-align: start;
+    }
+
+    .form-control {
+      padding: 8px;
+      flex: 1;
+      border: none;
+      font-size: 1.5rem;
+    }
+
+    img {
+      width: 22px;
+      height: 22px;
+    }
+  }
+}
+
+.middle-helper {
+  .toast-wrapper {
+    background: #fff;
+    background-color: transparent;
+    width: 86%;
+    max-width: 280px;
+    border-radius: 8px;
+  }
+
+  .toast-message {
+    color: #333;
+    font-size: 1.2rem;
+  }
+
+  .toast-button {
+    color: red !important;
+  }
+}
+
+.toast-sm {
+  .toast-wrapper {
+    background-color: transparent;
+    width: 50%;
+    max-width: 250px;
+    border-radius: 8px;
+  }
+
+  .toast-message {
+    border-radius: 40px;
+    text-align: center;
+    width: 90%;
+    padding: 8px !important;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background: #eee;
+    color: $dark;
+    font-size: 1.2rem;
+  }
+}
+
+.app-action-btn {
+  box-shadow: none;
+  border: 1px solid $primary;
+  padding: 2.4rem 2.6rem !important;
+  letter-spacing: 1px;
+}

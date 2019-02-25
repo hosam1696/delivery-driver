@@ -1,5 +1,7 @@
 {
   "name": "delivery-driver",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }
