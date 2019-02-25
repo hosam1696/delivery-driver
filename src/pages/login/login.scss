@@ -1,9 +1,47 @@
 page-login {
+
+  .hero {
+    background-image: url(../assets/imgs/login-header.png);
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  form {
+    padding: 26px;
+  }
   .container {
     margin-top: $container-margin-top;
+
     h3 {
       padding: 0 12px;
     }
+  }
 
+  .app-bg-btn {
+    &.loading {
+      .button-inner {
+        width: 100%;
+        justify-content: space-between;
+        * {
+          transition: all 0.2s linear;
+        }
+      }
+    }
+  }
+  .login-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2px;
+    margin-top: -8px;
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      label {
+        display: inline-block;
+        margin: 0 4px;
+      }
+    }
   }
 }

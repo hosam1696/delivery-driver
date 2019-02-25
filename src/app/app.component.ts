@@ -27,8 +27,10 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: 'HomePage' },
-      { title: 'List', component: 'ListPage' }
+      { title: 'بياناتى', component: 'HomePage' },
+      { title: 'الطلبات', component: 'ListPage' },
+      { title: ' الطلبات المؤجلة', component: 'ListPage' }
+
     ];
 
   }
@@ -45,6 +47,9 @@ export class MyApp {
     });
   }
 
+  logout () {
+    
+  }
 
   public changeLang(): void {
       const lang = this.translate.currentLang === 'ar' ? 'en' : 'ar';

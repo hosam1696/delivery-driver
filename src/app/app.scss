@@ -19,11 +19,15 @@ $light: color($colors, light);
 $danger: color($colors, danger);
 $secondary: color($colors, secondary);
 $dark: color($colors, dark);
+$lightGrey: color($colors, lightGrey);
 $grey: #545454;
 $yellow: #e5c82a;
 $container-margin-top: 12px;
 $iconWidth: 24px;
 
+* {
+    font-family: "Cairo-regular", "Roboto", sans-serif;
+}
 
 %flex-centered {
   display: flex;
@@ -54,6 +58,41 @@ $iconWidth: 24px;
   svg {
     fill: $secondary;
   }
+}
+
+ion-menu {
+  ion-content {
+    &.content {
+      background: $primary;
+    color: $light;
+    }
+
+    .avatar-menu {
+      text-align: center;
+      padding-top: 30px;
+
+      .avatar {
+        margin: 0 auto;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+
+    ion-list {
+      background: transparent !important;
+      button {
+      background: transparent !important;
+      color: $light !important;      
+      }
+    }
+  }
+
+
 }
 
 .svg-color-light {
@@ -131,10 +170,6 @@ $iconWidth: 24px;
 .icon-width {
   font-size: $iconWidth !important;
   padding: 0 0.15em;
-}
-
-.form-control {
-  box-shadow: none;
 }
 
 .color-secondary {
@@ -215,9 +250,10 @@ form {
     .form-icon {
       width: 40px;
       height: 38px;
+      transform: scale(1.05);
       @extend %flex-centered;
       margin: 0;
-      border-radius: 35px;
+      border-radius: inherit;
       background-color: $primary;
     }
 
@@ -237,7 +273,11 @@ form {
       padding: 8px;
       flex: 1;
       border: none;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
+      box-shadow: none;
+      &::placeholder {
+        color: $lightGrey
+      }
     }
 
     img {
@@ -269,7 +309,7 @@ form {
 .toast-sm {
   .toast-wrapper {
     background-color: transparent;
-    width: 50%;
+    min-width: 50%;
     max-width: 250px;
     border-radius: 8px;
   }
@@ -283,7 +323,7 @@ form {
     margin-bottom: 8px;
     background: #eee;
     color: $dark;
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 }
 

@@ -9,7 +9,7 @@ $font-path: "../assets/fonts";
 // The app direction is used to include
 // rtl styles in your app. For more info, please see:
 // http://ionicframework.com/docs/theming/rtl-support/
-$app-direction: ltr;
+$app-direction: multi;
 
 
 @import "ionic.globals";
@@ -34,11 +34,12 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #222
+  primary: #443279,
+  secondary: #534c4c,
+  danger: #901c56,
+  lightGrey: #d8d7d7,
+  light: #fff,
+  dark: #222
 );
 
 
@@ -72,6 +73,14 @@ $colors: (
 
 @import "ionic.theme.default";
 
+$font-path: "../assets/fonts";
+$menu-width: 230px;
+@font-face {
+  font-family: 'Cairo-regular';
+  src: url('../assets/fonts/Cairo-regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
 
 // Ionicons
 // --------------------------------------------------

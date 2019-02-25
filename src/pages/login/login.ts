@@ -12,6 +12,9 @@ import {UtilsProvider} from "../../providers/utils/utils";
 })
 export class LoginPage {
   loginForm: FormGroup;
+  rememberCredentials;
+  processing:  boolean =  false;
+
   constructor(public navCtrl: NavController,
               private formBuilder: FormBuilder,
               private AuthProvider: AuthProvider,
@@ -27,13 +30,20 @@ export class LoginPage {
     const validateForm = this.utils.validateForm(this.loginForm);
     console.log(this.loginForm.value);
     if (validateForm) {
-      const authLogin$ = this.AuthProvider.login(this.loginForm.value);
 
+      const authLogin$ = this.AuthProvider.login(this.loginForm.value);
+  this.processing = true;
       authLogin$.subscribe(response => {
+        this.processing = false;
         this.utils.showToast(response.message);
         if (response.success) {
           console.log('Login Success with', response);
         }
+
+        this.goTo('ProfilePage');
+      }, err => {
+        this.utils.showToast('Some thing not Correct, Please try again later');
+        this.processing = false;
       })
     }
   }
