@@ -4,6 +4,7 @@ import { LoginPage } from './login';
 import {TranslateModule} from "@ngx-translate/core";
 import {AuthProvider} from "../../providers/auth/auth";
 import {UtilsProvider} from "../../providers/utils/utils";
+import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {UtilsProvider} from "../../providers/utils/utils";
   ],
   providers: [
     AuthProvider,
-    UtilsProvider
+    UtilsProvider,
+    AppstorageProvider
   ]
 })
 export class LoginPageModule {}

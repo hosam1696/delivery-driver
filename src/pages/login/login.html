@@ -1,43 +1,27 @@
 <ion-content no-padding>
   <section class="hero"></section>
-    <form  action="" [formGroup]="loginForm" (ngSubmit)="submitForm()">
-      <h3 margin-bottom>{{'Login' | translate}}</h3>
-      <div class="form-group">
-        <div class="form-icon">
-          <ion-icon color="light" name="mail"></ion-icon>
-        </div>
-        <input class="form-control" type="email" name="moov-name" formControlName="email"
-               placeholder="{{'email'|translate}}">
+  <form action="" [formGroup]="loginForm" (ngSubmit)="submitForm()">
+    <h3 margin-bottom>{{'Login' | translate}}</h3>
+    <div class="form-group">
+      <div class="form-icon">
+        <ion-icon color="light" name="person"></ion-icon>
       </div>
-      <div class="form-group ">
-        <div class="form-icon">
-          <ion-icon color="light" name="lock"></ion-icon>
-        </div>
-        <input class="form-control" type="password" formControlName="password" placeholder="{{'password'|translate}}">
+      <input class="form-control" type="text" name="moov-name" formControlName="userName" placeholder="{{'userName'|translate}}">
+    </div>
+    <div class="form-group ">
+      <div class="form-icon">
+        <ion-icon color="light" name="lock"></ion-icon>
       </div>
+      <input class="form-control" type="password" formControlName="password" placeholder="{{'password'|translate}}">
+    </div>
 
-      <div class="login-actions"  margin-bottom>
-        <div class="remember-me">
-          <ion-checkbox id="remember-checkox" [(ngModel)]="rememberCredentials" [ngModelOptions]="{standalone: true}"></ion-checkbox>
-          <label for="remember-checkox">
-            {{'Remember Me' | translate}}
-          </label>
-        </div>
-
-        <button no-padding no-margin ion-button color="dark" clear type="button" (click)="goTo('ResetpassPage')">
-          {{'Forget Password?'|translate}}
-        </button>
-
-      </div>
-
-      <div text-center margin-top>
-        <button ion-button  class="app-bg-btn"  [class.loading]="processing" color="primary">
-          <span>
-            {{'Log' |translate}}
-
-          </span>
-          <ion-spinner color="light" [hidden]="!processing"></ion-spinner>
-        </button>
-      </div>
-    </form>
+    <div class="submit-button" text-center>
+      <button ion-button round class="app-bg-btn" [class.loading]="processing" color="primary">
+        <span>
+          {{'Log' |translate}}
+        </span>
+        <ion-spinner color="light" [hidden]="!processing"></ion-spinner>
+      </button>
+    </div>
+  </form>
 </ion-content>

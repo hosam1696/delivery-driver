@@ -3,7 +3,7 @@ import {Events, Nav, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {TranslateService} from "@ngx-translate/core";
-import {AppDirLang, DocumentDirection} from "../providers/types/app-types";
+import {AppDirLang, DocumentDirection, UserData, Langs} from "../providers/types/app-types";
 import {AppstorageProvider} from "../providers/appstorage/appstorage";
 
 
@@ -13,9 +13,10 @@ import {AppstorageProvider} from "../providers/appstorage/appstorage";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = 'LoginPage';
-  defaultLang: string = 'ar';
+  rootPage: any = 'StarterPage';
+  defaultLang: Langs = 'ar';
   pages: Array<{title: string, component: any}>;
+  userData: UserData;
 
   constructor(public platform: Platform,
               public statusBar: StatusBar,
@@ -30,25 +31,52 @@ export class MyApp {
       { title: 'بياناتى', component: 'HomePage' },
       { title: 'الطلبات', component: 'ListPage' },
       { title: ' الطلبات المؤجلة', component: 'ListPage' }
-
     ];
+
+    this.subscribeEvents();
 
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
+
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      this.appStorage.getAppLang()
-        .then(lang => this.setDefaultLang(lang || this.defaultLang));
+      this.setRootPage();
+
     });
   }
 
+  private setRootPage() {
+
+    Promise.all([
+      this.appStorage.getAppLang(),
+      this.appStorage.getUserData()
+    ]).then( async (data: [Langs, UserData])=> {
+      const [lang, userData] = data;
+      this.setDefaultLang(lang || this.defaultLang);
+      this.rootPage = userData ? 'ProfilePage' : 'LoginPage'
+    })
+  }
+
   logout () {
-    
+      Promise.all([
+        this.appStorage.storage.remove('delivery:user:data'),
+        this.appStorage.storage.remove('delivery:token'),
+      ]).then(()=>{
+        this.rootPage = 'LoginPage';
+        this.nav.setRoot('LoginPage')
+      })
+  }
+
+  private subscribeEvents() {
+    this.events.subscribe('change:root', page => this.rootPage = page);
+    this.events.subscribe('update:storage', () => {
+      this.appStorage.getUserData()
+        .then(userData => this.userData = userData)
+    });
+
   }
 
   public changeLang(): void {
@@ -56,7 +84,7 @@ export class MyApp {
       this.events.publish('change:lang', lang)
   }
 
-  private setDefaultLang(lang: 'en' | 'ar') {
+  private setDefaultLang(lang: Langs) {
     this.translate.setDefaultLang(lang);
     this.translate.use(lang);
     this.platform.setDir(AppDirLang[lang] as DocumentDirection, true);

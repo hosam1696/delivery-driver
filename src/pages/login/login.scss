@@ -9,6 +9,31 @@ page-login {
 
   form {
     padding: 26px;
+    .form-group {
+      width: 42px;
+      animation: fill .7s ease-in-out;
+      animation-fill-mode: forwards;
+      &:nth-of-type(2) {
+        animation-delay: .2s
+      }
+    }
+
+    .submit-button {
+      margin-top: 40px;
+      button {
+        height: 40px !important;
+      }
+    }
+    @keyframes fill {
+      from {
+        width: 42px;
+      }
+      to {
+        width: 100%;
+      }
+    }
+
+
   }
   .container {
     margin-top: $container-margin-top;

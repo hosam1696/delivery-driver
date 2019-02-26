@@ -41,5 +41,7 @@
   "Change Password": "تغيير كلمة المرور",
   "from": "من",
   "to": "الى",
-  "Do You have an account?": "هل لديك حساب؟"
+  "Do You have an account?": "هل لديك حساب؟",
+  "userName": "اسم المستخدم",
+  "User Name or Password are not Correct": "اسم المستخدم او الرقم السرى غير صحيح"
 }

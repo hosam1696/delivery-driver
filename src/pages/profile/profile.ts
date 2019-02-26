@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { UserData } from '../../providers/types/app-types';
+import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 
 @IonicPage()
 @Component({
@@ -8,11 +10,17 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ProfilePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  userData: UserData;
+
+  constructor(public navCtrl: NavController,
+     public navParams: NavParams,
+     private appStorage: AppstorageProvider
+     ) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
+  async ionViewDidLoad() {
+
+    this.userData = await this.appStorage.getUserData();
   }
 
 }

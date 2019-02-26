@@ -8,10 +8,10 @@
   
   <section class="avatar-section">
     <div class="avatar">
-      <img src="assets/imgs/avatar.png" alt="">
+      <img [src]="'https://www.moovstore.com/'+userData?.photo" alt="">
     </div>
-    <p>محمود ممدوح</p>
-    <p>01222222222</p>
+    <p>{{userData?.userName}}</p>
+    <p>{{userData?.phoneNumber}}</p>
   </section>
 
   <div class="info-section">
@@ -21,7 +21,7 @@
         {{'الشركة التابع لها'|translate}}
       </ion-label>
         <ion-label>
-          Moove Store
+          {{userData?.company_id}}
         </ion-label>
       </ion-item>
       <ion-item>

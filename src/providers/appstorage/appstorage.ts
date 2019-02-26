@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Storage} from '@ionic/storage';
-import {appLangs} from "../types/app-types";
+import {appLangs, UserData} from "../types/app-types";
 
 @Injectable()
 export class AppstorageProvider {
@@ -20,11 +20,11 @@ export class AppstorageProvider {
   }
 
 
-  getUserData() {
+  getUserData(): Promise<UserData> {
     return this.storage.get('delivery:user:data');
   }
 
-  setUserData(user) {
+  setUserData(user: UserData):Promise<UserData> {
     return this.storage.set('delivery:user:data', user);
   }
 

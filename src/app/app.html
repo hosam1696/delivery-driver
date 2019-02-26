@@ -3,10 +3,10 @@
   <ion-content>
 
     <div class="avatar-menu">
-        <div class="avatar">
-            <img src="assets/imgs/avatar.png" alt="">
-          </div>
-          <p>محمود ممدوح</p>
+      <div class="avatar">
+        <img [src]="'https://www.moovstore.com/'+userData?.photo" alt="">
+      </div>
+      <p>{{userData?.userName}}</p>
     </div>
     <ion-list clear no-lines>
       <button clear no-border menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
