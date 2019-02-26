@@ -9,7 +9,7 @@
   "Next": "التالى",
   "Skip": "تخطى",
   "Continue": "استمرار",
-  "Log out": "خروج",
+  "Log Out": "تسجيل الخروج",
   "Language": "اللغة",
   "My Profile": "ملفى",
   "please wait...": "من فضلك انتظر..",
@@ -43,5 +43,7 @@
   "to": "الى",
   "Do You have an account?": "هل لديك حساب؟",
   "userName": "اسم المستخدم",
-  "User Name or Password are not Correct": "اسم المستخدم او الرقم السرى غير صحيح"
+  "User Name or Password are not Correct": "اسم المستخدم او الرقم السرى غير صحيح",
+  "Activate recieving Requests": "تفعيل استقبال الطلبات",
+  "Request State": "حالة الطلب"
 }

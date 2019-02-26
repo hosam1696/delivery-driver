@@ -1,3 +1,47 @@
 page-starter {
+    ion-content {
+        &.content {
+            background: url('../assets/imgs/star.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .content {
+            $logo-animation-duration: 1.5s;
+            @extend %flex-centered;
+            height: 100%;
+            width: 75%;
+            margin: 0 auto;
+            flex-direction: column;
+            color: $light;
+            .logo {
+                animation: zoom #{$logo-animation-duration} cubic-bezier(0.445, 0.05, 0.55, 0.95) alternate;
+            }
+            .title {
+                opacity: 0;
+                animation: movetop .6s linear #{$logo-animation-duration};
+                animation-fill-mode: forwards;
+            }
 
+            @keyframes movetop {
+                from {
+                    opacity: 0;
+                    transform: translateY(15px)
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0)
+                }
+            }
+            @keyframes zoom {
+                from {
+                    transform: scale(0);
+                    opacity: .2;
+                }
+                to {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+        }
+    }
 }
