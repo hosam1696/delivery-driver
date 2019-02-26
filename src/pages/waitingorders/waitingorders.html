@@ -3,18 +3,15 @@
   <ion-navbar color="primary">
     <ion-title>{{'الطلبات المؤجلة'| translate}}</ion-title>
   </ion-navbar>
-  <ion-toolbar>
-      <ion-item no-lines>
-        <ion-label>
-          {{'Activate recieving Requests' | translate}}
-        </ion-label>
-        <ion-toggle [(ngModel)]='isRecievingRequests' (ionChange)="onToggleChange($event)"></ion-toggle>
-      </ion-item>
-    </ion-toolbar>
   </ion-header>
   
   <ion-content no-padding>
-  
+    <ion-item no-lines class="toolbar-toggle">
+      <ion-label>
+        {{'Activate recieving Requests' | translate}}
+      </ion-label>
+      <ion-toggle [(ngModel)]='isRecievingRequests' (ionChange)="onToggleChange($event)"></ion-toggle>
+    </ion-item>
     <div class="no-requests">
       <img src="assets/imgs/planning.png" alt="">
       <p>
