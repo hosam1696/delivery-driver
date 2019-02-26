@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthProvider } from "../../providers/auth/auth";
 import { UtilsProvider } from "../../providers/utils/utils";
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
+import { FcmProvider } from '../../providers/fcm/fcm';
 
 
 @IonicPage()
@@ -23,6 +24,7 @@ export class LoginPage {
     private events: Events,
     private appStorage: AppstorageProvider,
     private utils: UtilsProvider,
+    private fcmProvider: FcmProvider,
     public navParams: NavParams) {
     this.buildForm();
 
@@ -48,6 +50,14 @@ export class LoginPage {
         if (response.success) {
 
           this.utils.showToast(response.message);
+          // if The driver logged in from device then send the device token to login params
+          (async ()=>{
+            const fcmToken = await this.fcmProvider.getToken();
+            if (fcmToken) {
+              this.loginForm.get('player_id').setValue(fcmToken);
+              this.appStorage.saveFcmToken(fcmToken);
+            }
+          })()
 
           Promise.all([
             this.appStorage.setUserData(response.data.user),

@@ -32,6 +32,16 @@ $app-direction: multi;
 // to match your app's branding. Ionic uses a Sass map of
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
+$font-path: "../assets/fonts";
+
+$menu-width: 230px;
+@font-face {
+  font-family: 'cairo-regular';
+  src: url('../assets/fonts/cairo-regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 $colors: (
   primary: #443279,
@@ -73,14 +83,7 @@ $colors: (
 
 @import "ionic.theme.default";
 
-$font-path: "../assets/fonts";
-$menu-width: 230px;
-@font-face {
-  font-family: 'Cairo-regular';
-  src: url('../assets/fonts/Cairo-regular.ttf');
-  font-weight: normal;
-  font-style: normal;
-}
+
 
 // Ionicons
 // --------------------------------------------------

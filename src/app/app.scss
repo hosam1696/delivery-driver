@@ -13,6 +13,10 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+* {
+  font-family: "cairo-regular", Roboto, sans-serif;
+}
+
 
 $primary: color($colors, primary);
 $light: color($colors, light);
@@ -25,9 +29,7 @@ $yellow: #e5c82a;
 $container-margin-top: 12px;
 $iconWidth: 24px;
 
-* {
-    font-family: "Cairo-regular", "Roboto", sans-serif;
-}
+
 
 %flex-centered {
   display: flex;

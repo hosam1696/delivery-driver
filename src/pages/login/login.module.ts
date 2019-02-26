@@ -6,6 +6,7 @@ import {AuthProvider} from "../../providers/auth/auth";
 import {UtilsProvider} from "../../providers/utils/utils";
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { StarterPage } from '../starter/starter';
+import { FcmProvider } from '../../providers/fcm/fcm';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { StarterPage } from '../starter/starter';
   providers: [
     AuthProvider,
     UtilsProvider,
-    AppstorageProvider
+    AppstorageProvider,
+    FcmProvider
   ],
   exports: [
     StarterPage
