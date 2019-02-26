@@ -1,44 +1,44 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
-import { OrdersProvider } from '../../providers/orders/orders';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UserData } from '../../providers/types/app-types';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
+import { OrdersProvider } from '../../providers/orders/orders';
 import { UtilsProvider } from '../../providers/utils/utils';
 
 
 @IonicPage()
 @Component({
-  selector: 'page-requests',
-  templateUrl: 'requests.html',
+  selector: 'page-waitingorders',
+  templateUrl: 'waitingorders.html',
 })
-export class RequestsPage {
+export class WaitingordersPage {
   isRecievingRequests:boolean;
   userData: UserData;
   allOrders: any[];
 
-
+  
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              private appStorageProvider: AppstorageProvider,
-              private ordersProvider: OrdersProvider,
-              private utils: UtilsProvider,
-              private popOverctrl: PopoverController
-              ) {
+               public navParams: NavParams,
+               private appStorageProvider: AppstorageProvider,
+               private ordersProvider: OrdersProvider,
+               private utils: UtilsProvider,
+               ) {
   }
 
+  
   async ionViewDidLoad() {
     this.userData = await this.appStorageProvider.getUserData();
 
-    this.getAllOrders()
+    this.getWaitingOrders()
   }
 
 
-  private getAllOrders() {
+  private getWaitingOrders() {
 
-    const orders$ = this.ordersProvider.getAllOrders(this.userData.api_token);
+    const orders$ = this.ordersProvider.getWaitingOrders(this.userData.api_token);
 
     orders$.subscribe(data => {
-      console.log({orders: data});
+      console.log({waitingOrders: data});
     })
   }
 
@@ -58,17 +58,5 @@ export class RequestsPage {
     })
   }
 
-  showPopOver(ev) {
-    const popover = this.popOverctrl.create('OrdersstatesPage');
 
-    popover.onDidDismiss(data=> {
-      if (data != null) {
-        console.log('data from popover', {data});
-      }
-    })
-
-    popover.present({
-      ev
-    });
-  }
 }

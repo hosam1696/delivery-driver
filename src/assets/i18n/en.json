@@ -1,3 +1,6 @@
 {
-    "userName": "User Name"
+    "userName": "User Name",
+    "بياناتى": "My Profile",
+    "الطلبات": "Orders",
+    "الطلبات المؤجلة": "Posponing Orders"
 }

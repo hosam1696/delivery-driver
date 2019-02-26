@@ -30,7 +30,7 @@ export class MyApp {
     this.pages = [
       { title: 'بياناتى', component: 'ProfilePage', icon: 'man-user1.png' },
       { title: 'الطلبات', component: 'RequestsPage', icon: 'synchronization-arrows-couple1.png' },
-      { title: ' الطلبات المؤجلة', component: 'RequestsPage', icon: 'sync.png' }
+      { title: 'الطلبات المؤجلة', component: 'WaitingordersPage', icon: 'sync.png' }
     ];
 
     this.subscribeEvents();
