@@ -38,7 +38,7 @@ $iconWidth: 24px;
 .app-bg-btn {
   padding: 24px;
   border-radius: 30px;
-  //background-image: linear-gradient(to left, $primary, $secondary);
+  background-image: linear-gradient(to right, $danger, $primary);
   width: 150px;
 }
 
@@ -88,8 +88,19 @@ ion-menu {
     ion-list {
       background: transparent !important;
       button {
-      background: transparent !important;
-      color: $light !important;      
+        background: transparent !important;
+        color: $light !important;      
+        ion-label {
+          align-items: center;
+        }
+        img {
+          width: 22px;
+          height: 22px;
+        }
+        span {
+          display: inline-block;
+          margin: 0 10px;
+        }
       }
     }
   }

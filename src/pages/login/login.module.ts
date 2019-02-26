@@ -5,10 +5,12 @@ import {TranslateModule} from "@ngx-translate/core";
 import {AuthProvider} from "../../providers/auth/auth";
 import {UtilsProvider} from "../../providers/utils/utils";
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
+import { StarterPage } from '../starter/starter';
 
 @NgModule({
   declarations: [
     LoginPage,
+    StarterPage
   ],
   imports: [
     IonicPageModule.forChild(LoginPage),
@@ -18,6 +20,9 @@ import { AppstorageProvider } from '../../providers/appstorage/appstorage';
     AuthProvider,
     UtilsProvider,
     AppstorageProvider
+  ],
+  exports: [
+    StarterPage
   ]
 })
 export class LoginPageModule {}

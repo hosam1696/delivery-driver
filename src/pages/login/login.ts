@@ -15,6 +15,7 @@ export class LoginPage {
   loginForm: FormGroup;
   rememberCredentials;
   processing: boolean = false;
+  showSplash: boolean = true;
 
   constructor(public navCtrl: NavController,
     private formBuilder: FormBuilder,
@@ -24,9 +25,15 @@ export class LoginPage {
     private utils: UtilsProvider,
     public navParams: NavParams) {
     this.buildForm();
-  }
 
+  }
+  
   ionViewDidLoad() {
+    
+    this.events.subscribe('change:splash:screen', val => this.showSplash = val);
+    setTimeout(()=> {
+      this.showSplash = false;
+    }, 3000)
   }
 
   submitForm() {

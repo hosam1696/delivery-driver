@@ -1,4 +1,6 @@
-<ion-content no-padding>
+<page-starter [hidden]="!showSplash"></page-starter>
+
+<ion-content no-padding [hidden]="showSplash">
   <section class="hero"></section>
   <form action="" [formGroup]="loginForm" (ngSubmit)="submitForm()">
     <h3 margin-bottom>{{'Login' | translate}}</h3>

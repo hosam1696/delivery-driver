@@ -13,9 +13,9 @@ import {AppstorageProvider} from "../providers/appstorage/appstorage";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = 'StarterPage';
+  rootPage: any = 'LoginPage';
   defaultLang: Langs = 'ar';
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title: string, component: any, icon: string}>;
   userData: UserData;
 
   constructor(public platform: Platform,
@@ -28,9 +28,9 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'بياناتى', component: 'HomePage' },
-      { title: 'الطلبات', component: 'ListPage' },
-      { title: ' الطلبات المؤجلة', component: 'ListPage' }
+      { title: 'بياناتى', component: 'ProfilePage', icon: 'man-user1.png' },
+      { title: 'الطلبات', component: 'RequestsPage', icon: 'synchronization-arrows-couple1.png' },
+      { title: ' الطلبات المؤجلة', component: 'RequestsPage', icon: 'sync.png' }
     ];
 
     this.subscribeEvents();
@@ -56,7 +56,12 @@ export class MyApp {
     ]).then( async (data: [Langs, UserData])=> {
       const [lang, userData] = data;
       this.setDefaultLang(lang || this.defaultLang);
-      this.rootPage = userData ? 'ProfilePage' : 'LoginPage'
+      if (userData) {
+        this.rootPage = 'ProfilePage';
+        this.events.publish('update:storage');
+      } else {
+        this.rootPage = 'LoginPage'  
+      }
     })
   }
 
@@ -67,6 +72,7 @@ export class MyApp {
       ]).then(()=>{
         this.rootPage = 'LoginPage';
         this.nav.setRoot('LoginPage')
+        this.events.publish('change:splash:screen', false);
       })
   }
 

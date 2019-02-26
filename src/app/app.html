@@ -10,11 +10,17 @@
     </div>
     <ion-list clear no-lines>
       <button clear no-border menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
+        <img [src]="'assets/icon/'+p.icon" alt="menu-icon">
+        <span>
+          {{p.title | translate}}
+        </span>
       </button>
 
       <button menuClose ion-item (click)="logout()">
-        {{'Log Out' | translate}}
+        <img src="assets/icon/sign-out-option1.png" alt="signout-icon">
+        <span>
+            {{'Log Out' | translate}}
+        </span>
       </button>
     </ion-list>
   </ion-content>
