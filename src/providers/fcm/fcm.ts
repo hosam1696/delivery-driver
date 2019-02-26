@@ -1,17 +1,18 @@
-import { HttpClient } from '@angular/common/http';
+import { FCM } from '@ionic-native/fcm';
 import { Injectable } from '@angular/core';
+import { AppstorageProvider } from '../appstorage/appstorage';
 
-/*
-  Generated class for the FcmProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class FcmProvider {
 
-  constructor(public http: HttpClient) {
+  constructor(public fcm: FCM, private storageProvider: AppstorageProvider) {
     console.log('Hello FcmProvider Provider');
   }
 
+
+  async getToken() {
+    const fcmToken = await this.fcm.getToken();
+
+    return this.storageProvider.saveFcmToken(fcmToken);
+  }
 }

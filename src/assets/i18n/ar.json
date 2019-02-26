@@ -45,5 +45,7 @@
   "userName": "اسم المستخدم",
   "User Name or Password are not Correct": "اسم المستخدم او الرقم السرى غير صحيح",
   "Activate recieving Requests": "تفعيل استقبال الطلبات",
-  "Request State": "حالة الطلب"
+  "Request State": "حالة الطلب",
+  "Requests": "الطلبات",
+  "Requests in their way to you, Get Ready": "الطلبات فى طريقها اليك, استعد!"
 }

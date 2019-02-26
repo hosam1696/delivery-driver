@@ -40,7 +40,7 @@ export class MyApp {
   initializeApp() {
     this.platform.ready().then(() => {
 
-      this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#443279');
       this.splashScreen.hide();
 
       this.setRootPage();
@@ -57,7 +57,7 @@ export class MyApp {
       const [lang, userData] = data;
       this.setDefaultLang(lang || this.defaultLang);
       if (userData) {
-        this.rootPage = 'ProfilePage';
+        this.rootPage = 'RequestsPage';
         this.events.publish('update:storage');
       } else {
         this.rootPage = 'LoginPage'  
@@ -68,7 +68,8 @@ export class MyApp {
   logout () {
       Promise.all([
         this.appStorage.storage.remove('delivery:user:data'),
-        this.appStorage.storage.remove('delivery:token'),
+        this.appStorage.storage.remove('delivery:api:token'),
+        this.appStorage.storage.remove('delivery:fcm:token'),
       ]).then(()=>{
         this.rootPage = 'LoginPage';
         this.nav.setRoot('LoginPage')
@@ -104,6 +105,6 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    this.nav.push(page.component);
   }
 }

@@ -1,10 +1,13 @@
 
 <ion-header>
-  <ion-navbar>
-    <ion-title>{{'Reqquests' | translate}}</ion-title>
+  <ion-navbar color="primary">
+      <button ion-button clear icon-only menuToggle>
+          <ion-icon name="menu" color="light"></ion-icon>
+        </button>
+    <ion-title>{{'Requests' | translate}}</ion-title>
   </ion-navbar>
   <ion-toolbar>
-    <ion-item>
+    <ion-item no-lines>
       <ion-label>
         {{'Activate recieving Requests' | translate}}
       </ion-label>
@@ -16,7 +19,15 @@
 <ion-content no-padding>
   <section class="requests-states">
     <button ion-button clear>
-      {{'Request State' | translate}}
+      <b>{{'Request State' | translate}}</b>
     </button>
   </section>
+
+
+  <div class="no-requests">
+    <img src="assets/imgs/planning.png" alt="">
+    <p>
+      {{'Requests in their way to you, Get Ready' | translate}}
+    </p>
+  </div>
 </ion-content>

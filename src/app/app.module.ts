@@ -17,6 +17,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {IonicStorageModule} from "@ionic/storage";
+import { OrdersProvider } from '../providers/orders/orders';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -52,7 +53,8 @@ export function createTranslateLoader(http: HttpClient) {
     AppstorageProvider,
     UtilsProvider,
     FcmProvider,
-    ApiProvider
+    ApiProvider,
+    OrdersProvider
   ]
 })
 export class AppModule {}

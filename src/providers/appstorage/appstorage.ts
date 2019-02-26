@@ -29,12 +29,19 @@ export class AppstorageProvider {
   }
 
   getSavedToken() {
-    return this.storage.get('delivery:token')
+    return this.storage.get('delivery:api:token')
   }
 
   saveToken(token) {
-    return this.storage.set('delivery:token', token)
+    return this.storage.set('delivery:api:token', token)
   }
 
+  getFcmToken() {
+    return this.storage.get('delivery:fcm:token')
+  }
+
+  saveFcmToken(token) {
+    return this.storage.set('delivery:fcm:token', token)
+  }
   
 }

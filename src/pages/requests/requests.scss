@@ -1,3 +1,40 @@
 page-requests {
 
+    ion-toggle {
+        .toggle-icon {
+            background-color: #fbc2c2 !important;
+            .toggle-inner {
+                background-color: #ef120b !important;
+
+            }
+        }
+        &.toggle-checked {
+            .toggle-icon {
+                background-color: #c4f4c3 !important;
+                .toggle-inner {
+                    background-color: #0bcc31 !important;
+
+                }
+            }
+        }
+    }
+
+    ion-content {
+        .requests-states {
+            box-shadow: 1px 1px 7px #ccc;
+            button {
+                width: 50%;
+                margin: 0 !important;
+                border-bottom: 2px solid $primary;
+            }
+        }
+
+        .no-requests {
+            height: 70%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    }
 }
