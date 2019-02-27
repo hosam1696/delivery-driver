@@ -36,11 +36,15 @@ $font-path: "../assets/fonts";
 
 $menu-width: 230px;
 @font-face {
-  font-family: 'cairo-regular';
+  font-family: 'Cairo';
   src: url('../assets/fonts/cairo-regular.ttf');
   font-weight: normal;
   font-style: normal;
 }
+
+$font-family-base: "Cairo";
+$font-family-ios-base: "Cairo";
+$font-family-android-base: "Cairo";
 
 
 $colors: (
