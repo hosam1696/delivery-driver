@@ -32,7 +32,6 @@ $app-direction: multi;
 // to match your app's branding. Ionic uses a Sass map of
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
-$font-path: "../assets/fonts";
 
 $menu-width: 230px;
 @font-face {
@@ -51,7 +50,7 @@ $colors: (
   primary: #443279,
   secondary: #534c4c,
   danger: #901c56,
-  lightGrey: #d8d7d7,
+  lightGrey: #acaaaa,
   light: #fff,
   dark: #222
 );
