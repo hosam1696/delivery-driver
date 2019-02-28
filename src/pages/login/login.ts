@@ -5,6 +5,7 @@ import { AuthProvider } from "../../providers/auth/auth";
 import { UtilsProvider } from "../../providers/utils/utils";
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { FcmProvider } from '../../providers/fcm/fcm';
+import { AudioProvider } from '../../providers/audio/audio';
 
 
 @IonicPage()
@@ -25,6 +26,7 @@ export class LoginPage {
     private appStorage: AppstorageProvider,
     private utils: UtilsProvider,
     private fcmProvider: FcmProvider,
+    private audioProvider: AudioProvider,
     public navParams: NavParams) {
     this.buildForm();
 
@@ -35,7 +37,9 @@ export class LoginPage {
     this.events.subscribe('change:splash:screen', val => this.showSplash = val);
     setTimeout(()=> {
       this.showSplash = false;
-    }, 3000)
+    }, 3000);
+
+    this.audioProvider.activateBtnSound();
   }
 
   submitForm() {

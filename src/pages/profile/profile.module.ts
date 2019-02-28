@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { ProfilePage } from './profile';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
+import { AudioProvider } from '../../providers/audio/audio';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { AppstorageProvider } from '../../providers/appstorage/appstorage';
     TranslateModule
   ],
   providers: [
-    AppstorageProvider
+    AppstorageProvider,
+    AudioProvider
   ]
 })
 export class ProfilePageModule {}

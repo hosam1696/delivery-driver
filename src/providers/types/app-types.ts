@@ -78,3 +78,10 @@ export interface Company {
   status?: any;
   is_new?: any;
 }
+
+
+export interface Sound {
+  key: string;
+  asset: string;
+  isNative: boolean
+}

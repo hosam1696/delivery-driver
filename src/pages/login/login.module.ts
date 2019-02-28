@@ -7,6 +7,7 @@ import {UtilsProvider} from "../../providers/utils/utils";
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { StarterPage } from '../starter/starter';
 import { FcmProvider } from '../../providers/fcm/fcm';
+import { AudioProvider } from '../../providers/audio/audio';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FcmProvider } from '../../providers/fcm/fcm';
     AuthProvider,
     UtilsProvider,
     AppstorageProvider,
-    FcmProvider
+    FcmProvider,
+    AudioProvider
   ],
   exports: [
     StarterPage

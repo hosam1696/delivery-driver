@@ -4,6 +4,7 @@ import { OrdersProvider } from '../../providers/orders/orders';
 import { UserData } from '../../providers/types/app-types';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
+import { AudioProvider } from '../../providers/audio/audio';
 
 
 @IonicPage()
@@ -22,14 +23,17 @@ export class RequestsPage {
               private appStorageProvider: AppstorageProvider,
               private ordersProvider: OrdersProvider,
               private utils: UtilsProvider,
-              private popOverctrl: PopoverController
+              private popOverctrl: PopoverController,
+              private audioProvider: AudioProvider
               ) {
   }
 
   async ionViewDidLoad() {
     this.userData = await this.appStorageProvider.getUserData();
 
-    this.getAllOrders()
+    this.getAllOrders();
+
+    this.audioProvider.activateBtnSound();
   }
 
 

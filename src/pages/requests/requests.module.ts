@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { OrdersProvider } from '../../providers/orders/orders';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
+import { AudioProvider } from '../../providers/audio/audio';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { UtilsProvider } from '../../providers/utils/utils';
   providers: [
     OrdersProvider,
     AppstorageProvider,
-    UtilsProvider
+    UtilsProvider,
+    AudioProvider
   ]
 })
 export class RequestsPageModule {}

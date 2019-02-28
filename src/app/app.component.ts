@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import {TranslateService} from "@ngx-translate/core";
 import {AppDirLang, DocumentDirection, UserData, Langs} from "../providers/types/app-types";
 import {AppstorageProvider} from "../providers/appstorage/appstorage";
+import { AudioProvider } from '../providers/audio/audio';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class MyApp {
               public statusBar: StatusBar,
               public splashScreen: SplashScreen,
               public events: Events,
+              private audioProvider: AudioProvider,
               public appStorage:AppstorageProvider,
               public translate: TranslateService) {
     this.initializeApp();
@@ -44,6 +46,8 @@ export class MyApp {
       this.splashScreen.hide();
 
       this.setRootPage();
+     
+      this.audioProvider.activateBtnSound();
 
     });
   }
