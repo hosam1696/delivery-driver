@@ -54,14 +54,6 @@ export class LoginPage {
         if (response.success) {
 
           this.utils.showToast(response.message);
-          // if The driver logged in from device then send the device token to login params
-          (async ()=>{
-            const fcmToken = await this.fcmProvider.getToken();
-            if (fcmToken) {
-              this.loginForm.get('player_id').setValue(fcmToken);
-              this.appStorage.saveFcmToken(fcmToken);
-            }
-          })()
 
           Promise.all([
             this.appStorage.setUserData(response.data.user),
@@ -89,6 +81,18 @@ export class LoginPage {
       password: ['', Validators.required],
       player_id: ['']
     });
+
+    this.setToken();
+  }
+
+  async setToken() {
+      // if The driver logged in from device then send the device token to login params
+      const fcmToken = await this.fcmProvider.getToken()
+
+      if (fcmToken) {
+        this.loginForm.get('player_id').setValue(fcmToken);
+        this.appStorage.saveFcmToken(fcmToken);
+      }
   }
 
   goTo(page: string) {

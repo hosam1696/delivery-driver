@@ -10,7 +10,7 @@
     <div class="avatar" (click)="onClick()">
       <img [src]="'https://www.moovstore.com/'+userData?.photo" alt="">
     </div>
-    <p>{{userData?.userName}}</p>
+    <h2>{{userData?.userName}}</h2>
     <p>{{userData?.phoneNumber}}</p>
   </section>
 
@@ -29,7 +29,7 @@
           {{'Total Orders'|translate}}
         </ion-label>
         <ion-label>
-          34
+          {{userData?.order_count}}
         </ion-label>
       </ion-item>
     </ion-list>

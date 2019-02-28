@@ -2,7 +2,7 @@
 
   <ion-content>
 
-    <div class="avatar-menu">
+    <div class="avatar-menu" menuClose (click)="openProfilePage()">
       <div class="avatar">
         <img [src]="'https://www.moovstore.com/'+userData?.photo" alt="">
       </div>

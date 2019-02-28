@@ -111,4 +111,10 @@ export class MyApp {
     // we wouldn't want the back button to show in this scenario
     this.nav.push(page.component);
   }
+
+  openProfilePage() {
+    const page = this.pages.find(page => page.component == 'ProfilePage');
+
+    this.openPage(page);
+  }
 }

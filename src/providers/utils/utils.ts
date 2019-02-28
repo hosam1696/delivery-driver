@@ -53,7 +53,7 @@ export class UtilsProvider {
   validateForm(form: FormGroup) {
     const formFields = Object.keys(form.value);
     const translatedFields = formFields.map(fieldName => this.translate.instant(fieldName));
-    console.log('form fields', formFields, translatedFields);
+    // console.log('form fields', formFields, translatedFields);
     return formFields.every((formField, index) => {
       if (form.get(formField).getError('required')) {
         this.showToast(`${this.translate.instant('you have to enter')} ${translatedFields[index]}`);

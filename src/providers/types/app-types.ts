@@ -33,7 +33,9 @@ export interface UserData {
     "long": string | number,
     "api_token": string,
     "player_id": string,
-    company?: Company
+    company?: Company,
+    order_count?: any
+    
 }
 
 export interface Company {
