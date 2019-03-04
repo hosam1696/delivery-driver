@@ -62,7 +62,7 @@ export class LoginPage {
             this.events.publish('update:storage')
           })
 
-          this.goTo('ProfilePage');
+          this.navCtrl.setRoot('RequestsPage');
 
         } else {
           this.utils.showTranslatedToast(response.message == 'translation.auth failed' ? 'User Name or Password are not Correct' : response.message)

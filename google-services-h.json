@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "677236292513",
-    "firebase_url": "https://delivery-driver-ea3db.firebaseio.com",
-    "project_id": "delivery-driver-ea3db",
-    "storage_bucket": "delivery-driver-ea3db.appspot.com"
+    "project_number": "639552162791",
+    "firebase_url": "https://deliverydriver-app.firebaseio.com",
+    "project_id": "deliverydriver-app",
+    "storage_bucket": "deliverydriver-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:677236292513:android:d89792d189178bf6",
+        "mobilesdk_app_id": "1:639552162791:android:d89792d189178bf6",
         "android_client_info": {
           "package_name": "com.moove.deliverydriver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "677236292513-a8nqfpkdp5dnep4n9v3r72u9nhskso17.apps.googleusercontent.com",
+          "client_id": "639552162791-b67opdommndqfrol9sk53jabto8v2sr3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBEYJxX_KTH8DT3s8biJOo5ydAdGeG4-8k"
+          "current_key": "AIzaSyDOXnTS1itwEhX5khpI9ic90ZOF5bR0lDA"
         }
       ],
       "services": {
