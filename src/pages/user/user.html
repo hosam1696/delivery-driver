@@ -1,0 +1,46 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button icon-only menuToggle>
+        <ion-icon color="dark" name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <section class="avatar-section">
+    <div class="avatar" >
+      <img [src]="'https://www.rawahi.com/'+requestUser?.avatar" alt="">
+    </div>
+    <h2>{{requestUser?.name}}</h2>
+    <p>{{requestUser?.phone}}</p>
+    <p>{{requestUser?.gender | translate}}</p>
+  </section>
+
+
+  <div class="actions">
+    <div text-center>
+      <button ion-button round>
+        ابدأ رحلتك الان لتوصيل الطلب
+      </button>
+    </div>
+    <div text-center>
+      <button ion-button outline round>
+        تم التسليم
+      </button>
+      <button ion-button outline color="danger" round>
+        الغاء
+      </button>
+    </div>
+  </div>
+
+  <ion-fab bottom right>
+    <button ion-fab mini (click)="goToMaps()">
+      <img src="assets/imgs/map-pin.png" alt="">
+    </button>
+  </ion-fab>
+</ion-content>

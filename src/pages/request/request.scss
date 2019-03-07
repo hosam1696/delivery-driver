@@ -18,6 +18,7 @@ page-request {
       }
     }
     ion-slides {
+      min-height: 313px;
       .swiper-pagination {
         bottom: -5px !important;
       }
@@ -26,6 +27,8 @@ page-request {
           border-radius: 8px;
           height: 150px;
           min-height: 150px;
+          max-height: 150px;
+
           background: #eee;
         }
 
@@ -42,6 +45,13 @@ page-request {
             @extend .total-cost;
             margin: auto 0 ;
           }
+        }
+      }
+    }
+    ion-fab {
+      button {
+        img {
+          transform: scale(.6);
         }
       }
     }

@@ -34,6 +34,10 @@ export class OrdersProvider {
 
   }
 
+  awaitOrder(orderId, token) {
+
+  }
+
   acceptOrder(orderId, token) {
     return this.api.post('order/'.concat(orderId, '/accepted'), null, {api_token: token})
   }

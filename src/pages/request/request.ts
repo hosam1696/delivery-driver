@@ -48,4 +48,8 @@ export class RequestPage {
   onClick(requetAction : keyof RequestAction) {
 
   }
+
+  goToUserPage() {
+    this.navCtrl.push('UserPage', {user: this.driverOrder.order.user});
+  }
 }
