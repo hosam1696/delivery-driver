@@ -13,7 +13,7 @@
     <ion-label>
       {{'Activate recieving Requests' | translate}}
     </ion-label>
-    <ion-toggle [(ngModel)]='isRecievingRequests' (ionChange)="onToggleChange($event)"></ion-toggle>
+    <ion-toggle [(ngModel)]='isReceivingRequests' (ionChange)="onToggleChange($event)"></ion-toggle>
   </ion-item>
   <section class="requests-states">
     <button ion-button clear (click)="showPopOver($event)">
@@ -22,10 +22,14 @@
   </section>
 
 
-  <div class="no-requests">
+  <div class="no-requests" *ngIf="!requests||(requests&&!requests.length)">
     <img src="assets/imgs/planning.png" alt="">
     <p>
       {{'Requests in their way to you, Get Ready' | translate}}
     </p>
   </div>
+
+  <ion-list margin *ngFor="let request of requests">
+    <driver-request [request]="request" (click)="goToRequestPage(request)"></driver-request>
+  </ion-list>
 </ion-content>

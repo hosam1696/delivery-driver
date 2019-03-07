@@ -1,0 +1,15 @@
+<button ion-item class="user-order" no-lines>
+  <ion-avatar>
+    <img [src]="'https://www.rawahi.com/'+request.order.product_image" alt="">
+  </ion-avatar>
+  <div class="item-info">
+    <p>
+      <b>{{request.order.first_item.title}}</b>
+      <span>{{request.created_at | date:'short'}}</span>
+    </p>
+    <p>
+      {{request.order.status | translate}}
+    </p>
+  </div>
+
+</button>

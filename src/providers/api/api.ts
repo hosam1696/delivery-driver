@@ -6,7 +6,7 @@ import {Events} from "ionic-angular";
 @Injectable()
 
 export class ApiProvider {
-  API_URL: string = 'https://www.moovstore.com/api/delivery-driver/';
+  API_URL: string = 'https://www.rawahi.com/api/delivery-driver/';
   defaultLang: string = 'ar';
   choosedLang: 'en' | 'ar';
 

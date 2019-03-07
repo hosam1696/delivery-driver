@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { UserData } from '../../providers/types/app-types';
+import {DriverOrder, UserData} from '../../providers/types/app-types';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { OrdersProvider } from '../../providers/orders/orders';
 import { UtilsProvider } from '../../providers/utils/utils';
@@ -12,9 +12,9 @@ import { UtilsProvider } from '../../providers/utils/utils';
   templateUrl: 'waitingorders.html',
 })
 export class WaitingordersPage {
-  isRecievingRequests:boolean;
+  isReceivingRequests:boolean;
   userData: UserData;
-  allOrders: any[];
+  allRequests: DriverOrder[];
 
   
   constructor(public navCtrl: NavController,
@@ -37,13 +37,16 @@ export class WaitingordersPage {
 
     const orders$ = this.ordersProvider.getWaitingOrders(this.userData.api_token);
 
-    orders$.subscribe(data => {
-      console.log({waitingOrders: data});
+    orders$.subscribe(response => {
+      console.log({waitingOrders: response});
+      if (response.success) {
+        this.allRequests = response.data.orders;
+      }
     })
   }
 
   onToggleChange(event) {
-    this.isRecievingRequests = event.value;
+    this.isReceivingRequests = event.value;
     this.changeOrderStatus();
   }
 
@@ -58,5 +61,9 @@ export class WaitingordersPage {
     })
   }
 
+
+  goToRequestPage(request) {
+    this.navCtrl.push('RequestPage', {request})
+  }
 
 }

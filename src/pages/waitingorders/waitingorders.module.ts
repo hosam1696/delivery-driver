@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { OrdersProvider } from '../../providers/orders/orders';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
+import {ComponentsModule} from "../../components/components.module";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { UtilsProvider } from '../../providers/utils/utils';
   ],
   imports: [
     IonicPageModule.forChild(WaitingordersPage),
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    ComponentsModule
   ],
   providers: [
     OrdersProvider,

@@ -47,5 +47,16 @@
   "Activate recieving Requests": "تفعيل استقبال الطلبات",
   "Request State": "حالة الطلب",
   "Requests": "الطلبات",
-  "Requests in their way to you, Get Ready": "الطلبات فى طريقها اليك, استعد!"
+  "Request": "طلب",
+  "SAR": "ريال",
+  "Request Details": "تفاصيل الطلب",
+  "completed": "تم التوصيل",
+  "Requests in their way to you, Get Ready": "الطلبات فى طريقها اليك, استعد!",
+  "Quantity": "الكمية",
+  "Price": "السعر",
+  "Pay On Delivery": "الدفع عند الاستلام",
+  "Total": "الاجمالى",
+  "Deliver Now": "التوصيل الان",
+  "Deliver Later": "التوصيل لاحقا",
+  "Cancel": "رفض"
 }

@@ -1,0 +1,29 @@
+driver-request {
+  .user-order {
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px #eee;
+    margin-bottom: 12px;
+    ion-avatar {
+      min-width: 70px;
+      width: 70px;
+      height: 70px;
+
+      img {
+        width: 100%;
+        border: 2px solid $primary;
+        height: 100%;
+      }
+    }
+    .item-info {
+      margin-right: 10px;
+      width: 100%;
+      p {
+        display: flex;
+        justify-content: space-between;
+        span {
+          color: #ccc
+        }
+      }
+    }
+  }
+}

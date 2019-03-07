@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
 import { OrdersProvider } from '../../providers/orders/orders';
-import { UserData } from '../../providers/types/app-types';
+import {DriverOrder, OrderStatus, UserData} from '../../providers/types/app-types';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { AudioProvider } from '../../providers/audio/audio';
@@ -13,17 +13,17 @@ import { AudioProvider } from '../../providers/audio/audio';
   templateUrl: 'requests.html',
 })
 export class RequestsPage {
-  isRecievingRequests:boolean;
+  isReceivingRequests:boolean;
   userData: UserData;
-  allOrders: any[];
-
+  allRequests: DriverOrder[];
+  requests: DriverOrder[];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private appStorageProvider: AppstorageProvider,
               private ordersProvider: OrdersProvider,
               private utils: UtilsProvider,
-              private popOverctrl: PopoverController,
+              private popOverCtrl: PopoverController,
               private audioProvider: AudioProvider
               ) {
   }
@@ -41,13 +41,14 @@ export class RequestsPage {
 
     const orders$ = this.ordersProvider.getAllOrders(this.userData.api_token);
 
-    orders$.subscribe(data => {
-      console.log({orders: data});
+    orders$.subscribe(response => {
+      console.log({ordersResponse: response});
+      this.allRequests = this.requests = response.data.orders;
     })
   }
 
   onToggleChange(event) {
-    this.isRecievingRequests = event.value;
+    this.isReceivingRequests = event.value;
     this.changeOrderStatus();
   }
 
@@ -63,16 +64,25 @@ export class RequestsPage {
   }
 
   showPopOver(ev) {
-    const popover = this.popOverctrl.create('OrdersstatesPage');
+    const popover = this.popOverCtrl.create('OrdersstatesPage');
 
     popover.onDidDismiss(data=> {
       if (data != null) {
         console.log('data from popover', {data});
+        if (data == 0) {
+          this.requests = this.allRequests;
+        } else  {
+          this.requests = this.allRequests.filter(req=> req.order.status == OrderStatus[data]);
+        }
       }
     })
 
     popover.present({
       ev
     });
+  }
+
+  goToRequestPage(request) {
+    this.navCtrl.push('RequestPage', {request})
   }
 }

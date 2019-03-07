@@ -6,6 +6,7 @@ import { OrdersProvider } from '../../providers/orders/orders';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { AudioProvider } from '../../providers/audio/audio';
+import {ComponentsModule} from "../../components/components.module";
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { AudioProvider } from '../../providers/audio/audio';
   ],
   imports: [
     IonicPageModule.forChild(RequestsPage),
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    ComponentsModule
   ],
   providers: [
     OrdersProvider,

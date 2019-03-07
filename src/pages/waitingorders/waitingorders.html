@@ -10,13 +10,17 @@
       <ion-label>
         {{'Activate recieving Requests' | translate}}
       </ion-label>
-      <ion-toggle [(ngModel)]='isRecievingRequests' (ionChange)="onToggleChange($event)"></ion-toggle>
+      <ion-toggle [(ngModel)]='isReceivingRequests' (ionChange)="onToggleChange($event)"></ion-toggle>
     </ion-item>
-    <div class="no-requests">
+    <div class="no-requests" *ngIf="!allRequests||(allRequests&&!allRequests.length)">
       <img src="assets/imgs/planning.png" alt="">
       <p>
         {{'Requests in their way to you, Get Ready' | translate}}
       </p>
     </div>
+
+
+    <ion-list margin *ngFor="let request of allRequests">
+      <driver-request [request]="request" (click)="goToRequestPage(request)"></driver-request>
+    </ion-list>
   </ion-content>
-  
