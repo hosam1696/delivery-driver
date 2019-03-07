@@ -35,7 +35,7 @@
           {{driverOrder.order.total}} {{'SAR' | translate}}
         </span>
       </div>
-      <div class="btns" margin-top>
+      <div class="btns" margin-top *ngIf="driverOrder.order.status != 'completed'">
         <button ion-button round (click)="onClick('accept')">{{'Deliver Now' | translate}}</button>
         <button ion-button round  (click)="onClick('await')">{{'Deliver Later' | translate}}</button>
         <button ion-button round outline color="danger" (click)="onClick('cancel')">{{'Cancel' | translate}}</button>

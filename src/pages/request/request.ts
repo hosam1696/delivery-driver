@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {OrdersProvider} from "../../providers/orders/orders";
 import {DriverOrder, Order, RequestAction, UserData} from "../../providers/types/app-types";
 import {AppstorageProvider} from "../../providers/appstorage/appstorage";
+import {UtilsProvider} from "../../providers/utils/utils";
 
 
 
@@ -19,8 +20,9 @@ export class RequestPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private appStorage: AppstorageProvider,
-              private orderProvider: OrdersProvider
-              ) {
+              private orderProvider: OrdersProvider,
+              private utils: UtilsProvider,
+  ) {
   }
 
   async ionViewDidLoad() {
@@ -46,7 +48,52 @@ export class RequestPage {
 
 
   onClick(requetAction : keyof RequestAction) {
+    switch (requetAction) {
+      case 'accept':
+        this.acceptRequest();
+        break;
+      case 'await':
+        this.awaitRequest();
+        break;
+      case 'cancel':
+        this.cancelRequest();
+        break;
+    }
+  }
 
+  private acceptRequest() {
+    this.orderProvider.acceptOrder(this.driverOrder.id, this.userData.api_token)
+      .subscribe(response => {
+        console.log({response});
+        if (response.status) {
+
+        }
+        this.utils.showToast(response.message)
+      })
+  }
+
+  private awaitRequest() {
+    this.orderProvider.awaitOrder(this.driverOrder.id, this.userData.api_token)
+      .subscribe(response => {
+        console.log({response});
+        if (response.status) {
+
+        }
+        this.utils.showToast(response.message)
+      })
+  }
+
+
+  private cancelRequest() {
+    this.orderProvider.cancelOrder(this.driverOrder.id, this.userData.api_token)
+      .subscribe(response => {
+        console.log({response});
+        if (response.status) {
+
+        }
+        this.utils.showToast(response.message)
+
+      })
   }
 
   goToUserPage() {

@@ -35,6 +35,7 @@ export class OrdersProvider {
   }
 
   awaitOrder(orderId, token) {
+    return this.api.post('order/'.concat(orderId, '/waiting'), null, {api_token: token})
 
   }
 
