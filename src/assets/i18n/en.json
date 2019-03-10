@@ -2,5 +2,8 @@
     "userName": "User Name",
     "بياناتى": "My Profile",
     "الطلبات": "Orders",
-    "الطلبات المؤجلة": "Posponing Orders"
+    "الطلبات المؤجلة": "Posponing Orders",
+    "الدخول": "Login",
+    "اسم المستخدم": "userName",
+    "كلمة المرور": "password"
 }

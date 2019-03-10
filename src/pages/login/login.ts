@@ -60,9 +60,9 @@ export class LoginPage {
             this.appStorage.saveToken(response.data.user.api_token)
           ]).then(() => {
             this.events.publish('update:storage')
+            this.navCtrl.setRoot('RequestsPage');
           })
 
-          this.navCtrl.setRoot('RequestsPage');
 
         } else {
           this.utils.showTranslatedToast(response.message == 'translation.auth failed' ? 'User Name or Password are not Correct' : response.message)

@@ -3,18 +3,18 @@
 <ion-content no-padding [hidden]="showSplash">
   <section class="hero"></section>
   <form action="" [formGroup]="loginForm" (ngSubmit)="submitForm()">
-    <h3 margin-bottom>{{'Login' | translate}}</h3>
+    <h3 margin-bottom>{{'الدخول' | translate}}</h3>
     <div class="form-group">
       <div class="form-icon">
         <ion-icon color="light" name="person"></ion-icon>
       </div>
-      <input class="form-control" type="text" name="moov-name" formControlName="userName" placeholder="{{'userName'|translate}}">
+      <input class="form-control" type="text" name="moov-name" formControlName="userName" placeholder="{{'اسم المستخدم'|translate}}">
     </div>
     <div class="form-group ">
       <div class="form-icon">
         <ion-icon color="light" name="lock"></ion-icon>
       </div>
-      <input class="form-control" type="password" formControlName="password" placeholder="{{'password'|translate}}">
+      <input class="form-control" type="password" formControlName="password" placeholder="{{'كلمة المرور'|translate}}">
     </div>
 
     <div class="submit-button" text-center>
