@@ -66,5 +66,6 @@
   "accepted": "تم القبول",
   "refused": "تم الرفض",
   "cancelled": "تم الالغاء",
+  "canceled": "تم الالغاء",
   "waiting": "مؤجلة"
 }

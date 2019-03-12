@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import {OrdersProvider} from "../../providers/orders/orders";
 import {DriverOrder, Order, RequestAction, UserData} from "../../providers/types/app-types";
 import {AppstorageProvider} from "../../providers/appstorage/appstorage";
@@ -22,6 +22,7 @@ export class RequestPage {
               private appStorage: AppstorageProvider,
               private orderProvider: OrdersProvider,
               private utils: UtilsProvider,
+              private events: Events
   ) {
   }
 
@@ -65,7 +66,9 @@ export class RequestPage {
     this.orderProvider.acceptOrder(this.driverOrder.id, this.userData.api_token)
       .subscribe(response => {
         console.log({response});
-        if (response.status) {
+        if (response.success) {
+          this.driverOrder.status = response.data.order.status
+          this.events.publish('updateOrders');
 
         }
         this.utils.showToast(response.message)
@@ -76,8 +79,9 @@ export class RequestPage {
     this.orderProvider.awaitOrder(this.driverOrder.id, this.userData.api_token)
       .subscribe(response => {
         console.log({response});
-        if (response.status) {
-
+        if (response.success) {
+          this.driverOrder.status = response.data.order.status
+          this.events.publish('updateOrders');
         }
         this.utils.showToast(response.message)
       })
@@ -88,7 +92,9 @@ export class RequestPage {
     this.orderProvider.cancelOrder(this.driverOrder.id, this.userData.api_token)
       .subscribe(response => {
         console.log({response});
-        if (response.status) {
+        if (response.success) {
+          this.driverOrder.status = response.data.order.status;
+          this.events.publish('updateOrders');
 
         }
         this.utils.showToast(response.message)

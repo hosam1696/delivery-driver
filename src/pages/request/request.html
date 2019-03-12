@@ -35,15 +35,15 @@
           {{driverOrder.order.total}} {{'SAR' | translate}}
         </span>
       </div>
-      <div class="btns" margin-top *ngIf="driverOrder.order.status != 'completed'">
-        <button ion-button round (click)="onClick('accept')">{{'Deliver Now' | translate}}</button>
+      <div class="btns" margin-top *ngIf="driverOrder.status != 'completed' && driverOrder.status != 'canceled'">
+        <button ion-button round (click)="onClick('accept')" [hidden]="driverOrder.status == 'accepted'">{{'Deliver Now' | translate}}</button>
         <button ion-button round  (click)="onClick('await')">{{'Deliver Later' | translate}}</button>
-        <button ion-button round outline color="danger" (click)="onClick('cancel')">{{'Cancel' | translate}}</button>
+        <button ion-button round outline color="danger" [hidden]="driverOrder.status == 'accepted'" (click)="onClick('cancel')">{{'Cancel' | translate}}</button>
       </div>
     </div>
   </section>
 
-  <ion-fab bottom right>
+  <ion-fab bottom right *ngIf="driverOrder&&driverOrder.status != 'canceled'">
     <button ion-fab mini (click)="goToUserPage()">
       <img src="assets/imgs/map-pin.png" alt="">
     </button>

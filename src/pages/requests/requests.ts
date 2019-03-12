@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 import { OrdersProvider } from '../../providers/orders/orders';
 import {DriverOrder, OrderStatus, UserData} from '../../providers/types/app-types';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
@@ -26,7 +26,8 @@ export class RequestsPage {
               private authProvider: AuthProvider,
               private utils: UtilsProvider,
               private popOverCtrl: PopoverController,
-              private audioProvider: AudioProvider
+              private audioProvider: AudioProvider,
+              private events: Events
               ) {
   }
 
@@ -36,6 +37,10 @@ export class RequestsPage {
     this.getAllOrders();
 
     this.audioProvider.activateBtnSound();
+
+    this.events.subscribe('updateOrders', () => {
+      this.getAllOrders();
+    })
   }
 
 
