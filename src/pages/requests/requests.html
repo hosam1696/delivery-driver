@@ -24,14 +24,18 @@
   </section>
 
 
-  <div class="no-requests" *ngIf="!requests||(requests&&!requests.length)">
+  <div class="no-requests" *ngIf="(!requests||(requests&&!requests.length) ) && !isFiltering">
     <img src="assets/imgs/planning.png" alt="">
     <p>
       {{'Requests in their way to you, Get Ready' | translate}}
     </p>
   </div>
 
-  <ion-content>
+  <div class="no-requests" *ngIf="requests && !requests.length && isFiltering">
+    <p>{{'No Requests' | translate}}</p>
+  </div>
+
+  <ion-content *ngIf="requests && requests.length">
     <ion-refresher (ionRefresh)="onRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>

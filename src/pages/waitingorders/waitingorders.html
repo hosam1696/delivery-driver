@@ -22,9 +22,8 @@
       </p>
     </div>
 
-
-
     <ion-list margin *ngFor="let request of allRequests">
       <driver-request [request]="request" (click)="goToRequestPage(request)"></driver-request>
     </ion-list>
+    
   </ion-content>

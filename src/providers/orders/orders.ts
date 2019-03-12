@@ -25,8 +25,8 @@ export class OrdersProvider {
 
   }
 
-  refuseOrder(orderId, token) {
-    return this.api.post('order/'.concat(orderId, '/refused'), null, {api_token: token})
+  refuseOrder(orderId, token, comment) {
+    return this.api.post('order/'.concat(orderId, '/refused'), null, {api_token: token, comment})
 
   }
 

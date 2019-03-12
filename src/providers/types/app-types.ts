@@ -15,7 +15,7 @@ export interface RequestAction {
 export enum OrderStatus {
   all,
   processing,
-  shipping,
+  canceled,
   completed
 }
 

@@ -1,6 +1,6 @@
 
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>{{'Request Details' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -10,7 +10,7 @@
   <section class="request-details" *ngIf="driverOrder">
     <ion-slides pager="true" dir="rtl">
       <ion-slide  *ngFor="let item of driverOrder.order.items">
-      <img [src]="'https://www.moovestore.com/'+ item.image" alt="">
+      <img [src]="'https://www.moovstore.com/'+ item.image" alt="">
         <h3 class="product-title"><b>{{item.title}}</b></h3>
         <div class="info">
           <div>
@@ -37,7 +37,7 @@
       </div>
       <div class="btns" margin-top *ngIf="driverOrder.status != 'completed' && driverOrder.status != 'canceled'">
         <button ion-button round (click)="onClick('accept')" [hidden]="driverOrder.status == 'accepted'">{{'Deliver Now' | translate}}</button>
-        <button ion-button round  (click)="onClick('await')">{{'Deliver Later' | translate}}</button>
+        <button ion-button round  (click)="onClick('await')" [hidden]="driverOrder.status == 'accepted'">{{'Deliver Later' | translate}}</button>
         <button ion-button round outline color="danger" [hidden]="driverOrder.status == 'accepted'" (click)="onClick('cancel')">{{'Cancel' | translate}}</button>
       </div>
     </div>

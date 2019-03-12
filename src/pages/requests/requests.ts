@@ -18,6 +18,7 @@ export class RequestsPage {
   userData: UserData;
   allRequests: DriverOrder[];
   requests: DriverOrder[];
+  isFiltering: boolean = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -82,9 +83,11 @@ export class RequestsPage {
       if (data != null) {
         console.log('data from popover', {data});
         if (data == 0) {
+          this.isFiltering = false;
           this.requests = this.allRequests;
         } else  {
-          this.requests = this.allRequests.filter(req=> req.order.status == OrderStatus[data]);
+          this.isFiltering = true;
+          this.requests = this.allRequests.filter(req => req.status == OrderStatus[data]);
         }
       }
     })

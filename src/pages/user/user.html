@@ -14,11 +14,12 @@
 <ion-content padding>
   <section class="avatar-section">
     <div class="avatar" >
-      <img [src]="'https://www.moovestore.com/'+requestUser?.avatar" alt="">
+      <img [src]="'https://www.moovstore.com/'+requestUser?.avatar" alt="">
     </div>
     <h2>{{requestUser?.name}}</h2>
     <p>{{requestUser?.phone}}</p>
     <p>{{requestUser?.gender | translate}}</p>
+    <p>الدفع عند الاستلام</p>
   </section>
 
 
@@ -29,10 +30,10 @@
       </button>
     </div>
     <div text-center>
-      <button ion-button outline round>
+      <button ion-button outline round (click)="onDeliver()">
         تم التسليم
       </button>
-      <button ion-button outline color="danger" round>
+      <button ion-button outline color="danger" round (click)="showModal()">
         الغاء
       </button>
     </div>

@@ -1,0 +1,29 @@
+page-delayorder {
+
+    ion-content {
+        &.content {
+            background-color:  rgba(0,0,0,0.2);
+        }
+        .scroll-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .pop-content {
+            background-color: #fff;
+            padding: 16px;
+            width: 80%;
+            border-radius: 10px;
+            .action {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                button {
+                    &:first-of-type {
+                        background-color: #33d60d
+                    }
+                }
+            }
+        }
+    }
+}

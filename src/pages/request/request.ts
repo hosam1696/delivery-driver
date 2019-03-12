@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ModalController } from 'ionic-angular';
 import {OrdersProvider} from "../../providers/orders/orders";
 import {DriverOrder, Order, RequestAction, UserData} from "../../providers/types/app-types";
 import {AppstorageProvider} from "../../providers/appstorage/appstorage";
@@ -19,6 +19,7 @@ export class RequestPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              private modalCtrl: ModalController,
               private appStorage: AppstorageProvider,
               private orderProvider: OrdersProvider,
               private utils: UtilsProvider,
@@ -54,12 +55,24 @@ export class RequestPage {
         this.acceptRequest();
         break;
       case 'await':
-        this.awaitRequest();
+        this.showModal();
         break;
       case 'cancel':
         this.cancelRequest();
         break;
     }
+  }
+
+  showModal() {
+    const modal = this.modalCtrl.create('DelayorderPage');
+
+    modal.onDidDismiss(accept => {
+      if (accept) {
+        this.awaitRequest();
+      }
+    })
+
+    modal.present();
   }
 
   private acceptRequest() {
@@ -103,6 +116,6 @@ export class RequestPage {
   }
 
   goToUserPage() {
-    this.navCtrl.push('UserPage', {user: this.driverOrder.order.user});
+    this.navCtrl.push('UserPage', {user: this.driverOrder.order.user, orderId: this.driverOrder.id});
   }
 }
