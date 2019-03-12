@@ -6,18 +6,22 @@
   </ion-header>
   
   <ion-content no-padding>
-    <ion-item no-lines class="toolbar-toggle">
+    <ion-item no-lines class="toolbar-toggle" *ngIf="userData">
       <ion-label>
         {{'Activate recieving Requests' | translate}}
       </ion-label>
-      <ion-toggle [(ngModel)]='isReceivingRequests' (ionChange)="onToggleChange($event)"></ion-toggle>
+      <ion-toggle [(ngModel)]='userData.availability' (ionChange)="onToggleChange($event)"></ion-toggle>
     </ion-item>
     <div class="no-requests" *ngIf="!allRequests||(allRequests&&!allRequests.length)">
       <img src="assets/imgs/planning.png" alt="">
-      <p>
+      <p *ngIf="!allRequests">
         {{'Requests in their way to you, Get Ready' | translate}}
       </p>
+      <p text-center *ngIf="allRequests && !allRequests.length">
+        {{'لا يوجد طلبات مؤجلة' | translate}}
+      </p>
     </div>
+
 
 
     <ion-list margin *ngFor="let request of allRequests">

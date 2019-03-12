@@ -1,8 +1,11 @@
 driver-request {
+  :host {
+    
+  margin-bottom: 12px !important;
+  }
   .user-order {
     border-radius: 8px;
     box-shadow: 2px 2px 10px #eee;
-    margin-bottom: 12px;
     ion-avatar {
       min-width: 70px;
       width: 70px;

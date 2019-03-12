@@ -11,4 +11,8 @@ export class AuthProvider {
   login(loginData) {
     return this.api.post('login', loginData)
   }
+
+  updateProfile(userData, token) {
+    return this.api.post('update-profile', userData, {api_token: token})
+  }
 }

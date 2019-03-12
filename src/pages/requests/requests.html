@@ -9,11 +9,13 @@
 
 <ion-content no-padding>
 
-  <ion-item no-lines>
+
+
+  <ion-item no-lines *ngIf="userData">
     <ion-label>
       {{'Activate recieving Requests' | translate}}
     </ion-label>
-    <ion-toggle [(ngModel)]='isReceivingRequests' (ionChange)="onToggleChange($event)"></ion-toggle>
+    <ion-toggle [(ngModel)]='userData.availability' (ionChange)="onToggleChange($event)"></ion-toggle>
   </ion-item>
   <section class="requests-states">
     <button ion-button clear (click)="showPopOver($event)">
@@ -29,7 +31,14 @@
     </p>
   </div>
 
-  <ion-list margin *ngFor="let request of requests">
-    <driver-request [request]="request" (click)="goToRequestPage(request)"></driver-request>
-  </ion-list>
+  <ion-content>
+    <ion-refresher (ionRefresh)="onRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list no-lines margin *ngFor="let request of requests">
+      <driver-request [request]="request" (click)="goToRequestPage(request)"></driver-request>
+    </ion-list>
+  </ion-content>
+
 </ion-content>

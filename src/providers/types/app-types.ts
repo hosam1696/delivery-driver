@@ -28,6 +28,8 @@ export type Langs = 'ar' | 'en';
 
 export interface UserData {
     id: number,
+    availability: 0 | 1,
+    current_password?: any,
     "fullName": string,
     "userName": string,
     "age": string,

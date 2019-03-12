@@ -5,5 +5,6 @@
     "الطلبات المؤجلة": "Posponing Orders",
     "الدخول": "Login",
     "اسم المستخدم": "userName",
-    "كلمة المرور": "password"
+    "كلمة المرور": "password",
+    "لا يوجد طلبات مؤجلة": "No Waiting Orders"
 }

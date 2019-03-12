@@ -4,6 +4,7 @@ import {DriverOrder, UserData} from '../../providers/types/app-types';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { OrdersProvider } from '../../providers/orders/orders';
 import { UtilsProvider } from '../../providers/utils/utils';
+import { AuthProvider } from '../../providers/auth/auth';
 
 
 @IonicPage()
@@ -21,6 +22,7 @@ export class WaitingordersPage {
                public navParams: NavParams,
                private appStorageProvider: AppstorageProvider,
                private ordersProvider: OrdersProvider,
+               private authProvider: AuthProvider,
                private utils: UtilsProvider,
                ) {
   }
@@ -52,12 +54,14 @@ export class WaitingordersPage {
 
 
   changeOrderStatus() {
-    const deliveryStatus$ = this.ordersProvider.changeDeliveringOrdersStatus(this.userData.api_token);
+    const deliveryStatus$ = this.authProvider.updateProfile({current_password: this.userData.current_password ,availability: +this.userData.availability},this.userData.api_token);
     
     deliveryStatus$.subscribe(response=> {
       if (response.success) {
-        this.utils.showToast(response.message, {position: 'bottom'})
-      }
+        const availability = response.data.driver.availability;
+        this.utils.showToast(response.message, {position: 'bottom'});
+        this.appStorageProvider.setUserData({...this.userData, availability});
+      } 
     })
   }
 

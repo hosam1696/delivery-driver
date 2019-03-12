@@ -5,6 +5,7 @@ import {DriverOrder, OrderStatus, UserData} from '../../providers/types/app-type
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { AudioProvider } from '../../providers/audio/audio';
+import { AuthProvider } from '../../providers/auth/auth';
 
 
 @IonicPage()
@@ -22,6 +23,7 @@ export class RequestsPage {
               public navParams: NavParams,
               private appStorageProvider: AppstorageProvider,
               private ordersProvider: OrdersProvider,
+              private authProvider: AuthProvider,
               private utils: UtilsProvider,
               private popOverCtrl: PopoverController,
               private audioProvider: AudioProvider
@@ -55,12 +57,16 @@ export class RequestsPage {
 
 
   changeOrderStatus() {
-    const deliveryStatus$ = this.ordersProvider.changeDeliveringOrdersStatus(this.userData.api_token);
+    const deliveryStatus$ = this.authProvider.updateProfile({current_password: this.userData.current_password ,availability: +this.userData.availability}, this.userData.api_token);
     
     deliveryStatus$.subscribe(response=> {
+      
       if (response.success) {
-        this.utils.showToast(response.message, {position: 'bottom'})
-      }
+        const availability = response.data.driver.availability;
+        this.utils.showToast(response.message, {position: 'bottom'});
+        this.appStorageProvider.setUserData({...this.userData, availability});
+      } 
+
     })
   }
 
@@ -85,5 +91,13 @@ export class RequestsPage {
 
   goToRequestPage(request) {
     this.navCtrl.push('RequestPage', {request})
+  }
+
+  onRefresh(event) {
+    this.ionViewDidLoad();
+
+    setTimeout(() => {
+      event.complete();
+    }, 1000)
   }
 }

@@ -20,6 +20,10 @@ page-requests {
     }
 
     ion-content {
+
+        ion-content {
+            transform: translateY(2px)
+        }
         .requests-states {
             box-shadow: 1px 1px 7px #ccc;
             button {

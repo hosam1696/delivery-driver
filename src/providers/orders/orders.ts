@@ -16,20 +16,16 @@ export class OrdersProvider {
     return this.api.get('get-orders/waiting', {api_token: token})
   }
 
-  changeDeliveringOrdersStatus(token) {
-    return this.api.post('change-status', null, {api_token: token})
-  }
-
   getOrderDetails(orderId, token) {
     return this.api.get('order-details', {api_token: token, order_id: orderId})
   }
 
-  refuseOrder(orderId, token) {
+  cancelOrder(orderId, token) {
     return this.api.post('order/'.concat(orderId, '/canceled'), null, {api_token: token})
 
   }
 
-  cancelOrder(orderId, token) {
+  refuseOrder(orderId, token) {
     return this.api.post('order/'.concat(orderId, '/refused'), null, {api_token: token})
 
   }

@@ -7,6 +7,7 @@ import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { AudioProvider } from '../../providers/audio/audio';
 import {ComponentsModule} from "../../components/components.module";
+import { AuthProvider } from '../../providers/auth/auth';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {ComponentsModule} from "../../components/components.module";
     OrdersProvider,
     AppstorageProvider,
     UtilsProvider,
-    AudioProvider
+    AudioProvider,
+    AuthProvider
   ]
 })
 export class RequestsPageModule {}

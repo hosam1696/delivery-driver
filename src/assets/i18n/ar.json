@@ -61,5 +61,10 @@
   "male": "ذكر",
   "female": "انثى",
   "Deliver Later": "التوصيل لاحقا",
-  "Cancel": "رفض"
+  "Cancel": "رفض",
+  "init": "طلب جديد",
+  "accepted": "تم القبول",
+  "refused": "تم الرفض",
+  "cancelled": "تم الالغاء",
+  "waiting": "مؤجلة"
 }

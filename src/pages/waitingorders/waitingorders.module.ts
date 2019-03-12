@@ -6,6 +6,7 @@ import { OrdersProvider } from '../../providers/orders/orders';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
 import {ComponentsModule} from "../../components/components.module";
+import { AuthProvider } from '../../providers/auth/auth';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {ComponentsModule} from "../../components/components.module";
   providers: [
     OrdersProvider,
     AppstorageProvider,
-    UtilsProvider
+    UtilsProvider,
+    AuthProvider
   ]
 })
 export class WaitingordersPageModule {}

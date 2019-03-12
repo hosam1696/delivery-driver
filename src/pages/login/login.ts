@@ -52,11 +52,10 @@ export class LoginPage {
       authLogin$.subscribe(response => {
         this.processing = false;
         if (response.success) {
-
-          this.utils.showToast(response.message);
+          // this.utils.showToast(response.message);
 
           Promise.all([
-            this.appStorage.setUserData(response.data.user),
+            this.appStorage.setUserData({...response.data.user, current_password: this.loginForm.get('password').value}),
             this.appStorage.saveToken(response.data.user.api_token)
           ]).then(() => {
             this.events.publish('update:storage')
