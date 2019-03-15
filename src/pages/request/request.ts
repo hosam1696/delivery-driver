@@ -102,7 +102,7 @@ export class RequestPage {
 
 
   private cancelRequest() {
-    this.orderProvider.cancelOrder(this.driverOrder.id, this.userData.api_token)
+    this.orderProvider.refuseOrder(this.driverOrder.id, this.userData.api_token)
       .subscribe(response => {
         console.log({response});
         if (response.success) {
@@ -116,6 +116,6 @@ export class RequestPage {
   }
 
   goToUserPage() {
-    this.navCtrl.push('UserPage', {user: this.driverOrder.order.user, orderId: this.driverOrder.id});
+    this.navCtrl.push('UserPage', {user: this.driverOrder.order.user, orderId: this.driverOrder.id, orderStatus: this.driverOrder.status});
   }
 }

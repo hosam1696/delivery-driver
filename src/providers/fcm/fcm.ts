@@ -7,7 +7,6 @@ import { Platform } from 'ionic-angular';
 export class FcmProvider {
 
   constructor(public fcm: FCM, public platform: Platform, private storageProvider: AppstorageProvider) {
-    console.log('Hello FcmProvider Provider');
   }
 
 

@@ -20,14 +20,17 @@ export class OrdersProvider {
     return this.api.get('order-details', {api_token: token, order_id: orderId})
   }
 
-  cancelOrder(orderId, token) {
-    return this.api.post('order/'.concat(orderId, '/canceled'), null, {api_token: token})
+  cancelOrder(orderId, token, comment) {
+    return this.api.post('order/'.concat(orderId, '/canceled'), null, {api_token: token, comment})
+  }
+
+  deliverOrder(orderId, token) {
+    return this.api.post('order/'.concat(orderId, '/completed'), null, {api_token: token})
 
   }
 
-  refuseOrder(orderId, token, comment) {
+  refuseOrder(orderId, token, comment?:string) {
     return this.api.post('order/'.concat(orderId, '/refused'), null, {api_token: token, comment})
-
   }
 
   awaitOrder(orderId, token) {

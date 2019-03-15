@@ -5,7 +5,6 @@ import {ApiProvider} from "../api/api";
 export class AuthProvider {
 
   constructor(public api: ApiProvider) {
-    console.log('Hello AuthProvider Provider');
   }
 
   login(loginData) {

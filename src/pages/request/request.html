@@ -35,7 +35,7 @@
           {{driverOrder.order.total}} {{'SAR' | translate}}
         </span>
       </div>
-      <div class="btns" margin-top *ngIf="driverOrder.status != 'completed' && driverOrder.status != 'canceled'">
+      <div class="btns" margin-top *ngIf="driverOrder.status != 'completed' && driverOrder.status != 'canceled' && driverOrder.status != 'waiting'">
         <button ion-button round (click)="onClick('accept')" [hidden]="driverOrder.status == 'accepted'">{{'Deliver Now' | translate}}</button>
         <button ion-button round  (click)="onClick('await')" [hidden]="driverOrder.status == 'accepted'">{{'Deliver Later' | translate}}</button>
         <button ion-button round outline color="danger" [hidden]="driverOrder.status == 'accepted'" (click)="onClick('cancel')">{{'Cancel' | translate}}</button>
@@ -43,7 +43,20 @@
     </div>
   </section>
 
-  <ion-fab bottom right *ngIf="driverOrder&&driverOrder.status != 'canceled'">
+  <div class="reason" margin-vertical padding *ngIf="driverOrder?.status == 'refused' || driverOrder?.status == 'canceled'">
+    <p *ngIf="driverOrder.status == 'refused'">
+      تم الغاء الطلب
+    </p>
+
+    <div *ngIf="driverOrder.status == 'canceled'">
+      <p><b>سبب الرفض</b></p>
+      <p>
+      سبب رفض الطلب سبب رفض الطلب
+      </p>
+    </div>
+  </div>
+
+  <ion-fab bottom right *ngIf="driverOrder?.status == 'accepted' || driverOrder?.status == 'waiting' || driverOrder?.status == 'completed'">
     <button ion-fab mini (click)="goToUserPage()">
       <img src="assets/imgs/map-pin.png" alt="">
     </button>

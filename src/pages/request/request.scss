@@ -17,6 +17,11 @@ page-request {
         }
       }
     }
+    .reason {
+      box-shadow: 2px 2px 10px #eee;
+      border-radius: 8px;
+      
+    }
     ion-slides {
       min-height: 313px;
       .swiper-pagination {

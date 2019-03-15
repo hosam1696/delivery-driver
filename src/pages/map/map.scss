@@ -5,4 +5,9 @@ page-map {
   .nav-decor {
     background-color: rgba(255, 0, 0, 0) !important;
   }
+  .gmap-show {
+    position: fixed;
+    top: 20px;
+    left: 10px;
+  }
 }

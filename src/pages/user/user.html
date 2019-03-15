@@ -30,10 +30,10 @@
       </button>
     </div>
     <div text-center>
-      <button ion-button outline round (click)="onDeliver()">
+      <button ion-button outline round (click)="onDeliver()" [hidden]="orderStatus == 'waiting'" >
         تم التسليم
       </button>
-      <button ion-button outline color="danger" round (click)="showModal()">
+      <button ion-button outline color="danger" round (click)="showModal()" >
         الغاء
       </button>
     </div>
