@@ -12,6 +12,8 @@ export class AuthProvider {
   }
 
   updateProfile(userData, token) {
-    return this.api.post('update-profile', userData, {api_token: token})
+    let body = new FormData();
+    Object.keys(userData).forEach(key => body.append(key, userData[key]));
+    return this.api.post('update-profile', body, {api_token: token})
   }
 }
