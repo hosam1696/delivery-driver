@@ -1,5 +1,6 @@
 page-starter {
     ion-content {
+        overflow: hidden;
         &.content {
             background: url('../assets/imgs/star.jpg');
             background-size: cover;

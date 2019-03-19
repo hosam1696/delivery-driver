@@ -1,27 +1,58 @@
 {
   "project_info": {
-    "project_number": "677236292513",
-    "firebase_url": "https://delivery-driver-ea3db.firebaseio.com",
-    "project_id": "delivery-driver-ea3db",
-    "storage_bucket": "delivery-driver-ea3db.appspot.com"
+    "project_number": "630114166965",
+    "firebase_url": "https://moov-user-cd771.firebaseio.com",
+    "project_id": "moov-user-cd771",
+    "storage_bucket": "moov-user-cd771.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:677236292513:android:d89792d189178bf6",
+        "mobilesdk_app_id": "1:630114166965:android:d89792d189178bf6",
         "android_client_info": {
           "package_name": "com.moove.deliverydriver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "677236292513-a8nqfpkdp5dnep4n9v3r72u9nhskso17.apps.googleusercontent.com",
+          "client_id": "630114166965-hhe6el00l1ngj3p6o63l186ni0nkvg73.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBEYJxX_KTH8DT3s8biJOo5ydAdGeG4-8k"
+          "current_key": "AIzaSyCX3mIT5QtVCw7p3Ga6QEfnSeeBFqXFtFQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630114166965:android:0dd31b77f3e118cb",
+        "android_client_info": {
+          "package_name": "com.moovstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630114166965-hhe6el00l1ngj3p6o63l186ni0nkvg73.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX3mIT5QtVCw7p3Ga6QEfnSeeBFqXFtFQ"
         }
       ],
       "services": {
