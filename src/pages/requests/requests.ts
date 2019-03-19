@@ -51,8 +51,25 @@ export class RequestsPage {
 
     orders$.subscribe(response => {
       console.log({ordersResponse: response});
-      if (response.success)
-      this.allRequests = this.requests = response.data.orders;
+      if (response.success) {
+        this.allRequests = this.requests = response.data.orders;
+      } else if (response.error == 'Unauthenticated') {
+        const authLogin$ = this.authProvider.login({username: this.userData.userName, password: this.userData.current_password});
+        
+        authLogin$.subscribe(response => {
+          if (response.success) {
+  
+            Promise.all([
+              this.appStorageProvider.setUserData({...response.data.user}),
+              this.appStorageProvider.saveToken(response.data.user.api_token)
+            ]).then((data) => {
+              this.userData = data[0];
+              this.events.publish('update:storage');
+              this.getAllOrders();
+            })
+          }
+        })
+      }
     })
   }
 

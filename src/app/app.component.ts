@@ -6,7 +6,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {AppDirLang, DocumentDirection, UserData, Langs} from "../providers/types/app-types";
 import {AppstorageProvider} from "../providers/appstorage/appstorage";
 import { AudioProvider } from '../providers/audio/audio';
-
+import { FcmProvider } from '../providers/fcm/fcm';
 
 @Component({
   templateUrl: 'app.html'
@@ -24,6 +24,7 @@ export class MyApp {
               public splashScreen: SplashScreen,
               public events: Events,
               private audioProvider: AudioProvider,
+              public fcmProvider: FcmProvider,
               public appStorage:AppstorageProvider,
               public translate: TranslateService) {
     this.initializeApp();
@@ -61,8 +62,8 @@ export class MyApp {
       const [lang, userData] = data;
       this.setDefaultLang(lang || this.defaultLang);
       if (userData) {
-        this.rootPage = 'RequestsPage';
         this.events.publish('update:storage');
+        this.rootPage = 'RequestsPage';
       } else {
         this.rootPage = 'LoginPage'  
       }

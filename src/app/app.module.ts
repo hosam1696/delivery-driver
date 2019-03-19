@@ -65,7 +65,8 @@ export function createTranslateLoader(http: HttpClient) {
     FCM,
     AudioProvider,
     Geolocation,
-    LaunchNavigator
+    LaunchNavigator,
+    FcmProvider
   ]
 })
 export class AppModule {}

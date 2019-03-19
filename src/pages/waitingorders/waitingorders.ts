@@ -43,6 +43,21 @@ export class WaitingordersPage {
       console.log({waitingOrders: response});
       if (response.success) {
         this.allRequests = response.data.orders;
+      } else if (response.error == 'Unauthenticated') {
+        const authLogin$ = this.authProvider.login({username: this.userData.userName, password: this.userData.current_password});
+        
+        authLogin$.subscribe(response => {
+          if (response.success) {
+  
+            Promise.all([
+              this.appStorageProvider.setUserData({...response.data.user}),
+              this.appStorageProvider.saveToken(response.data.user.api_token)
+            ]).then((data) => {
+              this.userData = data[0];
+              this.getWaitingOrders();
+            })
+          }
+        })
       }
     })
   }
