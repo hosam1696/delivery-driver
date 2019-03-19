@@ -8,7 +8,7 @@
 <ion-content padding>
 
   <section class="request-details" *ngIf="driverOrder">
-    <ion-slides pager="true" dir="rtl">
+    <ion-slides [pager]="driverOrder.order.items.length>1" dir="rtl">
       <ion-slide  *ngFor="let item of driverOrder.order.items">
       <img [src]="'https://www.moovstore.com/'+ item.image" alt="">
         <h3 class="product-title"><b>{{item.title}}</b></h3>

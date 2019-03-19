@@ -6,6 +6,7 @@ import { UtilsProvider } from "../../providers/utils/utils";
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { FcmProvider } from '../../providers/fcm/fcm';
 import { AudioProvider } from '../../providers/audio/audio';
+import { Network } from '@ionic-native/network';
 
 
 @IonicPage()
@@ -26,6 +27,7 @@ export class LoginPage {
     private appStorage: AppstorageProvider,
     private utils: UtilsProvider,
     private fcmProvider: FcmProvider,
+    private network: Network,
     private audioProvider: AudioProvider,
     public navParams: NavParams) {
     this.buildForm();
@@ -40,6 +42,21 @@ export class LoginPage {
     }, 3000);
 
     this.audioProvider.activateBtnSound();
+  }
+  
+
+
+  submitOnConnect() {
+    let connectionType = this.network.type;
+
+    console.log({connectionType});
+   
+    if (connectionType != 'none') {
+      this.submitForm();
+    } else {
+      console.log('asdd');
+      this.utils.showToast('حدث خطأ بالاتصال بالانترنت');
+    }
   }
 
   submitForm() {

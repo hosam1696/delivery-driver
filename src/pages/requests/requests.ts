@@ -6,7 +6,7 @@ import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { AudioProvider } from '../../providers/audio/audio';
 import { AuthProvider } from '../../providers/auth/auth';
-
+import { Network } from '@ionic-native/network';
 
 @IonicPage()
 @Component({
@@ -19,6 +19,8 @@ export class RequestsPage {
   allRequests: DriverOrder[];
   requests: DriverOrder[];
   isFiltering: boolean = false;
+  disconnect$;
+  connect$;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -27,15 +29,32 @@ export class RequestsPage {
               private authProvider: AuthProvider,
               private utils: UtilsProvider,
               private popOverCtrl: PopoverController,
+              private network: Network,
               private audioProvider: AudioProvider,
               private events: Events
               ) {
+
+                this.disconnect$ = this.network.onDisconnect()
+                .subscribe(()=> {
+                  this.utils.showToast('التطبيق يتطلب الاتصال بالانترنت');
+                })
+          
+                this.connect$ = this.network.onDisconnect()
+                .subscribe(()=> {
+          
+                  setTimeout(() => {
+                    let connectionType = this.network.type;
+                    this.getAllOrders();
+                    console.log({connectionType});
+                  }, 3000);
+                })
+          
   }
 
   async ionViewDidLoad() {
     this.userData = await this.appStorageProvider.getUserData();
 
-    this.getAllOrders();
+    this.checkConnection()
 
     this.audioProvider.activateBtnSound();
 
@@ -44,6 +63,26 @@ export class RequestsPage {
     })
   }
 
+
+
+  private checkConnection() {
+    let connectionType = this.network.type;
+
+    console.log({connectionType});
+   
+    if (connectionType != 'none') {
+      this.getAllOrders();
+    } else {
+      console.log('asdd');
+      this.utils.showToast('حدث خطأ بالاتصال بالانترنت');
+    }
+  }
+
+  ionViewWillLeave() {
+    // this.disconnect$.unsubscribe();
+    // this.connect$.unsubscribe();
+
+  }
 
   private getAllOrders() {
 
@@ -70,6 +109,8 @@ export class RequestsPage {
           }
         })
       }
+    }, err => {
+      console.warn(err);
     })
   }
 

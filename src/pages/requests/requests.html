@@ -17,6 +17,10 @@
     </ion-label>
     <ion-toggle [(ngModel)]='userData.availability' (ionChange)="onToggleChange($event)"></ion-toggle>
   </ion-item>
+
+  <ion-refresher (ionRefresh)="onRefresh($event)" *ngIf="(!requests||(requests&&!requests.length) )">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <section class="requests-states">
     <button ion-button clear (click)="showPopOver($event)">
       <b>{{'Request State' | translate}}</b>
@@ -39,7 +43,6 @@
     <ion-refresher (ionRefresh)="onRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-
     <ion-list no-lines margin *ngFor="let request of requests">
       <driver-request [request]="request" (click)="goToRequestPage(request)"></driver-request>
     </ion-list>

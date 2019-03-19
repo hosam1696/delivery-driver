@@ -24,6 +24,7 @@ import { OrdersProvider } from '../providers/orders/orders';
 import { AudioProvider } from '../providers/audio/audio';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { Network } from '@ionic-native/network';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -66,7 +67,8 @@ export function createTranslateLoader(http: HttpClient) {
     AudioProvider,
     Geolocation,
     LaunchNavigator,
-    FcmProvider
+    FcmProvider,
+    Network
   ]
 })
 export class AppModule {}
