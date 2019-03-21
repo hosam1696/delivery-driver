@@ -89,10 +89,10 @@ export class MyApp {
         .then(userData => this.userData = userData)
     });
 
-    setTimeout( () => {
-      this.events.publish('open:popup')
+    // setTimeout( () => {
+    //   this.events.publish('open:popup')
 
-    }, 3000)
+    // }, 3000)
 
   }
 

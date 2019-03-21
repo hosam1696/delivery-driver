@@ -10,7 +10,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {FCM} from '@ionic-native/fcm';
 import {Geolocation} from '@ionic-native/geolocation';
-import { ClickOutsideModule } from 'ng-click-outside';
 import { AuthProvider } from '../providers/auth/auth';
 import { AppstorageProvider } from '../providers/appstorage/appstorage';
 import { UtilsProvider } from '../providers/utils/utils';

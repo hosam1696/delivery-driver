@@ -42,7 +42,12 @@ export class MapPage {
     this.diagnostic.isGpsLocationEnabled()
       .then((e) => {
         if (!e) {
-          this.diagnostic.switchToLocationSettings();
+          this.diagnostic.requestLocationAuthorization('when_in_use')
+            .then(d => {
+              if (!d) {
+                this.diagnostic.switchToLocationSettings();
+              }
+            })
         }
       }, err => {
         this.diagnostic.switchToLocationSettings();
