@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { RefusemsgPage } from './refusemsg';
+import { NotificationpopupPage } from './notificationpopup';
 import { ClickOutsideModule } from 'ng-click-outside';
 
 @NgModule({
   declarations: [
-    RefusemsgPage,
+    NotificationpopupPage,
   ],
   imports: [
-    IonicPageModule.forChild(RefusemsgPage),
+    IonicPageModule.forChild(NotificationpopupPage),
     ClickOutsideModule
   ],
 })
-export class RefusemsgPageModule {}
+export class NotificationpopupPageModule {}

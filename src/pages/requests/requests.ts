@@ -92,7 +92,7 @@ export class RequestsPage {
       console.log({ordersResponse: response});
       if (response.success) {
         this.allRequests = this.requests = response.data.orders;
-      } else if (response.error == 'Unauthenticated') {
+      } else if (response.error == 'Unauthenticated' || response.error == 'Unauthenticated.') {
         const authLogin$ = this.authProvider.login({username: this.userData.userName, password: this.userData.current_password});
         
         authLogin$.subscribe(response => {

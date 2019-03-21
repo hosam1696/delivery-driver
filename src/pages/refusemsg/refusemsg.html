@@ -4,13 +4,13 @@
 <ion-content padding>
 
 
-  <section class="pop-content">
+  <section class="pop-content" [exclude]="'button'" (clickOutside)="dismiss()">
     <ion-textarea [(ngModel)]="msg" placeholder="سبب الرفض">
 
     </ion-textarea>
 
     <div text-center>
-      <button ion-button round (click)="dismiss()">
+      <button ion-button round (click)="dismiss(msg)">
         موافق
       </button>
     </div>

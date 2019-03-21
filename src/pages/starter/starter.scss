@@ -1,6 +1,5 @@
 page-starter {
     ion-content {
-        overflow: hidden;
         &.content {
             background: url('../assets/imgs/star.jpg');
             background-size: cover;
@@ -14,6 +13,7 @@ page-starter {
             margin: 0 auto;
             flex-direction: column;
             color: $light;
+            overflow: hidden;
             .logo {
                 animation: zoom #{$logo-animation-duration} cubic-bezier(0.445, 0.05, 0.55, 0.95) alternate;
             }

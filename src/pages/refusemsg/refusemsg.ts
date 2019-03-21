@@ -17,8 +17,8 @@ export class RefusemsgPage {
     console.log('ionViewDidLoad RefusemsgPage');
   }
 
-  dismiss() {
-    this.viewCtrl.dismiss({msg: this.msg});
+  dismiss(msg) {
+    this.viewCtrl.dismiss({msg});
   }
 
 }

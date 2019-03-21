@@ -1,0 +1,47 @@
+<ion-content padding>
+  <section class="pop-content" [exclude]="'button'" (clickOutside)="dismiss()">
+    <div class="item company-title">
+      <img src="assets/imgs/avatar.png" alt="">
+      <p>
+        طلب جديد من شركة
+
+      </p>
+    </div>
+    <div class="item  order-owner">
+      <img src="assets/imgs/avatar.png" alt="">
+      <p>
+        محمود ممدوج
+
+      </p>
+    </div>
+    <div class="body" text-center>
+      <p >
+        الدفع عند الاستلام
+      </p>
+
+      <button ion-button large outline round>
+        تفاصيل الطلب
+      </button>
+    </div>
+    <div class="actions">
+      <div class="top">
+          <button ion-button round>
+              التوصيل الان
+            </button>
+            <button ion-button round>
+              التوصيل لاحقا
+            </button>
+      </div>
+
+      <div text-center>
+        <button ion-button round outline color="danger">
+          رفض
+        </button>
+      </div>
+    </div>
+
+    <div class="holder">
+      {{data | json}}
+    </div>
+  </section>
+</ion-content>

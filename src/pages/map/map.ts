@@ -4,6 +4,7 @@ import {User} from "../../providers/types/app-types";
 
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 
 declare let google;
@@ -24,6 +25,7 @@ export class MapPage {
   constructor(public navCtrl: NavController,
               private launchNavigator: LaunchNavigator,
               private geolocate: Geolocation,
+              public diagnostic: Diagnostic,
               public navParams: NavParams) {
     this.user = this.navParams.get('user');
 
@@ -32,8 +34,20 @@ export class MapPage {
   ionViewDidLoad() {
     this.initMap([this.user.lat, this.user.long]);
     this.getCurrentLoaction();
+    this.checkLocation();
   }
 
+
+  private checkLocation() {
+    this.diagnostic.isGpsLocationEnabled()
+      .then((e) => {
+        if (!e) {
+          this.diagnostic.switchToLocationSettings();
+        }
+      }, err => {
+        this.diagnostic.switchToLocationSettings();
+      })
+  }
 
   initMap(latlng) {
     let latLng = new google.maps.LatLng(Number(latlng[0]), Number(latlng[1]));

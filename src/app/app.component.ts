@@ -89,6 +89,11 @@ export class MyApp {
         .then(userData => this.userData = userData)
     });
 
+    setTimeout( () => {
+      this.events.publish('open:popup')
+
+    }, 3000)
+
   }
 
   public changeLang(): void {
@@ -103,7 +108,6 @@ export class MyApp {
     // this.config.set('backButtonIcon',lang == 'en'? 'arrow-back':'arrow-forward');
     this.appStorage.getAppLang()
       .then(lang => this.setDefaultLang(lang || this.defaultLang));
-
 
   }
 

@@ -1,13 +1,18 @@
 import { FCM } from '@ionic-native/fcm';
 import { Injectable } from '@angular/core';
 import { AppstorageProvider } from '../appstorage/appstorage';
-import { Platform } from 'ionic-angular';
+import { Platform, ModalController, Events } from 'ionic-angular';
 
 @Injectable()
 export class FcmProvider {
 
-  constructor(public fcm: FCM, public platform: Platform, private storageProvider: AppstorageProvider) {
+  constructor(public fcm: FCM, public platform: Platform,
+              private storageProvider: AppstorageProvider,
+              public events: Events,
+              private modalCtrl: ModalController) {
     this.handleNotifications();
+
+    this.events.subscribe('open:popup', (data?:any) => this.openNotificationPopup(data))
   }
 
 
@@ -20,9 +25,17 @@ export class FcmProvider {
         } else {
           console.log("Received in foreground");
         };
+        this.events.publish('open:popup', data);
+        this.events.publish('updateOrders');
       });
     }
     
+  }
+
+  private openNotificationPopup(data?:any) {
+    const modal = this.modalCtrl.create('NotificationpopupPage', {orderData: data});
+
+    modal.present();
   }
 
   async getToken() {
