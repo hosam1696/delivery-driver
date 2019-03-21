@@ -10,6 +10,7 @@ export class FcmProvider {
               private storageProvider: AppstorageProvider,
               public events: Events,
               private modalCtrl: ModalController) {
+
     this.handleNotifications();
 
     this.events.subscribe('open:popup', (data?:any) => this.openNotificationPopup(data))
@@ -17,9 +18,9 @@ export class FcmProvider {
 
 
   handleNotifications() {
-    if (this.platform.is('android') || this.platform.is('ios')) {
-
+    // if (this.platform.is('cordova') ) {
       this.fcm.onNotification().subscribe(data => {
+
         if(data.wasTapped){
           console.log("Received in background");
         } else {
@@ -28,7 +29,7 @@ export class FcmProvider {
         this.events.publish('open:popup', data);
         this.events.publish('updateOrders');
       });
-    }
+    // }
     
   }
 

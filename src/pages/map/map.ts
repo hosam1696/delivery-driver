@@ -1,5 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, AlertOptions } from 'ionic-angular';
 import {User} from "../../providers/types/app-types";
 
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
@@ -25,6 +25,7 @@ export class MapPage {
   constructor(public navCtrl: NavController,
               private launchNavigator: LaunchNavigator,
               private geolocate: Geolocation,
+              private alertCtrl: AlertController,
               public diagnostic: Diagnostic,
               public navParams: NavParams) {
     this.user = this.navParams.get('user');
@@ -45,14 +46,46 @@ export class MapPage {
           this.diagnostic.requestLocationAuthorization('when_in_use')
             .then(d => {
               if (!d) {
-                this.diagnostic.switchToLocationSettings();
+                this.showAlert().then(stat => {
+                    if (stat == 'ok') {
+                      this.diagnostic.switchToLocationSettings();
+                    }
+                  })
               }
             })
         }
-      }, err => {
-        this.diagnostic.switchToLocationSettings();
       })
   }
+
+  showAlert() {
+    return new Promise((resolve, reject) => {
+
+      const options: AlertOptions= {
+        title: "الموقع",
+        subTitle: " للاستمرار يرجى تفعيل GPS",
+        buttons: [
+          {
+            text: "لا شكرا",
+            role: 'cancel',
+            handler: () => {
+              resolve('cancel');
+            }
+          },
+           {
+             text: "موافق",
+             handler: () => {
+               resolve('ok');
+             }
+           }
+        ]
+      }
+      
+      const alert  = this.alertCtrl.create(options);
+
+      alert.present();
+    })
+  }
+
 
   initMap(latlng) {
     let latLng = new google.maps.LatLng(Number(latlng[0]), Number(latlng[1]));

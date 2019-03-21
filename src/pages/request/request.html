@@ -44,14 +44,14 @@
   </section>
 
   <div class="reason" margin-vertical padding *ngIf="driverOrder?.status == 'refused' || driverOrder?.status == 'canceled'">
-    <p *ngIf="driverOrder.status == 'refused'">
+    <p *ngIf="driverOrder.status == 'refused'" text-center>
       تم الغاء الطلب
     </p>
 
     <div *ngIf="driverOrder.status == 'canceled'">
       <p><b>سبب الرفض</b></p>
-      <p>
-      سبب رفض الطلب سبب رفض الطلب
+      <p text-center>
+      سبب رفض الطلب 
       </p>
     </div>
   </div>

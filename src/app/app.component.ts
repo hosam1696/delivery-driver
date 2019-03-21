@@ -90,8 +90,7 @@ export class MyApp {
     });
 
     // setTimeout( () => {
-    //   this.events.publish('open:popup')
-
+    //   this.events.publish('open:popup', {wasTapped: false, order_id: 118})
     // }, 3000)
 
   }

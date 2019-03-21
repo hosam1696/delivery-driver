@@ -152,6 +152,7 @@ export interface DriverOrder {
   delivery_driver_id: number;
   user_id: number;
   company_id: number;
+  company_name?: string,
   status: string;
   created_at: string;
   updated_at: string;

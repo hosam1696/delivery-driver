@@ -1,47 +1,51 @@
 <ion-content padding>
   <section class="pop-content" [exclude]="'button'" (clickOutside)="dismiss()">
-    <div class="item company-title">
-      <img src="assets/imgs/avatar.png" alt="">
-      <p>
-        طلب جديد من شركة
+    <ng-template [ngIf]="driverOrder">
 
+      <div class="item company-title">
+        <img [src]="'https://www.moovstore.com/'+ driverOrder.order.items[0].image" alt="">
+        <p>
+        طلب جديد من شركة
+        {{driverOrder?.company_name}}
       </p>
     </div>
     <div class="item  order-owner">
-      <img src="assets/imgs/avatar.png" alt="">
-      <p>
-        محمود ممدوج
-
-      </p>
+      <img [src]="'https://www.moovstore.com/'+ driverOrder.order.user.avatar" alt="">
+      <p>{{driverOrder.order.user.name}}</p>
     </div>
     <div class="body" text-center>
       <p >
         الدفع عند الاستلام
       </p>
-
-      <button ion-button large outline round>
+      
+      <button ion-button large outline round (click)="goToRequestPage(driverOrder)">
         تفاصيل الطلب
       </button>
+
     </div>
     <div class="actions">
       <div class="top">
-          <button ion-button round>
-              التوصيل الان
-            </button>
-            <button ion-button round>
-              التوصيل لاحقا
-            </button>
+        <button ion-button round (click)="onClick('accept')">
+          التوصيل الان
+        </button>
+        <button ion-button round (click)="onClick('await')">
+          التوصيل لاحقا
+        </button>
       </div>
-
+      
       <div text-center>
-        <button ion-button round outline color="danger">
+        <button ion-button round outline color="danger" (click)="onClick('cancel')">
           رفض
         </button>
       </div>
     </div>
+    
+  </ng-template>
 
-    <div class="holder">
-      {{data | json}}
+  <ng-template [ngIf]="!driverOrder">
+    <div class="loader">
+      <ion-spinner></ion-spinner>
     </div>
+  </ng-template>
   </section>
 </ion-content>

@@ -59,6 +59,7 @@ export class RequestsPage {
     this.audioProvider.activateBtnSound();
 
     this.events.subscribe('updateOrders', () => {
+      
       this.getAllOrders();
     })
   }
@@ -68,13 +69,15 @@ export class RequestsPage {
   private checkConnection() {
     let connectionType = this.network.type;
 
-    console.log({connectionType});
+    this.network.onConnect().subscribe(() => {
+      this.getAllOrders();
+    })
    
     if (connectionType != 'none') {
       this.getAllOrders();
     } else {
       console.log('asdd');
-      this.utils.showToast('حدث خطأ بالاتصال بالانترنت');
+      this.utils.showToast(' خطأ بالاتصال بالانترنت');
     }
   }
 

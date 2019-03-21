@@ -9,6 +9,12 @@ page-notificationpopup {
             justify-content: center;
             align-items: center;
         }
+        .loader {
+            background-color: #fff;
+            width: 90%;
+            border-radius: 10px;
+            height: 75vh;
+        }
         .pop-content {
             background-color: #fff;
             width: 90%;
