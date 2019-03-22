@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import {Storage} from '@ionic/storage';
 import {appLangs, UserData} from "../types/app-types";
-
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class AppstorageProvider {
   _appLang: string | appLangs = 'ar';
-
+  private _user = new BehaviorSubject(null);
+  emittedUser = this._user.asObservable();
 
   constructor(public storage: Storage) {
   }
@@ -25,6 +26,7 @@ export class AppstorageProvider {
   }
 
   setUserData(user: UserData):Promise<UserData> {
+    this._user.next(user);
     return this.storage.set('delivery:user:data', user);
   }
 

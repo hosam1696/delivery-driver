@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import {DriverOrder, UserData} from '../../providers/types/app-types';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { OrdersProvider } from '../../providers/orders/orders';
@@ -23,15 +23,26 @@ export class WaitingordersPage {
                private appStorageProvider: AppstorageProvider,
                private ordersProvider: OrdersProvider,
                private authProvider: AuthProvider,
+               private events: Events,
                private utils: UtilsProvider,
                ) {
   }
 
   
+  async ionViewWillEnter() {
+    this.userData = await this.appStorageProvider.getUserData();
+  }
+  
+  
   async ionViewDidLoad() {
     this.userData = await this.appStorageProvider.getUserData();
+    console.log({userData: this.userData});
+    this.getWaitingOrders();
 
-    this.getWaitingOrders()
+    this.events.subscribe('update:storage', () => {
+      this.appStorageProvider.getUserData()
+        .then(userData => this.userData = userData)
+    });
   }
 
 
@@ -73,9 +84,13 @@ export class WaitingordersPage {
     
     deliveryStatus$.subscribe(response=> {
       if (response.success) {
-        const availability = response.data.driver.availability;
+        const availability = +response.data.driver.availability;
         this.utils.showToast(response.message, {position: 'bottom'});
-        this.appStorageProvider.setUserData({...this.userData, availability});
+        this.appStorageProvider.setUserData({...this.userData, availability})
+          .then( (data) => {
+            console.log({savedUserInWaitingOrders: data});
+            this.events.publish('update:storage');
+          })
       } 
     })
   }

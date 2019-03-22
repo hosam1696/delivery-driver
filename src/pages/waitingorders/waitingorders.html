@@ -10,7 +10,7 @@
       <ion-label>
         {{'Activate recieving Requests' | translate}}
       </ion-label>
-      <ion-toggle [(ngModel)]='userData.availability' (ionChange)="onToggleChange($event)"></ion-toggle>
+      <ion-toggle [(ngModel)]='!!userData.availability' (ionChange)="onToggleChange($event)"></ion-toggle>
     </ion-item>
     <div class="no-requests" *ngIf="!allRequests||(allRequests&&!allRequests.length)">
       <img src="assets/imgs/planning.png" alt="">

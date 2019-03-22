@@ -50,6 +50,21 @@ export class MyApp {
      
       this.audioProvider.activateBtnSound();
 
+      this.fcmProvider.fcm.onNotification().subscribe(data => {
+
+        if(data.wasTapped){
+          console.log("Received in background");
+          if (data.order_id) {
+            this.events.publish('open:popup', data);
+            this.events.publish('updateOrders');
+          }
+        } else {
+          console.log("Received in foreground");
+          this.events.publish('open:popup', data);
+          this.events.publish('updateOrders');
+        };
+      });
+      
     });
   }
 

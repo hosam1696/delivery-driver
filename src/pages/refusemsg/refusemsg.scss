@@ -3,17 +3,14 @@ page-refusemsg {
         &.content {
             background-color:  rgba(0,0,0,0.2);
         }
-        .scroll-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+
         .pop-content {
             background-color: #fff;
             padding: 16px;
             width: 80%;
             border-radius: 10px;
-
+            margin: 0 auto;
+            transform: translateY(calc(50vh - 60%));
             ion-textarea {
                 border: 1px solid #eee;
                 margin-bottom: 20px;

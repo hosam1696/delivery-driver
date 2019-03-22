@@ -24,7 +24,7 @@ export class RequestsPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private appStorageProvider: AppstorageProvider,
+              public appStorageProvider: AppstorageProvider,
               private ordersProvider: OrdersProvider,
               private authProvider: AuthProvider,
               private utils: UtilsProvider,
@@ -51,17 +51,27 @@ export class RequestsPage {
           
   }
 
+  async ionViewWillEnter() {
+    this.userData = await this.appStorageProvider.getUserData();
+    
+  }
   async ionViewDidLoad() {
     this.userData = await this.appStorageProvider.getUserData();
 
-    this.checkConnection()
+    this.checkConnection();
 
     this.audioProvider.activateBtnSound();
 
     this.events.subscribe('updateOrders', () => {
       
       this.getAllOrders();
-    })
+    });
+
+    this.events.subscribe('update:storage', () => {
+      this.appStorageProvider.getUserData()
+        .then(userData => this.userData = userData)
+    });
+
   }
 
 
@@ -118,6 +128,7 @@ export class RequestsPage {
   }
 
   onToggleChange(event) {
+    console.log(event.value);
     this.isReceivingRequests = event.value;
     this.changeOrderStatus();
   }
@@ -129,9 +140,11 @@ export class RequestsPage {
     deliveryStatus$.subscribe(response=> {
       
       if (response.success) {
-        const availability = response.data.driver.availability;
+        const availability = +response.data.driver.availability;
+        console.log(this.userData.availability, response.data.driver.availability);
         this.utils.showToast(response.message, {position: 'bottom'});
         this.appStorageProvider.setUserData({...this.userData, availability});
+
       } 
 
     })
