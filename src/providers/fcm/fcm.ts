@@ -23,12 +23,19 @@ export class FcmProvider {
 
         if(data.wasTapped){
           console.log("Received in background");
+          if (data.order_id) {
+            this.events.publish('open:popup', data);
+            this.events.publish('updateOrders');
+          }
         } else {
           console.log("Received in foreground");
+          if (data.order_id) {
+            this.events.publish('open:popup', data);
+            this.events.publish('updateOrders');
+          }
         };
-        this.events.publish('open:popup', data);
-        this.events.publish('updateOrders');
       });
+      
     // }
     
   }
