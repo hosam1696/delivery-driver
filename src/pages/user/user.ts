@@ -4,6 +4,7 @@ import {User, UserData} from "../../providers/types/app-types";
 import { OrdersProvider } from '../../providers/orders/orders';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
+import {LaunchNavigator, LaunchNavigatorOptions} from "@ionic-native/launch-navigator";
 
 
 @IonicPage()
@@ -15,15 +16,17 @@ export class UserPage {
   requestUser: User = this.navParams.get('user');
   orderId = this.navParams.get('orderId');
   orderStatus = this.navParams.get('orderStatus');
-  userData: UserData; 
+  userData: UserData;
 
   constructor(public navCtrl: NavController,
-    private modalCtrl: ModalController,
-    private ordersProvider: OrdersProvider,
-    private events: Events,
-    private utils: UtilsProvider,
-    private appStorageProvider: AppstorageProvider,
-    public navParams: NavParams) {
+              private modalCtrl: ModalController,
+              private ordersProvider: OrdersProvider,
+              private launchNavigator: LaunchNavigator,
+              private events: Events,
+              private utils: UtilsProvider,
+              private appStorageProvider: AppstorageProvider,
+              public navParams: NavParams) {
+    console.log({requestStatus: this.orderStatus})
   }
 
   async ionViewDidLoad() {
@@ -34,6 +37,13 @@ export class UserPage {
     this.navCtrl.push('MapPage', {user: this.requestUser})
   }
 
+
+  showOnMaps(destination) {
+    let options: LaunchNavigatorOptions = {
+      app: this.launchNavigator.APP.GOOGLE_MAPS
+    };
+    this.launchNavigator.navigate(destination, options);
+  }
 
   showModal() {
     const modal = this.modalCtrl.create('RefusemsgPage');
@@ -70,5 +80,26 @@ export class UserPage {
     })
   }
 
+  onReceiving() {
+    this.ordersProvider.receiveOrder(this.orderId, this.userData.api_token)
 
+      .subscribe(response =>{
+        if (response.success) {
+          this.events.publish('updateOrders');
+          this.utils.showToast(response.message);
+        }
+      })
+  }
+
+
+  openCompanyLocation() {
+    const location = [+this.userData.company.lat, +this.userData.company.long];
+    this.showOnMaps(location);
+  }
+
+  openUserLocation() {
+    const location = [+this.requestUser.lat, +this.requestUser.long];
+    this.showOnMaps(location);
+
+  }
 }

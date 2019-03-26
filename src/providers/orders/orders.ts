@@ -26,7 +26,10 @@ export class OrdersProvider {
 
   deliverOrder(orderId, token) {
     return this.api.post('order/'.concat(orderId, '/completed'), null, {api_token: token})
+  }
 
+  receiveOrder(orderId, token) {
+    return this.api.post('order/'.concat(orderId, '/received'), null, {api_token: token})
   }
 
   refuseOrder(orderId, token, comment?:string) {

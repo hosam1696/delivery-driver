@@ -15,6 +15,9 @@ export class NotificationpopupPage {
   data = this.navParams.get('orderData');
   driverOrder: DriverOrder;
   userData: UserData;
+  private _next10 = +Date.now() + 1000 * 60 * 10;
+  counter = new Date(this._next10 - +Date.now());
+  countIsOver: boolean = false;
 
   constructor(public viewCtrl: ViewController,
     public navParams: NavParams,
@@ -29,8 +32,22 @@ export class NotificationpopupPage {
   async ionViewDidLoad() {
     
     this.userData = await  this.appStorage.getUserData();
-
+    this.playCounter();
     this.getRequestDetails();
+  }
+
+  playCounter() {
+
+    let interval = setInterval(() => {
+      let [minutes, seconds] = [this.counter.getMinutes(), this.counter.getSeconds()];
+      this.counter = new Date(this._next10 - +Date.now());
+
+      if(minutes <= 0 && seconds<= 0) {
+        clearInterval(interval);
+        this.countIsOver = true;
+      }
+    }, 1000);
+
   }
 
   getRequestDetails() {

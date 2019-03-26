@@ -1,4 +1,3 @@
-
 <ion-header>
 
   <ion-navbar>
@@ -12,33 +11,65 @@
 </ion-header>
 
 <ion-content padding>
-  <section class="avatar-section">
-    <div class="avatar" >
-      <img [src]="'https://www.moovstore.com/'+requestUser?.avatar" alt="">
-    </div>
-    <h2>{{requestUser?.name}}</h2>
-    <p>{{requestUser?.phone}}</p>
-    <p>{{requestUser?.gender | translate}}</p>
-    <p>الدفع عند الاستلام</p>
-  </section>
+
+  <ng-template [ngIf]="userData && orderStatus == 'accepted'">
 
 
-  <div class="actions">
-    <div text-center>
-      <button ion-button round (click)="goToMaps()">
-        ابدأ رحلتك الان لتوصيل الطلب
-      </button>
-    </div>
-    <div text-center>
-      <button ion-button outline round (click)="onDeliver()" [hidden]="orderStatus == 'waiting'" >
-        تم التسليم
-      </button>
-      <button ion-button outline color="danger" round (click)="showModal()" >
-        الغاء
-      </button>
-    </div>
-  </div>
+    <section class="avatar-section">
+      <div class="avatar">
+        <img [src]="'https://www.moovstore.com/'+userData.company.logo" alt="">
+      </div>
+      <h2>{{userData.company.name}}</h2>
+      <p>{{userData.company.phone}}</p>
+      <p>الدفع عند الاستلام</p>
+    </section>
 
+
+    <div class="actions">
+      <div text-center>
+        <button ion-button round (click)="openCompanyLocation()">
+          ابدأ رحلتك الان لاستلام الطلب
+        </button>
+      </div>
+      <div text-center [hidden]="orderStatus == 'waiting'">
+        <button ion-button outline round (click)="onReceiving()" >
+          تم الاستلام
+        </button>
+        <button ion-button outline color="danger" round (click)="showModal()">
+          الغاء
+        </button>
+      </div>
+    </div>
+
+  </ng-template>
+
+
+  <ng-template [ngIf]="requestUser && orderStatus != 'accepted'">
+
+    <section class="avatar-section">
+      <div class="avatar">
+        <img [src]="'https://www.moovstore.com/'+requestUser?.logo" alt="">
+      </div>
+      <h2>{{requestUser?.name}}</h2>
+      <p>{{requestUser?.phone}}</p>
+      <p>{{requestUser?.gender | translate}}</p>
+      <p>الدفع عند الاستلام</p>
+    </section>
+
+
+    <div class="actions">
+      <div text-center>
+        <button ion-button round (click)="openUserLocation()">
+          ابدأ رحلتك الان لتوصيل الطلب
+        </button>
+      </div>
+      <div text-center>
+        <button ion-button outline round (click)="onDeliver()" [hidden]="orderStatus == 'waiting'">
+          تم التوصيل
+        </button>
+      </div>
+    </div>
+  </ng-template>
   <ion-fab bottom right hidden>
     <button ion-fab mini (click)="goToMaps()">
       <img src="assets/imgs/map-pin.png" alt="">

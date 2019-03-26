@@ -20,6 +20,9 @@ page-request {
     .reason {
       box-shadow: 2px 2px 10px #eee;
       border-radius: 8px;
+      .first-refuse {
+        margin: 0;
+      }
       
     }
     ion-slides {

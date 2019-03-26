@@ -93,8 +93,9 @@ export class RequestPage {
       .subscribe(response => {
         console.log({response});
         if (response.success) {
-          this.driverOrder.status = response.data.order.status
+          this.driverOrder.status = response.data.order.status;
           this.events.publish('updateOrders');
+          this.navCtrl.push('WaitingordersPage')
         }
         this.utils.showToast(response.message)
       })

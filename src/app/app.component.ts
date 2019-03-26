@@ -92,15 +92,11 @@ export class MyApp {
     });
 
     // setTimeout( () => {
-    //   this.events.publish('open:popup', {wasTapped: false, order_id: 118})
+    //   this.events.publish('open:popup', {wasTapped: false, order_id: 13})
     // }, 3000)
 
   }
 
-  public changeLang(): void {
-      const lang = this.translate.currentLang === 'ar' ? 'en' : 'ar';
-      this.events.publish('change:lang', lang)
-  }
 
   private setDefaultLang(lang: Langs) {
     this.translate.setDefaultLang(lang);
