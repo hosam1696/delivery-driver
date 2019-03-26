@@ -9,7 +9,6 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {FCM} from '@ionic-native/fcm';
-import {Geolocation} from '@ionic-native/geolocation';
 import { AuthProvider } from '../providers/auth/auth';
 import { AppstorageProvider } from '../providers/appstorage/appstorage';
 import { UtilsProvider } from '../providers/utils/utils';
@@ -24,7 +23,6 @@ import { AudioProvider } from '../providers/audio/audio';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { Network } from '@ionic-native/network';
-import {Diagnostic} from '@ionic-native/diagnostic';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -65,11 +63,9 @@ export function createTranslateLoader(http: HttpClient) {
     OrdersProvider,
     FCM,
     AudioProvider,
-    Geolocation,
     LaunchNavigator,
     FcmProvider,
     Network,
-    Diagnostic
   ]
 })
 export class AppModule {}
