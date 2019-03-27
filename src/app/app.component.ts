@@ -91,27 +91,29 @@ export class MyApp {
         .then(userData => this.userData = userData)
     });
 
+    // Testing Notification Popup in Browser
     // setTimeout( () => {
     //   this.events.publish('open:popup', {wasTapped: false, order_id: 13})
     // }, 3000)
 
   }
 
-
+  //TODO: To use later if we added second lang to the app
+  
   private setDefaultLang(lang: Langs) {
     this.translate.setDefaultLang(lang);
     this.translate.use(lang);
     this.platform.setDir(AppDirLang[lang] as DocumentDirection, true);
-    // this.config.set('backButtonIcon',lang == 'en'? 'arrow-back':'arrow-forward');
     this.appStorage.getAppLang()
       .then(lang => this.setDefaultLang(lang || this.defaultLang));
 
   }
 
   openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.push(page.component);
+
+    // show only the menu button on the requests page & make other pages subpages from it
+    if (this.nav.getActive().id == 'RequestsPage' && page.component != 'RequestsPage')
+      this.nav.push(page.component);
   }
 
   openProfilePage() {

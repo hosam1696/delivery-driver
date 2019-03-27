@@ -1,6 +1,14 @@
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
+    <ion-title>
+      <span *ngIf="orderStatus == 'accepted' || orderStatus == 'waiting'">
+        شركة التوصيل
+      </span>
+      <span *ngIf="orderStatus != 'accepted' && orderStatus != 'waiting'">
+        العميل
+      </span>
+    </ion-title>
     <ion-buttons end>
       <button ion-button icon-only menuToggle>
         <ion-icon color="dark" name="menu"></ion-icon>
@@ -12,7 +20,7 @@
 
 <ion-content padding>
 
-  <ng-template [ngIf]="userData && orderStatus == 'accepted'">
+  <ng-template [ngIf]="userData && (orderStatus == 'accepted' || orderStatus == 'waiting')">
 
 
     <section class="avatar-section">
@@ -27,7 +35,7 @@
 
     <div class="actions">
       <div text-center>
-        <button ion-button round (click)="openCompanyLocation()">
+        <button ion-button round [hidden]="orderStatus == 'waiting'" (click)="openCompanyLocation()">
           ابدأ رحلتك الان لاستلام الطلب
         </button>
       </div>
@@ -44,7 +52,7 @@
   </ng-template>
 
 
-  <ng-template [ngIf]="requestUser && orderStatus != 'accepted'">
+  <ng-template [ngIf]="requestUser && orderStatus != 'accepted' &&  orderStatus != 'waiting'">
 
     <section class="avatar-section">
       <div class="avatar">

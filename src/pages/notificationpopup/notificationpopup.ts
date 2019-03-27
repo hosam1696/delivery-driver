@@ -45,6 +45,7 @@ export class NotificationpopupPage {
       if(minutes <= 0 && seconds<= 0) {
         clearInterval(interval);
         this.countIsOver = true;
+        this.onClick('cancel');
       }
     }, 1000);
 

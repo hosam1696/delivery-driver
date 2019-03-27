@@ -1,13 +1,10 @@
 page-user {
-  ion-navbar {
-    .toolbar-background {
-      background: #fff !important;
-    }
-  }
+
   ion-content {
     .avatar-section {
       text-align: center;
       color: $dark;
+      margin-top: 8px;
       h2 {
         margin-bottom: 0;
       }
