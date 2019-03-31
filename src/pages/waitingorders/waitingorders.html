@@ -8,14 +8,14 @@
   <ion-content no-padding>
     <ion-item no-lines class="toolbar-toggle" *ngIf="userData">
       <ion-label>
-        {{'Activate recieving Requests' | translate}}
+        {{'تفعيل استقبال الطلبات' | translate}}        
       </ion-label>
       <ion-toggle [(ngModel)]='!!userData.availability' (ionChange)="onToggleChange($event)"></ion-toggle>
     </ion-item>
     <div class="no-requests" *ngIf="!allRequests||(allRequests&&!allRequests.length)">
       <img src="assets/imgs/planning.png" alt="">
       <p *ngIf="!allRequests">
-        {{'Requests in their way to you, Get Ready' | translate}}
+        {{'الطلبات فى طريقها اليك, استعد!' | translate}}
       </p>
       <p text-center *ngIf="allRequests && !allRequests.length">
         {{'لا يوجد طلبات مؤجلة' | translate}}

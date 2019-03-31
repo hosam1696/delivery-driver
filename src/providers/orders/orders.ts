@@ -29,7 +29,11 @@ export class OrdersProvider {
   }
 
   receiveOrder(orderId, token) {
-    return this.api.post('order/'.concat(orderId, '/received'), null, {api_token: token})
+    return this.api.post('order/'.concat(orderId, '/ongoing'), null, {api_token: token})
+  }
+
+  processOrder(orderId, token) {
+    return this.api.post('order/'.concat(orderId, '/processing'), null, {api_token: token})
   }
 
   refuseOrder(orderId, token, comment?:string) {

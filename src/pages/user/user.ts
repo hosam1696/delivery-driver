@@ -16,6 +16,7 @@ export class UserPage {
   requestUser: User = this.navParams.get('user');
   orderId = this.navParams.get('orderId');
   orderStatus = this.navParams.get('orderStatus');
+  driverOrder = this.navParams.get('driverOrder');
   userData: UserData;
 
   constructor(public navCtrl: NavController,
@@ -65,6 +66,9 @@ export class UserPage {
         if (response.success) {
           this.events.publish('updateOrders');
           this.utils.showToast(response.message);
+          setTimeout(() => {
+            this.navCtrl.setRoot('RequestsPage')
+          }, 1000)
         }
       })
   }
@@ -76,6 +80,8 @@ export class UserPage {
       if (response.success) {
         this.events.publish('updateOrders');
         this.utils.showToast(response.message);
+        this.orderStatus = 'completed';
+        this.driverOrder.status = 'completed';
       }
     })
   }
@@ -87,6 +93,9 @@ export class UserPage {
         if (response.success) {
           this.events.publish('updateOrders');
           this.utils.showToast(response.message);
+          this.driverOrder.status = 'ongoing';
+          this.orderStatus = 'ongoing';
+
         }
       })
   }
@@ -94,7 +103,23 @@ export class UserPage {
 
   openCompanyLocation() {
     const location = [+this.userData.company.lat, +this.userData.company.long];
+
     this.showOnMaps(location);
+
+    this.onProcessing();
+  }
+
+  onProcessing() {
+    this.ordersProvider.processOrder(this.orderId, this.userData.api_token)
+
+    .subscribe(response =>{
+      if (response.success) {
+        this.events.publish('updateOrders');
+        this.driverOrder.status = 'processing';
+        this.orderStatus = 'processing';
+
+      }
+    })
   }
 
   openUserLocation() {

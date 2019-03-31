@@ -117,6 +117,6 @@ export class RequestPage {
   }
 
   goToUserPage() {
-    this.navCtrl.push('UserPage', {user: this.driverOrder.order.user, orderId: this.driverOrder.id, orderStatus: this.driverOrder.status});
+    this.navCtrl.push('UserPage', {user: this.driverOrder.order.user, orderId: this.driverOrder.id, orderStatus: this.driverOrder.status, driverOrder: this.driverOrder.order});
   }
 }

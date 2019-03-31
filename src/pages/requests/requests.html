@@ -3,7 +3,7 @@
     <button ion-button clear icon-only menuToggle>
       <ion-icon name="menu" color="light"></ion-icon>
     </button>
-    <ion-title>{{'Requests' | translate}}</ion-title>
+    <ion-title>{{'الطلبات' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -13,7 +13,7 @@
 
   <ion-item no-lines *ngIf="userData">
     <ion-label>
-      {{'Activate recieving Requests' | translate}}
+      {{'تفعيل استقبال الطلبات' | translate}}
     </ion-label>
     <ion-toggle [(ngModel)]='!!userData.availability' (ionChange)="onToggleChange($event)"></ion-toggle>
   </ion-item>
@@ -23,7 +23,7 @@
   </ion-refresher>
   <section class="requests-states">
     <button ion-button clear (click)="showPopOver($event)">
-      <b>{{'Request State' | translate}}</b>
+      <b>{{'حالة الطلب' | translate}}</b>
     </button>
   </section>
 
@@ -31,12 +31,12 @@
   <div class="no-requests" *ngIf="(!requests||(requests&&!requests.length) ) && !isFiltering">
     <img src="assets/imgs/planning.png" alt="">
     <p>
-      {{'Requests in their way to you, Get Ready' | translate}}
+      {{'الطلبات فى طريقها اليك, استعد!' | translate}}
     </p>
   </div>
 
   <div class="no-requests" *ngIf="requests && !requests.length && isFiltering">
-    <p>{{'No Requests' | translate}}</p>
+    <p>{{'لا يوجد طلبات' | translate}}</p>
   </div>
 
   <ion-content *ngIf="requests && requests.length">

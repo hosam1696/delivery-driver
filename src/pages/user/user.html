@@ -2,10 +2,10 @@
 
   <ion-navbar color="primary">
     <ion-title>
-      <span *ngIf="orderStatus == 'accepted' || orderStatus == 'waiting'">
+      <span *ngIf="orderStatus == 'accepted' || orderStatus == 'waiting' && driverOrder?.status != 'ongoing'">
         شركة التوصيل
       </span>
-      <span *ngIf="orderStatus != 'accepted' && orderStatus != 'waiting'">
+      <span *ngIf="driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' || orderStatus == 'completed'">
         العميل
       </span>
     </ion-title>
@@ -20,7 +20,7 @@
 
 <ion-content padding>
 
-  <ng-template [ngIf]="userData && (orderStatus == 'accepted' || orderStatus == 'waiting')">
+  <ng-template [ngIf]="userData && (orderStatus == 'accepted' || orderStatus == 'waiting' || orderStatus == 'processing')">
 
 
     <section class="avatar-section">
@@ -30,6 +30,8 @@
       <h2>{{userData.company.name}}</h2>
       <p>{{userData.company.phone}}</p>
       <p>الدفع عند الاستلام</p>
+      <p class="small" *ngIf="orderStatus && orderStatus != 'waiting' && (orderStatus == 'processing' || orderStatus == 'ongoing')">{{orderStatus | translate}}</p>
+
     </section>
 
 
@@ -52,7 +54,7 @@
   </ng-template>
 
 
-  <ng-template [ngIf]="requestUser && orderStatus != 'accepted' &&  orderStatus != 'waiting'">
+  <ng-template [ngIf]="requestUser && orderStatus != 'accepted' &&  orderStatus != 'waiting' &&  orderStatus != 'processing'  && (driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' || orderStatus == 'completed')">
 
     <section class="avatar-section">
       <div class="avatar">
@@ -62,10 +64,11 @@
       <p>{{requestUser?.phone}}</p>
       <p>{{requestUser?.gender | translate}}</p>
       <p>الدفع عند الاستلام</p>
+      <p class="small" *ngIf="driverOrder.status && (driverOrder.status == 'processing' || driverOrder.status == 'ongoing') && driverOrder.status != 'completed'">{{orderStatus | translate}}</p>
     </section>
-
-
-    <div class="actions">
+    
+    
+    <div class="actions" *ngIf="orderStatus != 'completed'">
       <div text-center>
         <button ion-button round (click)="openUserLocation()">
           ابدأ رحلتك الان لتوصيل الطلب
@@ -75,6 +78,11 @@
         <button ion-button outline round (click)="onDeliver()" [hidden]="orderStatus == 'waiting'">
           تم التوصيل
         </button>
+      </div>
+
+      <!-- TODO: may add rating to the delivery trip -->
+      <div class="action" *ngIf="orderStatus == 'completed'">
+        تم التوصيل
       </div>
     </div>
   </ng-template>

@@ -7,5 +7,13 @@
     "اسم المستخدم": "userName",
     "كلمة المرور": "password",
     "لا يوجد طلبات مؤجلة": "No Waiting Orders",
-    "دخول": "Log"
+    "دخول": "Log",
+    "طلب": "Order",
+ "تفعيل استقبال الطلبات":  "Activate recieving Requests",
+ "حالة الطلب": "Request State",
+ "الطلبات فى طريقها اليك, استعد!": "Requests in their way to you, Get Ready",
+ "لا يوجد طلبات": "No Requests",
+ "التوصيل الان": "Deliver Now",
+  "التوصيل لاحقا":"Deliver Later",
+ "رفض": "Camcel"
 }

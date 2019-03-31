@@ -36,9 +36,9 @@
         </span>
       </div>
       <div class="btns" margin-top *ngIf="driverOrder.status == 'init' || driverOrder?.status == 'waiting'">
-        <button ion-button round (click)="onClick('accept')" >{{'Deliver Now' | translate}}</button>
-        <button ion-button round  (click)="onClick('await')" [hidden]="driverOrder?.status == 'waiting'" >{{'Deliver Later' | translate}}</button>
-        <button ion-button round outline color="danger"  (click)="onClick('cancel')">{{'Cancel' | translate}}</button>
+        <button ion-button round (click)="onClick('accept')" >{{'التوصيل الان' | translate}}</button>
+        <button ion-button round  (click)="onClick('await')" [hidden]="driverOrder?.status == 'waiting'" >{{'التوصيل لاحقا' | translate}}</button>
+        <button ion-button round outline color="danger"  (click)="onClick('cancel')">{{'رفض' | translate}}</button>
       </div>
     </div>
   </section>
@@ -56,7 +56,7 @@
     </div>
   </div>
 
-  <ion-fab bottom right *ngIf="driverOrder?.status == 'accepted' || driverOrder?.status == 'waiting' || driverOrder?.status == 'completed'">
+  <ion-fab bottom right *ngIf="driverOrder?.status == 'accepted' || driverOrder?.status == 'waiting' || driverOrder?.status == 'completed' || driverOrder?.status == 'ongoing' || driverOrder?.status == 'processing'">
     <button ion-fab mini (click)="goToUserPage()">
       <img src="assets/imgs/map-pin.png" alt="">
     </button>

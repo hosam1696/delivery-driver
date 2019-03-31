@@ -16,7 +16,8 @@ export enum OrderStatus {
   all,
   returned,
   canceled,
-  completed
+  completed,
+  refused
 }
 
 export enum appLangs {
