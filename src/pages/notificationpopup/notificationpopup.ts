@@ -4,6 +4,7 @@ import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { OrdersProvider } from '../../providers/orders/orders';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { RequestAction, UserData, DriverOrder } from '../../providers/types/app-types';
+import { AudioProvider } from '../../providers/audio/audio';
 
 
 @IonicPage()
@@ -26,6 +27,7 @@ export class NotificationpopupPage {
     private appStorage: AppstorageProvider,
     private orderProvider: OrdersProvider,
     private utils: UtilsProvider,
+    private audioProvider: AudioProvider,
     private events: Events
 ) {
 }
@@ -34,6 +36,7 @@ export class NotificationpopupPage {
     this.userData = await  this.appStorage.getUserData();
     this.playCounter();
     this.getRequestDetails();
+    this.audioProvider.activateNotifySound();
   }
 
   playCounter() {

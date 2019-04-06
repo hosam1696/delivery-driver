@@ -64,6 +64,7 @@ export class AudioProvider {
 
   }
 
+  
   activateBtnSound() {
     this.preload('btnClick', '../assets/sounds/cs.mp3');
 
@@ -73,4 +74,11 @@ export class AudioProvider {
       }
     })
   }
+
+  activateNotifySound() {
+    this.preload('notifySound', '../assets/sounds/notify-sound.mp3');
+
+    this.play('notifySound');
+  }
+
 }

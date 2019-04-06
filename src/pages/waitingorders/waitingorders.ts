@@ -26,6 +26,7 @@ export class WaitingordersPage {
               private events: Events,
               private utils: UtilsProvider,
   ) {
+    this.events.subscribe('getWaitingOrders', () => this.getWaitingOrders())
   }
 
 

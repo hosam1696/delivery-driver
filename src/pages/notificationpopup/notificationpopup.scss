@@ -15,6 +15,12 @@ page-notificationpopup {
             border-radius: 10px;
             height: 40vh;
         }
+
+        .fixed-btn {
+            position: fixed;
+            bottom: 5px;
+            left: 5px;
+        }
         .pop-content {
             background-color: #fff;
             width: 96%;

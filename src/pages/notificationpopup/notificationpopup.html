@@ -1,5 +1,7 @@
 <ion-content padding>
   <!-- [exclude]="'button'" (clickOutside)="dismiss()" -->
+
+
   <section class="pop-content" >
     <ng-template [ngIf]="driverOrder">
 
@@ -52,4 +54,10 @@
       </div>
     </ng-template>
   </section>
+
+  <div class="fixed-btn">
+    <button ion-button icon-only clear id="notifySound">
+      <ion-icon name="volume"></ion-icon>
+    </button>
+  </div>
 </ion-content>

@@ -7,18 +7,18 @@ import {Events} from "ionic-angular";
 
 export class ApiProvider {
   API_URL: string = 'https://developer.moovstore.com/api/delivery-driver/';
-  defaultLang: string = 'ar';
-  choosedLang: 'en' | 'ar';
+  chosenLang: 'en' | 'ar';
 
   constructor(public http: HttpClient, private translate: TranslateService, private events: Events) {
-    this.events.subscribe('change:lang', lang => this.choosedLang = lang);
+    this.events.subscribe('change:lang', lang => this.chosenLang = lang);
   }
 
   get(endpoint: string, params?: any) {
     let httpParams: HttpParams = new HttpParams({});
     if (params) {
       for (let param in params) {
-        httpParams = httpParams.set(param, params[param])
+        if (params.hasOwnProperty(param))
+          httpParams = httpParams.set(param, params[param])
       }
     }
     return this.http.get<any>(this.API_URL + endpoint, {params: httpParams})

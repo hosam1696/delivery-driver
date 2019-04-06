@@ -65,6 +65,7 @@ export class MyApp {
       this.setDefaultLang(lang || this.defaultLang);
       if (userData) {
         this.events.publish('update:storage');
+        this.events.publish('getWaitingOrders')
         this.rootPage = 'RequestsPage';
       } else {
         this.rootPage = 'LoginPage'  
@@ -91,7 +92,7 @@ export class MyApp {
         .then(userData => this.userData = userData)
     });
 
-    // Testing Notification Popup in Browser
+    //Testing Notification Popup in Browser
     // setTimeout( () => {
     //   this.events.publish('open:popup', {wasTapped: false, order_id: 13})
     // }, 3000)
