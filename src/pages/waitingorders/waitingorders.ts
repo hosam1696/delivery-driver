@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams, Events} from 'ionic-angular';
 import {DriverOrder, UserData} from '../../providers/types/app-types';
-import { AppstorageProvider } from '../../providers/appstorage/appstorage';
-import { OrdersProvider } from '../../providers/orders/orders';
-import { UtilsProvider } from '../../providers/utils/utils';
-import { AuthProvider } from '../../providers/auth/auth';
+import {AppstorageProvider} from '../../providers/appstorage/appstorage';
+import {OrdersProvider} from '../../providers/orders/orders';
+import {UtilsProvider} from '../../providers/utils/utils';
+import {AuthProvider} from '../../providers/auth/auth';
 
 
 @IonicPage()
@@ -13,27 +13,27 @@ import { AuthProvider } from '../../providers/auth/auth';
   templateUrl: 'waitingorders.html',
 })
 export class WaitingordersPage {
-  isReceivingRequests:boolean;
+  isReceivingRequests: boolean;
   userData: UserData;
   allRequests: DriverOrder[];
 
-  
+
   constructor(public navCtrl: NavController,
-               public navParams: NavParams,
-               private appStorageProvider: AppstorageProvider,
-               private ordersProvider: OrdersProvider,
-               private authProvider: AuthProvider,
-               private events: Events,
-               private utils: UtilsProvider,
-               ) {
+              public navParams: NavParams,
+              private appStorageProvider: AppstorageProvider,
+              private ordersProvider: OrdersProvider,
+              private authProvider: AuthProvider,
+              private events: Events,
+              private utils: UtilsProvider,
+  ) {
   }
 
-  
+
   async ionViewWillEnter() {
     this.userData = await this.appStorageProvider.getUserData();
   }
-  
-  
+
+
   async ionViewDidLoad() {
     this.userData = await this.appStorageProvider.getUserData();
     console.log({userData: this.userData});
@@ -53,13 +53,16 @@ export class WaitingordersPage {
     orders$.subscribe(response => {
       console.log({waitingOrders: response});
       if (response.success) {
-        this.allRequests = response.data.orders;
+        this.allRequests = this.filterOrders(response.data.orders);
       } else if (response.error == 'Unauthenticated') {
-        const authLogin$ = this.authProvider.login({username: this.userData.userName, password: this.userData.current_password});
-        
+        const authLogin$ = this.authProvider.login({
+          username: this.userData.userName,
+          password: this.userData.current_password
+        });
+
         authLogin$.subscribe(response => {
           if (response.success) {
-  
+
             Promise.all([
               this.appStorageProvider.setUserData({...response.data.user}),
               this.appStorageProvider.saveToken(response.data.user.api_token)
@@ -80,24 +83,50 @@ export class WaitingordersPage {
 
 
   changeOrderStatus() {
-    const deliveryStatus$ = this.authProvider.updateProfile({current_password: this.userData.current_password ,availability: +this.userData.availability},this.userData.api_token);
-    
-    deliveryStatus$.subscribe(response=> {
+    const deliveryStatus$ = this.authProvider.updateProfile({
+      current_password: this.userData.current_password,
+      availability: +this.userData.availability
+    }, this.userData.api_token);
+
+    deliveryStatus$.subscribe(response => {
       if (response.success) {
         const availability = +response.data.driver.availability;
         this.utils.showToast(response.message, {position: 'bottom'});
         this.appStorageProvider.setUserData({...this.userData, availability})
-          .then( (data) => {
+          .then((data) => {
             console.log({savedUserInWaitingOrders: data});
             this.events.publish('update:storage');
           })
-      } 
+      }
     })
   }
 
 
   goToRequestPage(request) {
     this.navCtrl.push('RequestPage', {request})
+  }
+
+  private filterOrders(orders: any): any[] {
+    let waitingOrders, oneDay = 1000 * 60 * 60 * 24, dateNow = +Date.now();
+
+    waitingOrders = orders.filter(order => dateNow - +new Date(order.updated_at) < oneDay);
+
+    // Change the status of exceeded delayed order
+    orders.filter(order => dateNow - +new Date(order.updated_at) > oneDay).forEach(order => {
+      this.cancelRequest(order.id)
+    });
+
+    return waitingOrders;
+  }
+
+  private cancelRequest(orderId) {
+    this.ordersProvider.refuseOrder(orderId, this.userData.api_token)
+      .subscribe(response => {
+        console.log({response});
+        if (response.success) {
+          this.events.publish('updateOrders');
+        }
+      })
   }
 
 }

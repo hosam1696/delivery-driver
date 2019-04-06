@@ -54,8 +54,7 @@ export class LoginPage {
     if (connectionType != 'none') {
       this.submitForm();
     } else {
-      console.log('asdd');
-      this.utils.showToast('حدث خطأ بالاتصال بالانترنت');
+      this.utils.showToast('تعذر الاتصال بالانترنت');
     }
   }
 

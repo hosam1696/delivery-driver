@@ -55,10 +55,14 @@ export class RequestsPage {
     this.userData = await this.appStorageProvider.getUserData();
     
   }
+
+
   async ionViewDidLoad() {
     this.userData = await this.appStorageProvider.getUserData();
 
     this.checkConnection();
+
+    this.getAllOrders();
 
     this.audioProvider.activateBtnSound();
 
@@ -79,21 +83,25 @@ export class RequestsPage {
   private checkConnection() {
     let connectionType = this.network.type;
 
-    this.network.onConnect().subscribe(() => {
-      this.getAllOrders();
-    })
-   
-    if (connectionType != 'none') {
-      this.getAllOrders();
-    } else {
-      console.log('asdd');
-      this.utils.showToast(' خطأ بالاتصال بالانترنت');
-    }
+    this.disconnect$ = this.network.onDisconnect()
+      .subscribe(()=> {
+        this.utils.showToast('تعذر الاتصال بالانترنت');
+      })
+
+    this.connect$ = this.network.onDisconnect()
+      .subscribe(()=> {
+
+        setTimeout(() => {
+          let connectionType = this.network.type;
+          this.getAllOrders();
+          console.log({connectionType});
+        }, 3000);
+      })
   }
 
   ionViewWillLeave() {
-    // this.disconnect$.unsubscribe();
-    // this.connect$.unsubscribe();
+    this.disconnect$.unsubscribe();
+    this.connect$.unsubscribe();
 
   }
 
