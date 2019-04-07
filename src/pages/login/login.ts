@@ -49,8 +49,6 @@ export class LoginPage {
   submitOnConnect() {
     let connectionType = this.network.type;
 
-    console.log({connectionType});
-   
     if (connectionType != 'none') {
       this.submitForm();
     } else {
@@ -60,7 +58,7 @@ export class LoginPage {
 
   submitForm() {
     const validateForm = this.utils.validateForm(this.loginForm);
-    console.log(this.loginForm.value);
+    // console.log(this.loginForm.value);
     if (validateForm) {
 
       const authLogin$ = this.AuthProvider.login(this.loginForm.value);

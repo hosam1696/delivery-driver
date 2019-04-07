@@ -3,7 +3,7 @@
   <ion-navbar color="primary">
     <ion-title>
       <span *ngIf="orderStatus == 'accepted' || orderStatus == 'waiting' && driverOrder?.status != 'ongoing'">
-        شركة التوصيل
+        الشركة
       </span>
       <span *ngIf="driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' || orderStatus == 'completed'">
         العميل
@@ -20,15 +20,15 @@
 
 <ion-content padding>
 
-  <ng-template [ngIf]="userData && (orderStatus == 'accepted' || orderStatus == 'waiting' || orderStatus == 'processing')">
+  <ng-template [ngIf]="driverOrder && (orderStatus == 'accepted' || orderStatus == 'waiting' || orderStatus == 'processing')">
 
 
     <section class="avatar-section">
       <div class="avatar">
-        <img [src]="'https://www.moovstore.com/'+userData.company.logo" alt="">
+        <img [src]="'https://www.moovstore.com/' + driverOrder.company.logo" alt="">
       </div>
-      <h2>{{userData.company.name}}</h2>
-      <p>{{userData.company.phone}}</p>
+      <h2>{{driverOrder.company.name}}</h2>
+      <p>{{driverOrder.company.phone}}</p>
       <p>الدفع عند الاستلام</p>
       <p class="small" *ngIf="orderStatus && orderStatus != 'waiting' && (orderStatus == 'processing' || orderStatus == 'ongoing')">{{orderStatus | translate}}</p>
 

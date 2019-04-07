@@ -94,7 +94,7 @@ export class RequestsPage {
         setTimeout(() => {
           let connectionType = this.network.type;
           this.getAllOrders();
-          console.log({connectionType});
+          // console.log({connectionType});
         }, 3000);
       })
   }
@@ -110,9 +110,9 @@ export class RequestsPage {
     const orders$ = this.ordersProvider.getAllOrders(this.userData.api_token);
 
     orders$.subscribe(response => {
-      console.log({ordersResponse: response});
+      // console.log({ordersResponse: response});
       if (response.success) {
-        this.allRequests = this.requests = response.data.orders;
+        this.allRequests = this.requests = this.checkDelayedOrders(response.data.orders);
       } else if (response.error == 'Unauthenticated' || response.error == 'Unauthenticated.') {
         const authLogin$ = this.authProvider.login({username: this.userData.userName, password: this.userData.current_password});
         
@@ -141,6 +141,32 @@ export class RequestsPage {
     this.changeOrderStatus();
   }
 
+  private checkDelayedOrders(orders) {
+    let allOrders, supposedTime = 1000 * 60 * 10 , dateNow = +Date.now(),
+     isExceededTime = order => dateNow - +new Date(order.created_at) > supposedTime;
+
+    allOrders = orders.filter(order => order.status != 'init');
+
+    // Change the status of exceeded delayed order
+    orders.filter(order => isExceededTime(order) && order.status == 'init').forEach(order => {
+      this.cancelRequest(order.id)
+      console.log({order})
+    });
+
+    return allOrders;
+  }
+
+
+  
+  private cancelRequest(orderId) {
+    this.ordersProvider.refuseOrder(orderId, this.userData.api_token)
+      .subscribe(response => {
+        // console.log({response});
+        if (response.success) {
+          this.events.publish('updateOrders');
+        }
+      })
+  }
 
   changeOrderStatus() {
     const deliveryStatus$ = this.authProvider.updateProfile({current_password: this.userData.current_password ,availability: +this.userData.availability}, this.userData.api_token);

@@ -28,6 +28,8 @@ export class UserPage {
               private appStorageProvider: AppstorageProvider,
               public navParams: NavParams) {
     console.log({requestStatus: this.orderStatus})
+    console.log({driverOrder: this.driverOrder})
+
   }
 
   async ionViewDidLoad() {
@@ -102,8 +104,8 @@ export class UserPage {
 
 
   openCompanyLocation() {
-    const location = [+this.userData.company.lat, +this.userData.company.long];
-
+    const location = [+this.driverOrder.company.lat, +this.driverOrder.company.long];
+    console.log({location});
     this.showOnMaps(location);
 
     this.onProcessing();

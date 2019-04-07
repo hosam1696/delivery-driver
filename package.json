@@ -1,14 +1,18 @@
 {
   "name": "delivery-driver",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "author": "Hosam Elnabawy",
+  "homepage": "http://hosam1696.github.io/portfolio",
   "private": true,
   "scripts": {
     "start": "ionic-app-scripts serve",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hosam1696/delivery-driver.git"
   },
   "dependencies": {
     "4": "0.0.0",
