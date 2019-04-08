@@ -16,6 +16,7 @@ export class RequestPage {
   request: Order;
   driverOrder: DriverOrder;
   userData: UserData;
+  fromPop: boolean = this.navParams.get('fromPop');
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,

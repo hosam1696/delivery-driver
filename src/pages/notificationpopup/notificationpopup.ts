@@ -66,8 +66,8 @@ export class NotificationpopupPage {
     })
   }
 
-  goToRequestPage(request) {
-    this.navCtrl.push('RequestPage', {request})
+  goToRequestPage(request, params) {
+    this.navCtrl.push('RequestPage', {request, ...params})
   }
 
   

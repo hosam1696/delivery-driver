@@ -93,10 +93,10 @@ export class MyApp {
     });
 
     //Testing Notification Popup in Browser
-    // setTimeout( () => {
-    //   this.events.publish('open:popup', {wasTapped: false, order_id: 13})
-    // }, 3000)
-
+    setTimeout( () => {
+      this.events.publish('open:popup', {wasTapped: false, order_id: 13})
+    }, 3000)
+  
   }
 
   //TODO: To use later if we added second lang to the app

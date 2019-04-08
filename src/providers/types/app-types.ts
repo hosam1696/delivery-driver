@@ -158,12 +158,15 @@ export interface DriverOrder {
   created_at: string;
   updated_at: string;
   waiting_time?: null;
+  comment?:string,
   order: Order;
 }
 export interface Order {
   id: number;
   user_id: number;
   company_id: number;
+  company?:any;
+  comment?: string,
   status: string;
   total: number;
   created_at: string;

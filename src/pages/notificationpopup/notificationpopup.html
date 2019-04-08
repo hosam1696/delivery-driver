@@ -9,7 +9,7 @@
         <img [src]="'https://www.moovstore.com/'+ driverOrder.order.items[0].image" alt="">
         <p>
           طلب جديد من شركة
-          {{userData.company.name}}
+          {{driverOrder.order.company.name}}
         </p>
       </div>
       <div class="item  order-owner">
@@ -21,7 +21,7 @@
           الدفع عند الاستلام
         </p>
 
-        <button ion-button large outline round (click)="goToRequestPage(driverOrder)">
+        <button ion-button large outline round (click)="goToRequestPage(driverOrder, {fromPop: true})">
           تفاصيل الطلب
         </button>
 

@@ -35,13 +35,16 @@
           {{driverOrder.order.total}} {{'SAR' | translate}}
         </span>
       </div>
-      <div class="btns" margin-top *ngIf="driverOrder.status == 'init' || driverOrder?.status == 'waiting'">
-        <button ion-button round (click)="onClick('accept')" >{{'التوصيل الان' | translate}}</button>
-        <button ion-button round  (click)="onClick('await')" [hidden]="driverOrder?.status == 'waiting'" >{{'التوصيل لاحقا' | translate}}</button>
-        <button ion-button round outline color="danger"  (click)="onClick('cancel')">{{'رفض' | translate}}</button>
-      </div>
+      <ng-template [ngIf]="!fromPop">
+        <div class="btns" margin-top *ngIf="driverOrder.status == 'init' || driverOrder?.status == 'waiting'">
+          <button ion-button round (click)="onClick('accept')" >{{'التوصيل الان' | translate}}</button>
+          <button ion-button round  (click)="onClick('await')" [hidden]="driverOrder?.status == 'waiting'" >{{'التوصيل لاحقا' | translate}}</button>
+          <button ion-button round outline color="danger"  (click)="onClick('cancel')">{{'رفض' | translate}}</button>
+        </div>
+      </ng-template>
     </div>
   </section>
+  <ng-template [ngIf]="!fromPop">
 
   <div class="reason" margin-vertical padding *ngIf="driverOrder?.status == 'refused' || driverOrder?.status == 'canceled'">
     <p *ngIf="driverOrder.status == 'refused'" text-center class="first-refuse">
@@ -51,10 +54,11 @@
     <div *ngIf="driverOrder.status == 'canceled'">
       <p><b>سبب الالغاء</b></p>
       <p text-center>
-      سبب الغاء الطلب
+        {{driverOrder?.comment || driverOrder.order?.comment}}
       </p>
     </div>
   </div>
+  </ng-template>
 
   <ion-fab bottom right *ngIf="driverOrder?.status == 'accepted' || driverOrder?.status == 'waiting' || driverOrder?.status == 'completed' || driverOrder?.status == 'ongoing' || driverOrder?.status == 'processing'">
     <button ion-fab mini (click)="goToUserPage()">
