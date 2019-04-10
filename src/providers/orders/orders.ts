@@ -23,7 +23,7 @@ export class OrdersProvider {
   cancelOrder(orderId, token, comment) {
     let body = new FormData();
     body.append('comment', comment);
-    return this.api.post('order/'.concat(orderId, '/canceled'), body, {api_token: token, comment})
+    return this.api.post('order/'.concat(orderId, '/canceled'), body, {api_token: token})
   }
 
   deliverOrder(orderId, token) {
