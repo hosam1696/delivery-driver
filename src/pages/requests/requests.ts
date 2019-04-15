@@ -81,7 +81,7 @@ export class RequestsPage {
 
 
   private checkConnection() {
-    let connectionType = this.network.type;
+    // let connectionType = this.network.type;
 
     this.disconnect$ = this.network.onDisconnect()
       .subscribe(()=> {
@@ -92,7 +92,7 @@ export class RequestsPage {
       .subscribe(()=> {
 
         setTimeout(() => {
-          let connectionType = this.network.type;
+          // let connectionType = this.network.type;
           this.getAllOrders();
           // console.log({connectionType});
         }, 3000);

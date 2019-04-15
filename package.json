@@ -1,6 +1,6 @@
 {
-  "name": "delivery-driver",
-  "version": "0.0.1",
+  "name": "moov-express",
+  "version": "1.0.0",
   "author": "Hosam Elnabawy",
   "homepage": "http://hosam1696.github.io/portfolio",
   "private": true,
@@ -60,7 +60,7 @@
     "@ionic/app-scripts": "3.2.1",
     "typescript": "~2.6.2"
   },
-  "description": "An Ionic project",
+  "description": "Moov Company App",
   "cordova": {
     "plugins": {
       "cordova-plugin-fcm": {},

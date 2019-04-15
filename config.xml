@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.moove.deliverydriver" version="0.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Moov Delivery</name>
-    <description>Moov Company app</description>
-    <author email="hi@ionicframework" href="https://www.moovstore.com/">Moov Team</author>
+<widget id="com.moove.deliverydriver" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Moov Express</name>
+    <description>Moov Company App</description>
+    <author email="elrayan9@gmail.com" href="https://www.moovstore.com/">Moov Team</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -17,8 +17,7 @@
     <resource-file src="src/assets/sound/notify-sound.mp3" target="src/assets/sound/notify-sound.mp3" />
     <resource-file src="src/assets/sound/notify-sound.mp3" target="notify-sound.mp3" />
     <preference name="ScrollEnabled" value="false" />
-    <preference name="android-minSdkVersion" value="14" />
-    <preference name="android-targetSdkVersion" value="14" />
+    <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="FadeSplashScreenDuration" value="0" />
