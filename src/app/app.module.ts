@@ -44,7 +44,12 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      backButtonText: '',
+      ios: {
+        statusbarPadding: true
+      }
+    }),
   ],
   bootstrap: [IonicApp],
   entryComponents: [

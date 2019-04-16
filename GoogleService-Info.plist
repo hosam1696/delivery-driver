@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>677236292513-2964n5hn2736kai7ueg09tfdlmi0evn6.apps.googleusercontent.com</string>
+	<string>630114166965-kn0t8mb34q0ondo4rseus7j1o0368c71.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.677236292513-2964n5hn2736kai7ueg09tfdlmi0evn6</string>
+	<string>com.googleusercontent.apps.630114166965-kn0t8mb34q0ondo4rseus7j1o0368c71</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC4udIt1NsCPFPMkkAAwFWWLuma9HGvzKY</string>
+	<string>AIzaSyDxeDnAU1MLgfD8M6E29m3jUe7dgTGtut0</string>
 	<key>GCM_SENDER_ID</key>
-	<string>677236292513</string>
+	<string>630114166965</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.moove.deliverydriver</string>
 	<key>PROJECT_ID</key>
-	<string>delivery-driver-ea3db</string>
+	<string>moov-user-cd771</string>
 	<key>STORAGE_BUCKET</key>
-	<string>delivery-driver-ea3db.appspot.com</string>
+	<string>moov-user-cd771.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:677236292513:ios:d89792d189178bf6</string>
+	<string>1:630114166965:ios:d89792d189178bf6</string>
 	<key>DATABASE_URL</key>
-	<string>https://delivery-driver-ea3db.firebaseio.com</string>
+	<string>https://moov-user-cd771.firebaseio.com</string>
 </dict>
 </plist>
