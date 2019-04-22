@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Inject} from "@angular/core";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {TranslateService} from "@ngx-translate/core";
 import {Events} from "ionic-angular";
@@ -6,10 +6,10 @@ import {Events} from "ionic-angular";
 @Injectable()
 
 export class ApiProvider {
-  API_URL: string = 'https://www.moovstore.com/api/delivery-driver/';
-  chosenLang: 'en' | 'ar';
+  private API_URL: string = this.domainUrl.concat('/api/delivery-driver/');
+  private chosenLang: 'en' | 'ar';
 
-  constructor(public http: HttpClient, private translate: TranslateService, private events: Events) {
+  constructor( @Inject('DOMAIN_URL') private domainUrl,public http: HttpClient, private translate: TranslateService, private events: Events) {
     this.events.subscribe('change:lang', lang => this.chosenLang = lang);
   }
 

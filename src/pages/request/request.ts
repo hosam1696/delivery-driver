@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, ModalController } from 'ionic-angular';
 import {OrdersProvider} from "../../providers/orders/orders";
 import {DriverOrder, Order, RequestAction, UserData} from "../../providers/types/app-types";
@@ -18,7 +18,8 @@ export class RequestPage {
   userData: UserData;
   fromPop: boolean = this.navParams.get('fromPop');
 
-  constructor(public navCtrl: NavController,
+  constructor(@Inject('DOMAIN_URL') public domainUrl,
+              public navCtrl: NavController,
               public navParams: NavParams,
               private modalCtrl: ModalController,
               private appStorage: AppstorageProvider,

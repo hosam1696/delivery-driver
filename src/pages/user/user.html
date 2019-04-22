@@ -2,7 +2,7 @@
 
   <ion-navbar color="primary">
     <ion-title>
-      <span *ngIf="orderStatus == 'accepted' || orderStatus == 'waiting' && driverOrder?.status != 'ongoing'">
+      <span *ngIf="orderStatus == 'accepted' || orderStatus == 'waiting'|| orderStatus == 'processing' && driverOrder?.status != 'ongoing'">
         الشركة
       </span>
       <span *ngIf="driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' || orderStatus == 'completed'">
@@ -20,17 +20,20 @@
 
 <ion-content padding>
 
-  <ng-template [ngIf]="driverOrder && (orderStatus == 'accepted' || orderStatus == 'waiting' || orderStatus == 'processing')">
+  <ng-template [ngIf]="driverOrder && driverOrder.company && (orderStatus == 'accepted' || orderStatus == 'waiting' || orderStatus == 'processing')">
 
 
     <section class="avatar-section">
       <div class="avatar">
-        <img [src]="'https://www.moovstore.com/' + driverOrder.company.logo" alt="">
+        <img [src]="domainUrl + driverOrder.company.logo" alt="">
       </div>
       <h2>{{driverOrder.company.name}}</h2>
       <p>{{driverOrder.company.phone}}</p>
       <p>الدفع عند الاستلام</p>
-      <p class="small" *ngIf="orderStatus && orderStatus != 'waiting' && (orderStatus == 'processing' || orderStatus == 'ongoing')">{{orderStatus | translate}}</p>
+      <p class="small" *ngIf="orderStatus && orderStatus != 'waiting' && (orderStatus == 'processing' || orderStatus == 'ongoing')">
+        {{orderStatus | translate}}
+        <span *ngIf="orderStatus == 'processing'"> {{driverOrder.company.name}}</span>      
+      </p>
 
     </section>
 
@@ -58,13 +61,15 @@
 
     <section class="avatar-section">
       <div class="avatar">
-        <img [src]="'https://www.moovstore.com/'+requestUser?.logo" alt="">
+        <img [src]="domainUrl + requestUser?.logo" alt="">
       </div>
       <h2>{{requestUser?.name}}</h2>
       <p>{{requestUser?.phone}}</p>
       <p>{{requestUser?.gender | translate}}</p>
       <p>الدفع عند الاستلام</p>
-      <p class="small" *ngIf="driverOrder.status && (driverOrder.status == 'processing' || driverOrder.status == 'ongoing') && driverOrder.status != 'completed'">{{orderStatus | translate}}</p>
+      <p class="small" *ngIf="driverOrder.status && (driverOrder.status == 'processing' || driverOrder.status == 'ongoing') && driverOrder.status != 'completed'">
+        {{orderStatus | translate}}
+      </p>
     </section>
     
     
@@ -86,9 +91,4 @@
       </div>
     </div>
   </ng-template>
-  <ion-fab bottom right hidden>
-    <button ion-fab mini (click)="goToMaps()">
-      <img src="assets/imgs/map-pin.png" alt="">
-    </button>
-  </ion-fab>
 </ion-content>

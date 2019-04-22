@@ -10,7 +10,7 @@
   <section class="request-details" *ngIf="driverOrder">
     <ion-slides [pager]="driverOrder.order.items && driverOrder.order.items.length>1" dir="rtl">
       <ion-slide  *ngFor="let item of driverOrder.order.items">
-      <img [src]="'https://www.moovstore.com/'+ item.image" alt="">
+      <img [src]="domainUrl + item.image" alt="">
         <h3 class="product-title"><b>{{item.title}}</b></h3>
         <div class="info">
           <div>

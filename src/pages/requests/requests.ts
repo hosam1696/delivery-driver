@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 import { OrdersProvider } from '../../providers/orders/orders';
-import {DriverOrder, OrderStatus, UserData} from '../../providers/types/app-types';
+import {DriverOrder, OrderStatus, UserData, Order} from '../../providers/types/app-types';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { AudioProvider } from '../../providers/audio/audio';
@@ -56,7 +56,6 @@ export class RequestsPage {
     
   }
 
-
   async ionViewDidLoad() {
     this.userData = await this.appStorageProvider.getUserData();
 
@@ -68,7 +67,7 @@ export class RequestsPage {
 
     this.events.subscribe('updateOrders', () => {
       
-      this.getAllOrders();
+      this.getAllOrders(false);
     });
 
     this.events.subscribe('update:storage', () => {
@@ -105,7 +104,7 @@ export class RequestsPage {
 
   }
 
-  private getAllOrders() {
+  private getAllOrders(withCheck = true) {
 
     const orders$ = this.ordersProvider.getAllOrders(this.userData.api_token);
 
@@ -113,25 +112,30 @@ export class RequestsPage {
       // console.log({ordersResponse: response});
       if (response.success) {
         this.allRequests = this.requests = this.checkDelayedOrders(response.data.orders);
+        withCheck && this.checkProcessingOrders();
+
       } else if (response.error == 'Unauthenticated' || response.error == 'Unauthenticated.') {
-        const authLogin$ = this.authProvider.login({username: this.userData.userName, password: this.userData.current_password});
-        
-        authLogin$.subscribe(response => {
-          if (response.success) {
-  
-            Promise.all([
-              this.appStorageProvider.setUserData({...response.data.user}),
-              this.appStorageProvider.saveToken(response.data.user.api_token)
-            ]).then((data) => {
-              this.userData = data[0];
-              this.events.publish('update:storage');
-              this.getAllOrders();
-            })
-          }
-        })
+        this.handleUnAuthenticatedResult();
       }
     }, err => {
       console.warn(err);
+    })
+  }
+
+  private handleUnAuthenticatedResult():void {
+    const authLogin$ = this.authProvider.login({username: this.userData.userName, password: this.userData.current_password});
+        
+    authLogin$.subscribe(response => {
+      if (response.success) {
+        Promise.all([
+          this.appStorageProvider.setUserData({...response.data.user}),
+          this.appStorageProvider.saveToken(response.data.user.api_token)
+        ]).then((data) => {
+          this.userData = data[0];
+          this.events.publish('update:storage');
+          this.getAllOrders();
+        })
+      }
     })
   }
 
@@ -141,23 +145,45 @@ export class RequestsPage {
     this.changeOrderStatus();
   }
 
-  private checkDelayedOrders(orders) {
+  private checkDelayedOrders(orders: DriverOrder[]): DriverOrder[] {
     let allOrders, supposedTime = 1000 * 60 * 10 , dateNow = +Date.now(),
      isExceededTime = order => dateNow - +new Date(order.created_at) > supposedTime;
 
     allOrders = orders.filter(order => order.status != 'init');
-    // allOrders = orders;
     // Change the status of exceeded delayed order
-    orders.filter(order => isExceededTime(order) && order.status == 'init').forEach(order => {
-      this.cancelRequest(order.id)
-      // console.log({order})
-    });
+    orders.filter(order => isExceededTime(order) && order.status == 'init').forEach(order => this.cancelRequest(order.id));
 
     return allOrders;
   }
 
+  private checkProcessingOrders(): void {
+    // get the first in delivering state order
+    const processingOrder: DriverOrder = this.allRequests.find((order:DriverOrder) => order.status == 'ongoing' || order.status == 'processing');
+
+    this.getRequestDetails(processingOrder.id);
+  }
 
   
+  private getRequestDetails(requestId: number):void {
+    const request$ = this.ordersProvider.getOrderDetails(requestId, this.userData.api_token);
+
+
+    request$.subscribe(response => {
+      if (response.success) {
+        const currentProcessingdOrder: DriverOrder = response.data.order;
+
+        this.goToDeliveryPage(currentProcessingdOrder);
+
+      }
+
+    })
+  }
+
+  private goToDeliveryPage(driverOrder: DriverOrder): void {
+    this.navCtrl.push('UserPage', {user: driverOrder.order.user, orderId: driverOrder.id, orderStatus: driverOrder.status, driverOrder: driverOrder.order});
+
+  } 
+
   private cancelRequest(orderId) {
     this.ordersProvider.refuseOrder(orderId, this.userData.api_token)
       .subscribe(response => {

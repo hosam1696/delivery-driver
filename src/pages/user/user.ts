@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Events } from 'ionic-angular';
-import {User, UserData} from "../../providers/types/app-types";
+import {User, UserData, Order} from "../../providers/types/app-types";
 import { OrdersProvider } from '../../providers/orders/orders';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
@@ -15,11 +15,13 @@ import {LaunchNavigator, LaunchNavigatorOptions} from "@ionic-native/launch-navi
 export class UserPage {
   requestUser: User = this.navParams.get('user');
   orderId = this.navParams.get('orderId');
-  orderStatus = this.navParams.get('orderStatus');
-  driverOrder = this.navParams.get('driverOrder');
+  orderStatus: string = this.navParams.get('orderStatus');
+  driverOrder: Order = this.navParams.get('driverOrder');
   userData: UserData;
 
-  constructor(public navCtrl: NavController,
+  constructor(
+              @Inject('DOMAIN_URL') public domainUrl,
+              public navCtrl: NavController,
               private modalCtrl: ModalController,
               private ordersProvider: OrdersProvider,
               private launchNavigator: LaunchNavigator,
@@ -27,19 +29,17 @@ export class UserPage {
               private utils: UtilsProvider,
               private appStorageProvider: AppstorageProvider,
               public navParams: NavParams) {
-    console.log({requestStatus: this.orderStatus})
-    console.log({driverOrder: this.driverOrder})
+    // console.log({requestStatus: this.orderStatus})
+    // console.log({driverOrder: this.driverOrder});
+    // console.log({paramsData: this.navParams.data})
 
   }
 
   async ionViewDidLoad() {
     this.userData = await this.appStorageProvider.getUserData();
-  }
 
-  goToMaps() {
-    this.navCtrl.push('MapPage', {user: this.requestUser})
-  }
 
+  }
 
   showOnMaps(destination) {
     let options: LaunchNavigatorOptions = {
@@ -84,6 +84,9 @@ export class UserPage {
         this.utils.showToast(response.message);
         this.orderStatus = 'completed';
         this.driverOrder.status = 'completed';
+        setTimeout(() => {
+          this.navCtrl.popToRoot();
+        }, 500)
       }
     })
   }

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, Inject} from '@angular/core';
 import {DriverOrder} from "../../providers/types/app-types";
 
 @Component({
@@ -9,7 +9,7 @@ export class RequestComponent {
 
   @Input('request') request: DriverOrder;
 
-  constructor() {
+  constructor(@Inject('DOMAIN_URL') public domainUrl) {
   }
 
 }

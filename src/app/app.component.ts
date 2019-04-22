@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Inject } from '@angular/core';
 import {Events, Nav, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,7 +19,8 @@ export class MyApp {
   pages: Array<{title: string, component: any, icon: string}>;
   userData: UserData;
 
-  constructor(public platform: Platform,
+  constructor(@Inject('DOMAIN_URL') public domainUrl,
+              public platform: Platform,
               public statusBar: StatusBar,
               public splashScreen: SplashScreen,
               public events: Events,

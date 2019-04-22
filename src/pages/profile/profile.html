@@ -8,7 +8,7 @@
   
   <section class="avatar-section">
     <div class="avatar" (click)="onClick()">
-      <img [src]="'https://www.moovstore.com/'+userData?.photo" alt="">
+      <img [src]="domainUrl + userData?.photo" alt="">
     </div>
     <h2>{{userData?.userName}}</h2>
     <p>{{userData?.phoneNumber}}</p>

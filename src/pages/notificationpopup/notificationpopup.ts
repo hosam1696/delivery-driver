@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { IonicPage, NavParams, ViewController, ModalController, Events, NavController } from 'ionic-angular';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { OrdersProvider } from '../../providers/orders/orders';
@@ -20,7 +20,9 @@ export class NotificationpopupPage {
   counter = new Date(this._next10 - +Date.now());
   countIsOver: boolean = false;
 
-  constructor(public viewCtrl: ViewController,
+  constructor(
+    @Inject('DOMAIN_URL') public domainUrl,
+    public viewCtrl: ViewController,
     public navParams: NavParams,
     public navCtrl: NavController,
     private modalCtrl: ModalController,
