@@ -15,6 +15,7 @@ export class ApiProvider {
 
   get(endpoint: string, params?: any) {
     let httpParams: HttpParams = new HttpParams({});
+    httpParams = httpParams.set('local', this.translate.currentLang);
     if (params) {
       for (let param in params) {
         if (params.hasOwnProperty(param))

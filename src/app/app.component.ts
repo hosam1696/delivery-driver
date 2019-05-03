@@ -60,7 +60,8 @@ export class MyApp {
 
     Promise.all([
       this.appStorage.getAppLang(),
-      this.appStorage.getUserData()
+      this.appStorage.getUserData(),
+      this.appStorage.getSavedToken()
     ]).then( async (data: [Langs, UserData])=> {
       const [lang, userData] = data;
       this.setDefaultLang(lang || this.defaultLang);

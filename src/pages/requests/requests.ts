@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
 import { OrdersProvider } from '../../providers/orders/orders';
-import {DriverOrder, OrderStatus, UserData, Order} from '../../providers/types/app-types';
+import {DriverOrder, OrderStatus, UserData} from '../../providers/types/app-types';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { AudioProvider } from '../../providers/audio/audio';
@@ -65,6 +65,10 @@ export class RequestsPage {
 
     this.audioProvider.activateBtnSound();
 
+    setTimeout(() => {
+      this.updateDelegateLocation();
+    }, 5000);
+
     this.events.subscribe('updateOrders', () => {
       
       this.getAllOrders(false);
@@ -77,11 +81,7 @@ export class RequestsPage {
 
   }
 
-
-
   private checkConnection() {
-    // let connectionType = this.network.type;
-
     this.disconnect$ = this.network.onDisconnect()
       .subscribe(()=> {
         this.utils.showToast('تعذر الاتصال بالانترنت');
@@ -89,12 +89,7 @@ export class RequestsPage {
 
     this.connect$ = this.network.onDisconnect()
       .subscribe(()=> {
-
-        setTimeout(() => {
-          // let connectionType = this.network.type;
-          this.getAllOrders();
-          // console.log({connectionType});
-        }, 3000);
+        setTimeout(() => this.getAllOrders(), 3000);
       })
   }
 
@@ -115,6 +110,10 @@ export class RequestsPage {
         withCheck && this.checkProcessingOrders();
 
       } else if (response.error == 'Unauthenticated' || response.error == 'Unauthenticated.') {
+        // show Hint to app user the user has been logged before by this account, he have to login againg to refresh token
+        this.utils.showToast('التطبيق يعمل على جهاز اخر.');
+
+        // Try to Login Again
         this.handleUnAuthenticatedResult();
       }
     }, err => {
@@ -160,7 +159,7 @@ export class RequestsPage {
     // get the first in delivering state order
     const processingOrder: DriverOrder = this.allRequests.find((order:DriverOrder) => order.status == 'ongoing' || order.status == 'processing');
 
-    this.getRequestDetails(processingOrder.id);
+    processingOrder && this.getRequestDetails(processingOrder.id);
   }
 
   
@@ -171,17 +170,13 @@ export class RequestsPage {
     request$.subscribe(response => {
       if (response.success) {
         const currentProcessingdOrder: DriverOrder = response.data.order;
-
         this.goToDeliveryPage(currentProcessingdOrder);
-
       }
-
     })
   }
 
   private goToDeliveryPage(driverOrder: DriverOrder): void {
     this.navCtrl.push('UserPage', {user: driverOrder.order.user, orderId: driverOrder.id, orderStatus: driverOrder.status, driverOrder: driverOrder.order});
-
   } 
 
   private cancelRequest(orderId) {
@@ -241,5 +236,12 @@ export class RequestsPage {
     setTimeout(() => {
       event.complete();
     }, 1000)
+  }
+
+  private updateDelegateLocation() {
+
+    this.authProvider.updateLocation({lat: 1, long: 1.1}, this.userData.api_token).subscribe(data => {
+      console.log({data})
+    })
   }
 }

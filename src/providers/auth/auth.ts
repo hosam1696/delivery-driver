@@ -19,4 +19,10 @@ export class AuthProvider {
     Object.keys(userData).forEach(key => body.append(key, userData[key]));
     return this.api.post('update-profile', body, {api_token: token})
   }
+
+  updateLocation(location: {lat: number, long: number}, token: string) {
+    let body = new FormData();
+    Object.keys(location).forEach(key => body.append(key, location[key]));
+    return this.api.post('change-location', location, {api_token: token})
+  }
 }

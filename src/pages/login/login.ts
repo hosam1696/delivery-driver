@@ -58,15 +58,13 @@ export class LoginPage {
 
   submitForm() {
     const validateForm = this.utils.validateForm(this.loginForm);
-    // console.log(this.loginForm.value);
-    if (validateForm) {
 
+    if (validateForm) {
       const authLogin$ = this.AuthProvider.login(this.loginForm.value);
       this.processing = true;
       authLogin$.subscribe(response => {
         this.processing = false;
         if (response.success) {
-          // this.utils.showToast(response.message);
 
           Promise.all([
             this.appStorage.setUserData({...response.data.user, current_password: this.loginForm.get('password').value}),
