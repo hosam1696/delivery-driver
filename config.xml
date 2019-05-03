@@ -100,5 +100,7 @@
         <variable name="OKHTTP_VERSION" value="3.+" />
     </plugin>
     <plugin name="cordova-plugin-network-information" spec="2.0.1" />
+    <plugin name="cordova-plugin-geolocation" spec="4.0.1" />
+    <plugin name="cordova.plugins.diagnostic" spec="3.9.2" />
     <engine name="android" spec="7.1.4" />
 </widget>

@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, PopoverController, Events } from 'ionic-angular';
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  PopoverController,
+  Events,
+  AlertController,
+  AlertOptions
+} from 'ionic-angular';
 import { OrdersProvider } from '../../providers/orders/orders';
 import {DriverOrder, OrderStatus, UserData} from '../../providers/types/app-types';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
@@ -7,6 +15,8 @@ import { UtilsProvider } from '../../providers/utils/utils';
 import { AudioProvider } from '../../providers/audio/audio';
 import { AuthProvider } from '../../providers/auth/auth';
 import { Network } from '@ionic-native/network';
+import { Geolocation, Geoposition } from "@ionic-native/geolocation";
+import { Diagnostic } from "@ionic-native/diagnostic";
 
 @IonicPage()
 @Component({
@@ -21,6 +31,8 @@ export class RequestsPage {
   isFiltering: boolean = false;
   disconnect$;
   connect$;
+  currentLocation: {lat: number, long: number};
+  locationInterval;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -30,6 +42,9 @@ export class RequestsPage {
               private utils: UtilsProvider,
               private popOverCtrl: PopoverController,
               private network: Network,
+              private geolocate: Geolocation,
+              private diagnostic: Diagnostic,
+              private alertCtrl: AlertController,
               private audioProvider: AudioProvider,
               private events: Events
               ) {
@@ -53,7 +68,9 @@ export class RequestsPage {
 
   async ionViewWillEnter() {
     this.userData = await this.appStorageProvider.getUserData();
-    
+    this.locationInterval = setInterval(() => {
+      this.checkLocation();
+    }, 1000 * 60 * 5);
   }
 
   async ionViewDidLoad() {
@@ -65,12 +82,12 @@ export class RequestsPage {
 
     this.audioProvider.activateBtnSound();
 
-    setTimeout(() => {
-      this.updateDelegateLocation();
-    }, 5000);
+    this.subscribeToEvents();
 
+  }
+
+  private subscribeToEvents() {
     this.events.subscribe('updateOrders', () => {
-      
       this.getAllOrders(false);
     });
 
@@ -78,7 +95,6 @@ export class RequestsPage {
       this.appStorageProvider.getUserData()
         .then(userData => this.userData = userData)
     });
-
   }
 
   private checkConnection() {
@@ -96,6 +112,8 @@ export class RequestsPage {
   ionViewWillLeave() {
     this.disconnect$.unsubscribe();
     this.connect$.unsubscribe();
+
+    clearInterval(this.locationInterval);
 
   }
 
@@ -240,8 +258,76 @@ export class RequestsPage {
 
   private updateDelegateLocation() {
 
-    this.authProvider.updateLocation({lat: 1, long: 1.1}, this.userData.api_token).subscribe(data => {
-      console.log({data})
-    })
+    this.authProvider.updateLocation(this.currentLocation, this.userData.api_token).subscribe()
+
   }
+
+
+
+    private getCurrentLoaction() {
+      const geolocate = this.geolocate.getCurrentPosition();
+
+      geolocate.then((data: Geoposition) => {
+        this.currentLocation = {lat:data.coords.latitude, long:data.coords.longitude};
+        this.updateDelegateLocation();
+      }).catch((err) => {
+        this.checkLocation();
+      })
+    }
+
+  private checkLocation() {
+      this.diagnostic.isGpsLocationEnabled().then(e => {
+        if (!e) {
+          this.showAlert().then(state => {
+            if (state == "ok") {
+              this.diagnostic.switchToLocationSettings();
+              this.diagnostic.isLocationEnabled()
+                .then(() => {
+                  //TODO: check if the delegate is on ongoing or delivering order
+                  if (this.delegateIsAvailable) {
+                    this.getCurrentLoaction();
+                  }
+                })
+            }
+          });
+        } else {
+          //TODO: check if the delegate is on ongoing or delivering order
+          if (this.delegateIsAvailable) {
+            this.getCurrentLoaction();
+          }
+        }
+      });
+    }
+
+    showAlert() {
+      return new Promise((resolve, reject) => {
+        const options: AlertOptions = {
+          title: "الموقع",
+          subTitle: " للاستمرار يرجى تفعيل GPS",
+          buttons: [
+            {
+              text: "لا شكرا",
+              role: "cancel",
+              handler: () => {
+                resolve("cancel");
+              }
+            },
+            {
+              text: "موافق",
+              handler: () => {
+                resolve("ok");
+              }
+            }
+          ]
+        };
+
+        const alert = this.alertCtrl.create(options);
+
+        alert.present();
+      });
+    }
+
+    private get delegateIsAvailable(): boolean {
+    return +this.userData.availability == 1;
+    }
 }
