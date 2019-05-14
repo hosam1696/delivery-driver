@@ -65,9 +65,13 @@ export class LoginPage {
       authLogin$.subscribe(response => {
         this.processing = false;
         if (response.success) {
-
+          // this.AuthProvider.getProfile(response.data.user.api_token)
+          //   .subscribe((response) => {
+          //     console.log({loginResponse: response})
+          //   });
+          const isRestaurantDelegate = response.data.user.logistic_company_service && response.data.user.logistic_company_service.service&& response.data.user.logistic_company_service.service.name == 'توصيل مطاعم';
           Promise.all([
-            this.appStorage.setUserData({...response.data.user, current_password: this.loginForm.get('password').value}),
+            this.appStorage.setUserData({...response.data.user, current_password: this.loginForm.get('password').value, isRestaurantDelegate}),
             this.appStorage.saveToken(response.data.user.api_token)
           ]).then(() => {
             this.events.publish('update:storage')

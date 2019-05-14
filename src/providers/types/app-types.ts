@@ -12,6 +12,7 @@ export interface RequestAction {
   await: string,
   cancel: string
 }
+
 export enum OrderStatus {
   all,
   returned,
@@ -28,27 +29,29 @@ export enum appLangs {
 export type Langs = 'ar' | 'en';
 
 export interface UserData {
-    id: number,
-    availability: 0 | 1 | number,
-    current_password?: any,
-    "fullName": string,
-    "userName": string,
-    "age": string,
-    "uniqueId": string,
-    "nationalId": string,
-    "phoneNumber": string,
-    "photo": string,
-    "created_at": string,
-    "updated_at": string,
-    "active": number,
-    "new_photo": string,
-    "company_id": number,
-    "lat": string| number,
-    "long": string | number,
-    "api_token": string,
-    "player_id": string,
-    company?: Company,
-    order_count?: any
+  id: number,
+  availability: 0 | 1 | number,
+  current_password?: any,
+  "fullName": string,
+  "userName": string,
+  "age": string,
+  "uniqueId": string,
+  "nationalId": string,
+  "phoneNumber": string,
+  "photo": string,
+  "created_at": string,
+  "updated_at": string,
+  "active": number,
+  "new_photo": string,
+  "company_id": number,
+  "lat": string | number,
+  "long": string | number,
+  "api_token": string,
+  "player_id": string,
+  company?: Company,
+  logistic_company_service?: any,
+  order_count?: any,
+  isRestaurantDelegate?: boolean
 
 }
 
@@ -158,14 +161,15 @@ export interface DriverOrder {
   created_at: string;
   updated_at: string;
   waiting_time?: null;
-  comment?:string,
+  comment?: string,
   order: Order;
 }
+
 export interface Order {
   id: number;
   user_id: number;
   company_id: number;
-  company?:any;
+  company?: any;
   comment?: string,
   status: string;
   total: number;
@@ -175,7 +179,9 @@ export interface Order {
   product_image: string;
   first_item: FirstItem;
   user?: User,
-  items?: Item[]
+  items?: Item[],
+  lat?: number,
+  lng?: number
 }
 
 export interface Item {

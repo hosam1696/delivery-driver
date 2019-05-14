@@ -1,11 +1,8 @@
-
-
-
 <ion-content padding>
 
 
   <section class="pop-content" [exclude]="'button'" (clickOutside)="dismiss()">
-    <ion-textarea [(ngModel)]="msg" placeholder="سبب الرفض">
+    <ion-textarea [(ngModel)]="msg" [placeholder]="navParams.data.action == 'return'?'سبب ارجاع الطلب':'سبب الرفض'">
 
     </ion-textarea>
 

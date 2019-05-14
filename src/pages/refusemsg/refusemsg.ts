@@ -18,7 +18,7 @@ export class RefusemsgPage {
   }
 
   dismiss(msg) {
-    this.viewCtrl.dismiss({msg});
+    this.viewCtrl.dismiss({msg, action: this.navParams.data.action});
   }
 
 }

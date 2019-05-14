@@ -68,6 +68,8 @@ export class RequestsPage {
 
   async ionViewWillEnter() {
     this.userData = await this.appStorageProvider.getUserData();
+    this.checkLocation();
+
     this.locationInterval = setInterval(() => {
       this.checkLocation();
     }, 1000 * 60 * 5);
@@ -126,7 +128,6 @@ export class RequestsPage {
       if (response.success) {
         this.allRequests = this.requests = this.checkDelayedOrders(response.data.orders);
         withCheck && this.checkProcessingOrders();
-
       } else if (response.error == 'Unauthenticated' || response.error == 'Unauthenticated.') {
         // show Hint to app user the user has been logged before by this account, he have to login againg to refresh token
         this.utils.showToast('التطبيق يعمل على جهاز اخر.');
@@ -328,6 +329,6 @@ export class RequestsPage {
     }
 
     private get delegateIsAvailable(): boolean {
-    return +this.userData.availability == 1;
+    return +this.userData.availability == 1 && this.allRequests && this.allRequests.every(request => request.status != 'ongoning' && request.status != 'processing');
     }
 }

@@ -127,9 +127,37 @@ export class UserPage {
     })
   }
 
-  openUserLocation() {
-    const location = [+this.requestUser.lat, +this.requestUser.long];
+  openOrderLocation() {
+    const location = [+this.driverOrder.lat, +this.driverOrder.lng];
+    console.log({OrderLocation: location})
     this.showOnMaps(location);
 
+  }
+
+  onReturned() {
+      const modal = this.modalCtrl.create('RefusemsgPage', {action: 'return'});
+
+      modal.onDidDismiss(data => {
+        console.log({data});
+        if (data.msg && data.msg.trim() && data.action === 'return') {
+          this.returnRequest(data.msg);
+        }
+      })
+
+      modal.present();
+  }
+
+  private returnRequest(msg) {
+    this.ordersProvider.returnOrder(this.driverOrder.id, this.userData.api_token, msg)
+      .subscribe(response => {
+        console.log({response});
+        if (response.success) {
+          this.driverOrder.status = response.data.order.status;
+          this.events.publish('updateOrders');
+
+        }
+        this.utils.showToast(response.message)
+
+      })
   }
 }

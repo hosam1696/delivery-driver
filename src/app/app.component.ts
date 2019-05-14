@@ -96,7 +96,7 @@ export class MyApp {
 
     //Testing Notification Popup in Browser
     // setTimeout( () => {
-    //   this.events.publish('open:popup', {wasTapped: false, order_id: 13})
+    //   this.events.publish('open:popup', {wasTapped: false, order_id: 120})
     // }, 3000)
   
   }

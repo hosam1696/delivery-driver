@@ -22,7 +22,7 @@ export class OrdersProvider {
 
   cancelOrder(orderId, token, comment) {
     let body = new FormData();
-    body.append('comment', comment);
+    body.append('reason', comment);
     return this.api.post('order/'.concat(orderId, '/canceled'), body, {api_token: token})
   }
 
@@ -40,6 +40,12 @@ export class OrdersProvider {
 
   refuseOrder(orderId, token, comment?:string) {
     return this.api.post('order/'.concat(orderId, '/refused'), null, {api_token: token, comment})
+  }
+
+  returnOrder(orderId, token, comment?:string) {
+    let body = new FormData();
+    body.append('reason', comment);
+    return this.api.post('order/'.concat(orderId, '/returned'), body, {api_token: token})
   }
 
   awaitOrder(orderId, token) {

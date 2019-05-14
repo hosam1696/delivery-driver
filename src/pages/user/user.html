@@ -25,11 +25,21 @@
 
     <section class="avatar-section">
       <div class="avatar">
-        <img [src]="domainUrl + driverOrder.company.logo" alt="">
+        <img [src]="driverOrder.company.logo" alt="">
       </div>
       <h2>{{driverOrder.company.name}}</h2>
       <p>{{driverOrder.company.phone}}</p>
-      <p>الدفع عند الاستلام</p>
+      <p>يرجى دفع مبلغ
+        <b>
+
+        {{driverOrder.total}}
+          {{'SAR' | translate}}
+        </b>
+        ريال
+        الى شركة
+        {{driverOrder.company.name}}
+
+      </p>
       <p class="small" *ngIf="orderStatus && orderStatus != 'waiting' && (orderStatus == 'processing' || orderStatus == 'ongoing')">
         {{orderStatus | translate}}
         <span *ngIf="orderStatus == 'processing'"> {{driverOrder.company.name}}</span>      
@@ -61,11 +71,23 @@
 
     <section class="avatar-section">
       <div class="avatar">
-        <img [src]="domainUrl + requestUser?.logo" alt="">
+        <img [src]="requestUser?.logo" alt="">
       </div>
       <h2>{{requestUser?.name}}</h2>
       <p>{{requestUser?.phone}}</p>
       <p>{{requestUser?.gender | translate}}</p>
+      <p>يرجى استلام مبلغ
+        <b>
+          {{driverOrder.total}}
+        </b>
+        +
+        <b>
+        {{userData?.logistic_company_servie?.attributes?.priceForHour}}
+        </b>
+         ريال
+         من
+        {{requestUser.name}}
+      </p>
       <p>الدفع عند الاستلام</p>
       <p class="small" *ngIf="driverOrder.status && (driverOrder.status == 'processing' || driverOrder.status == 'ongoing') && driverOrder.status != 'completed'">
         {{orderStatus | translate}}
@@ -75,11 +97,14 @@
     
     <div class="actions" *ngIf="orderStatus != 'completed'">
       <div text-center>
-        <button ion-button round (click)="openUserLocation()">
+        <button ion-button round (click)="openOrderLocation()">
           ابدأ رحلتك الان لتوصيل الطلب
         </button>
       </div>
       <div text-center>
+        <button ion-button outline round color="danger" (click)="onReturned()" [hidden]="orderStatus == 'waiting'">
+          ارجاع
+        </button>
         <button ion-button outline round (click)="onDeliver()" [hidden]="orderStatus == 'waiting'">
           تم التوصيل
         </button>

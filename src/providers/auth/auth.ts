@@ -14,6 +14,10 @@ export class AuthProvider {
     return this.api.post('login', body)
   }
 
+  getProfile(token) {
+    return this.api.get('get-profile',  {api_token: token})
+  }
+
   updateProfile(userData, token) {
     let body = new FormData();
     Object.keys(userData).forEach(key => body.append(key, userData[key]));
