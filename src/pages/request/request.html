@@ -46,7 +46,7 @@
   </section>
   <ng-template [ngIf]="!fromPop">
 
-  <div class="reason" margin-vertical padding *ngIf="driverOrder?.status == 'refused' || driverOrder?.status == 'canceled'">
+  <div class="reason" margin-vertical padding *ngIf="driverOrder?.status == 'returned' || driverOrder?.status == 'refused' || driverOrder?.status == 'canceled'">
     <p *ngIf="driverOrder.status == 'refused'" text-center class="first-refuse">
       تم رفض الطلب
     </p>

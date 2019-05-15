@@ -62,7 +62,7 @@ export class MyApp {
       this.appStorage.getAppLang(),
       this.appStorage.getUserData(),
       this.appStorage.getSavedToken()
-    ]).then( async (data: [Langs, UserData])=> {
+    ]).then( async (data: [Langs, UserData, string])=> {
       const [lang, userData] = data;
       this.setDefaultLang(lang || this.defaultLang);
       if (userData) {
@@ -96,7 +96,7 @@ export class MyApp {
 
     //Testing Notification Popup in Browser
     // setTimeout( () => {
-    //   this.events.publish('open:popup', {wasTapped: false, order_id: 120})
+    //   this.events.publish('open:popup', {wasTapped: false, order_id: 139})
     // }, 3000)
   
   }

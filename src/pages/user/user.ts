@@ -148,11 +148,12 @@ export class UserPage {
   }
 
   private returnRequest(msg) {
-    this.ordersProvider.returnOrder(this.driverOrder.id, this.userData.api_token, msg)
+    this.ordersProvider.returnOrder(this.orderId, this.userData.api_token, msg)
       .subscribe(response => {
         console.log({response});
         if (response.success) {
           this.driverOrder.status = response.data.order.status;
+          this.navCtrl.popToRoot();
           this.events.publish('updateOrders');
 
         }
