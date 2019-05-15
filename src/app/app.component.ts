@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Inject } from '@angular/core';
 import {Events, Nav, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,7 +19,7 @@ export class MyApp {
   pages: Array<{title: string, component: any, icon: string, pageStatus?: string}>;
   userData: UserData;
 
-  constructor(
+  constructor(@Inject('DOMAIN_URL') public domainUrl,
               public platform: Platform,
               public statusBar: StatusBar,
               public splashScreen: SplashScreen,
@@ -113,6 +113,12 @@ export class MyApp {
     this.appStorage.getAppLang()
       .then(lang => this.setDefaultLang(lang || this.defaultLang));
 
+  }
+
+  
+  fillImgSrc(src: string): string {
+
+    return src.startsWith('/storage')?this.domainUrl.concat(src):src;
   }
 
   openPage(page) {

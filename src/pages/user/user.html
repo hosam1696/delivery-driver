@@ -25,7 +25,7 @@
 
     <section class="avatar-section">
       <div class="avatar">
-        <img [src]="driverOrder.company.logo" alt="">
+        <img [src]="fillImgSrc(driverOrder.company.logo)" alt="">
       </div>
       <h2>{{driverOrder.company.name}}</h2>
       <p>{{driverOrder.company.phone}}</p>
@@ -71,7 +71,7 @@
 
     <section class="avatar-section">
       <div class="avatar">
-        <img [src]="requestUser?.logo" alt="">
+        <img [src]="fillImgSrc(requestUser?.logo)" alt="">
       </div>
       <h2>{{requestUser?.name}}</h2>
       <p>{{requestUser?.phone}}</p>

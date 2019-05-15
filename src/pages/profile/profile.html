@@ -7,8 +7,8 @@
   </section>
   
   <section class="avatar-section">
-    <div class="avatar" (click)="onClick()">
-      <img [src]="userData?.photo" alt="">
+    <div class="avatar" *ngIf="userData" (click)="onClick()">
+      <img [src]="fillImgSrc(userData?.photo)" alt="">
     </div>
     <h2>{{userData?.userName}}</h2>
     <p>{{userData?.phoneNumber}}</p>

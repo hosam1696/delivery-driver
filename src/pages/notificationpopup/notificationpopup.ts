@@ -149,4 +149,10 @@ export class NotificationpopupPage {
   dismiss() {
     this.viewCtrl.dismiss();
   }
+
+  
+  fillImgSrc(src: string): string {
+
+    return src.startsWith('/storage')?this.domainUrl.concat(src):src;
+  }
 }

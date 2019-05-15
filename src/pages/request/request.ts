@@ -121,4 +121,9 @@ export class RequestPage {
   goToUserPage() {
     this.navCtrl.push('UserPage', {user: this.driverOrder.order.user, orderId: this.driverOrder.id, orderStatus: this.driverOrder.status, driverOrder: this.driverOrder.order});
   }
+
+  fillImgSrc(src: string): string {
+
+    return src.startsWith('/storage')?this.domainUrl.concat(src):src;
+  }
 }

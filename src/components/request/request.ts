@@ -12,4 +12,8 @@ export class RequestComponent {
   constructor(@Inject('DOMAIN_URL') public domainUrl) {
   }
 
+  fillImgSrc(src: string): string {
+
+    return src.startsWith('/storage')?this.domainUrl.concat(src):src;
+  }
 }
