@@ -11,7 +11,7 @@
 
 
 
-  <ion-item no-lines *ngIf="userData">
+  <ion-item no-lines *ngIf="userData" class="toolbar-toggle">
     <ion-label>
       {{'تفعيل استقبال الطلبات' | translate}}
     </ion-label>
@@ -21,7 +21,7 @@
   <ion-refresher (ionRefresh)="onRefresh($event)" *ngIf="(!requests||(requests&&!requests.length) )">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <section class="requests-states">
+  <section class="requests-states" hidden>
     <button ion-button clear (click)="showPopOver($event)">
       <b>{{'حالة الطلب' | translate}}</b>
     </button>

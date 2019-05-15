@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiProvider } from '../api/api';
-
+import {forkJoin} from 'rxjs/observable/forkJoin';
 @Injectable()
 export class OrdersProvider {
+
 
   constructor(public api:ApiProvider) {
 
@@ -15,6 +16,19 @@ export class OrdersProvider {
   getWaitingOrders(token) {
     return this.api.get('get-orders/waiting', {api_token: token})
   }
+  
+  getReturnedOrders(token) {
+    return this.api.get('get-orders/returned', {api_token: token})
+  }
+
+  getCompletedOrders(token) {
+    return this.api.get('get-orders/completed', {api_token: token})
+  }
+
+  getCanceledOrders(token) {
+    return forkJoin(this.api.get('get-orders/canceled', {api_token: token}), this.api.get('get-orders/refused', {api_token: token}))
+  }
+
 
   getOrderDetails(orderId, token) {
     return this.api.get('order-details', {api_token: token, order_id: orderId})

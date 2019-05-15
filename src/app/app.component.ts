@@ -1,4 +1,4 @@
-import { Component, ViewChild, Inject } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {Events, Nav, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -16,10 +16,10 @@ export class MyApp {
 
   rootPage: any = 'LoginPage';
   defaultLang: Langs = 'ar';
-  pages: Array<{title: string, component: any, icon: string}>;
+  pages: Array<{title: string, component: any, icon: string, pageStatus?: string}>;
   userData: UserData;
 
-  constructor(@Inject('DOMAIN_URL') public domainUrl,
+  constructor(
               public platform: Platform,
               public statusBar: StatusBar,
               public splashScreen: SplashScreen,
@@ -34,7 +34,10 @@ export class MyApp {
     this.pages = [
       { title: 'بياناتى', component: 'ProfilePage', icon: 'man-user1.png' },
       { title: 'الطلبات', component: 'RequestsPage', icon: 'synchronization-arrows-couple1.png' },
-      { title: 'الطلبات المؤجلة', component: 'WaitingordersPage', icon: 'sync.png' }
+      { title: 'الطلبات المؤجلة', component: 'WaitingordersPage', icon: 'sync.png', pageStatus: 'waiting' },
+      { title: 'الطلبات المكتملة', component: 'WaitingordersPage', icon: 'synchronization-arrows-couple1.png', pageStatus: 'completed' },
+      { title: 'الطلبات المرتجعة', component: 'WaitingordersPage', icon: 'synchronization-arrows-couple1.png', pageStatus: 'returned' },
+      { title: 'الطلبات المرفوضة', component: 'WaitingordersPage', icon: 'synchronization-arrows-couple1.png', pageStatus: 'canceled' }
     ];
 
     this.subscribeEvents();
@@ -116,7 +119,7 @@ export class MyApp {
 
     // show only the menu button on the requests page & make other pages subpages from it
     if (this.nav.getActive().id == 'RequestsPage' && page.component != 'RequestsPage')
-      this.nav.push(page.component);
+      this.nav.push(page.component, {pageStatus: page.pageStatus});
   }
 
   openProfilePage() {

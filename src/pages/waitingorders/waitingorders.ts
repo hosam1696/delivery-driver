@@ -16,7 +16,7 @@ export class WaitingordersPage {
   isReceivingRequests: boolean;
   userData: UserData;
   allRequests: DriverOrder[];
-
+  pageStatus: string = this.navParams.get('pageStatus');
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -38,7 +38,21 @@ export class WaitingordersPage {
   async ionViewDidLoad() {
     this.userData = await this.appStorageProvider.getUserData();
     console.log({userData: this.userData});
-    this.getWaitingOrders();
+
+    switch(this.pageStatus) {
+      case 'waiting':
+        this.getWaitingOrders();
+        break;
+      case 'completed':
+        this.getCompletedOrders();
+        break;
+      case 'canceled':
+        this.getCanceledOrders();
+        break;
+      case 'returned':
+        this.getReturnedOrders();
+        break;
+    }
 
     this.events.subscribe('update:storage', () => {
       this.appStorageProvider.getUserData()
@@ -47,6 +61,7 @@ export class WaitingordersPage {
   }
 
 
+  
   private getWaitingOrders() {
 
     const orders$ = this.ordersProvider.getWaitingOrders(this.userData.api_token);
@@ -74,6 +89,104 @@ export class WaitingordersPage {
           }
         })
       }
+    })
+  }
+
+  
+  private getCompletedOrders() {
+
+    const orders$ = this.ordersProvider.getCompletedOrders(this.userData.api_token);
+
+    orders$.subscribe(response => {
+      console.log({waitingOrders: response});
+      if (response.success) {
+        this.allRequests = this.filterOrders(response.data.orders);
+      } else if (response.error == 'Unauthenticated') {
+        const authLogin$ = this.authProvider.login({
+          username: this.userData.userName,
+          password: this.userData.current_password
+        });
+
+        authLogin$.subscribe(response => {
+          if (response.success) {
+
+            Promise.all([
+              this.appStorageProvider.setUserData({...response.data.user}),
+              this.appStorageProvider.saveToken(response.data.user.api_token)
+            ]).then((data) => {
+              this.userData = data[0];
+              this.getWaitingOrders();
+            })
+          }
+        })
+      }
+    })
+  }
+
+
+  private getReturnedOrders() {
+
+    const orders$ = this.ordersProvider.getReturnedOrders(this.userData.api_token);
+
+    orders$.subscribe(response => {
+      console.log({waitingOrders: response});
+      if (response.success) {
+        this.allRequests = this.filterOrders(response.data.orders);
+      } else if (response.error == 'Unauthenticated') {
+        const authLogin$ = this.authProvider.login({
+          username: this.userData.userName,
+          password: this.userData.current_password
+        });
+
+        authLogin$.subscribe(response => {
+          if (response.success) {
+
+            Promise.all([
+              this.appStorageProvider.setUserData({...response.data.user}),
+              this.appStorageProvider.saveToken(response.data.user.api_token)
+            ]).then((data) => {
+              this.userData = data[0];
+              this.getWaitingOrders();
+            })
+          }
+        })
+      }
+    })
+  }
+
+  private getCanceledOrders() {
+
+    const orders$ = this.ordersProvider.getCanceledOrders(this.userData.api_token);
+
+    orders$.subscribe(responses => {
+      console.log({cancelRequest: responses});
+      responses.forEach(response => {
+        if (response.success) {
+          if (!this.allRequests)
+            this.allRequests = [];
+          responses.forEach(response => {
+            this.allRequests = Array.from(new Set(this.allRequests.concat(response.data.orders)));
+          })
+        } else if (response.error == 'Unauthenticated') {
+          const authLogin$ = this.authProvider.login({
+            username: this.userData.userName,
+            password: this.userData.current_password
+          });
+          
+          authLogin$.subscribe(response => {
+            if (response.success) {
+              
+              Promise.all([
+                this.appStorageProvider.setUserData({...response.data.user}),
+                this.appStorageProvider.saveToken(response.data.user.api_token)
+              ]).then((data) => {
+                this.userData = data[0];
+                this.getWaitingOrders();
+              })
+            }
+          })
+        }
+      })
     })
   }
 
