@@ -167,7 +167,7 @@ export class RequestsPage {
     let allOrders, supposedTime = 1000 * 60 * 10 , dateNow = +Date.now(),
      isExceededTime = order => dateNow - +new Date(order.created_at) > supposedTime;
 
-    allOrders = orders.filter(order => order.status != 'init' && (order.status == 'processing' || order.status == 'ongoing'));
+    allOrders = orders.filter(order => order.status != 'init' && (order.status =='accepted' || order.status == 'processing' || order.status == 'ongoing' ));
     // Change the status of exceeded delayed order
     orders.filter(order => isExceededTime(order) && order.status == 'init').forEach(order => this.cancelRequest(order.id));
 

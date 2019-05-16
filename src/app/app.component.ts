@@ -1,12 +1,13 @@
-import { Component, ViewChild, Inject } from '@angular/core';
+import {Component, ViewChild, Inject} from '@angular/core';
 import {Events, Nav, Platform} from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
 import {TranslateService} from "@ngx-translate/core";
 import {AppDirLang, DocumentDirection, UserData, Langs} from "../providers/types/app-types";
 import {AppstorageProvider} from "../providers/appstorage/appstorage";
-import { AudioProvider } from '../providers/audio/audio';
-import { FcmProvider } from '../providers/fcm/fcm';
+import {AudioProvider} from '../providers/audio/audio';
+import {FcmProvider} from '../providers/fcm/fcm';
+import {AuthProvider} from "../providers/auth/auth";
 
 @Component({
   templateUrl: 'app.html'
@@ -16,7 +17,7 @@ export class MyApp {
 
   rootPage: any = 'LoginPage';
   defaultLang: Langs = 'ar';
-  pages: Array<{title: string, component: any, icon: string, pageStatus?: string}>;
+  pages: Array<{ title: string, component: any, icon: string, pageStatus?: string }>;
   userData: UserData;
 
   constructor(@Inject('DOMAIN_URL') public domainUrl,
@@ -26,18 +27,34 @@ export class MyApp {
               public events: Events,
               private audioProvider: AudioProvider,
               public fcmProvider: FcmProvider,
-              public appStorage:AppstorageProvider,
+              public appStorage: AppstorageProvider,
+              private authProvider: AuthProvider,
               public translate: TranslateService) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'بياناتى', component: 'ProfilePage', icon: 'man-user1.png' },
-      { title: 'الطلبات', component: 'RequestsPage', icon: 'synchronization-arrows-couple1.png' },
-      { title: 'الطلبات المؤجلة', component: 'WaitingordersPage', icon: 'sync.png', pageStatus: 'waiting' },
-      { title: 'الطلبات المكتملة', component: 'WaitingordersPage', icon: 'synchronization-arrows-couple1.png', pageStatus: 'completed' },
-      { title: 'الطلبات المرتجعة', component: 'WaitingordersPage', icon: 'synchronization-arrows-couple1.png', pageStatus: 'returned' },
-      { title: 'الطلبات المرفوضة', component: 'WaitingordersPage', icon: 'synchronization-arrows-couple1.png', pageStatus: 'canceled' }
+      {title: 'بياناتى', component: 'ProfilePage', icon: 'man-user1.png'},
+      {title: 'الطلبات', component: 'RequestsPage', icon: 'synchronization-arrows-couple1.png'},
+      {title: 'الطلبات المؤجلة', component: 'WaitingordersPage', icon: 'sync.png', pageStatus: 'waiting'},
+      {
+        title: 'الطلبات المكتملة',
+        component: 'WaitingordersPage',
+        icon: 'synchronization-arrows-couple1.png',
+        pageStatus: 'completed'
+      },
+      {
+        title: 'الطلبات المرتجعة',
+        component: 'WaitingordersPage',
+        icon: 'synchronization-arrows-couple1.png',
+        pageStatus: 'returned'
+      },
+      {
+        title: 'الطلبات المرفوضة',
+        component: 'WaitingordersPage',
+        icon: 'synchronization-arrows-couple1.png',
+        pageStatus: 'canceled'
+      }
     ];
 
     this.subscribeEvents();
@@ -51,11 +68,11 @@ export class MyApp {
       this.splashScreen.hide();
 
       this.setRootPage();
-     
+
       this.audioProvider.activateBtnSound();
 
       this.fcmProvider.handleNotifications();
-      
+
     });
   }
 
@@ -65,7 +82,7 @@ export class MyApp {
       this.appStorage.getAppLang(),
       this.appStorage.getUserData(),
       this.appStorage.getSavedToken()
-    ]).then( async (data: [Langs, UserData, string])=> {
+    ]).then(async (data: [Langs, UserData, string]) => {
       const [lang, userData] = data;
       this.setDefaultLang(lang || this.defaultLang);
       if (userData) {
@@ -73,20 +90,29 @@ export class MyApp {
         this.events.publish('getWaitingOrders')
         this.rootPage = 'RequestsPage';
       } else {
-        this.rootPage = 'LoginPage'  
+        this.rootPage = 'LoginPage'
       }
     })
   }
 
-  logout () {
-      Promise.all([
-        this.appStorage.storage.remove('delivery:user:data'),
-        this.appStorage.storage.remove('delivery:api:token'),
-        this.appStorage.storage.remove('delivery:fcm:token'),
-      ]).then(()=>{
-        this.rootPage = 'LoginPage';
-        this.nav.setRoot('LoginPage')
-        this.events.publish('change:splash:screen', false);
+  logout() {
+
+    this.authProvider.logout(this.userData.api_token)
+      .subscribe(response => {
+        if (response.success) {
+
+        Promise.all([
+          this.appStorage.storage.remove('delivery:user:data'),
+          this.appStorage.storage.remove('delivery:api:token'),
+          this.appStorage.storage.remove('delivery:fcm:token'),
+        ]).then(() => {
+          this.rootPage = 'LoginPage';
+          this.nav.setRoot('LoginPage')
+          this.events.publish('change:splash:screen', false);
+        })
+        } else {
+          //TODO: Check error or network connection
+        }
       })
   }
 
@@ -101,11 +127,11 @@ export class MyApp {
     // setTimeout( () => {
     //   this.events.publish('open:popup', {wasTapped: false, order_id: 139})
     // }, 3000)
-  
+
   }
 
   //TODO: To use later if we added second lang to the app
-  
+
   private setDefaultLang(lang: Langs) {
     this.translate.setDefaultLang(lang);
     this.translate.use(lang);
@@ -115,10 +141,10 @@ export class MyApp {
 
   }
 
-  
+
   fillImgSrc(src: string): string {
 
-    return src.startsWith('/storage')?this.domainUrl.concat(src):src;
+    return src.startsWith('/storage') ? this.domainUrl.concat(src) : src;
   }
 
   openPage(page) {

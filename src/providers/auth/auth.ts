@@ -29,4 +29,8 @@ export class AuthProvider {
     Object.keys(location).forEach(key => body.append(key, location[key]));
     return this.api.post('change-location', location, {api_token: token})
   }
+
+  logout(token: string) {
+    return this.api.post('logout', null, {api_token: token})
+  }
 }
