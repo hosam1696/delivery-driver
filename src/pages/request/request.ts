@@ -1,10 +1,9 @@
-import { Component, Inject } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, ModalController } from 'ionic-angular';
+import {Component, Inject} from '@angular/core';
+import {Events, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {OrdersProvider} from "../../providers/orders/orders";
-import {DriverOrder, Order, RequestAction, UserData} from "../../providers/types/app-types";
+import {DriverOrder, Order, OrderStatus, UserData} from "../../providers/types/app-types";
 import {AppstorageProvider} from "../../providers/appstorage/appstorage";
 import {UtilsProvider} from "../../providers/utils/utils";
-
 
 
 @IonicPage()
@@ -32,7 +31,7 @@ export class RequestPage {
   async ionViewDidLoad() {
     console.log(this.navParams.get('request'));
     this.driverOrder = this.navParams.get('request');
-    this.userData = await  this.appStorage.getUserData();
+    this.userData = await this.appStorage.getUserData();
 
     this.getRequestDetails();
   }
@@ -51,16 +50,16 @@ export class RequestPage {
   }
 
 
-  onClick(requetAction : keyof RequestAction) {
-    switch (requetAction) {
-      case 'accept':
-        this.acceptRequest();
+  onClick(requestAction: OrderStatus | string) {
+    switch (requestAction) {
+      case OrderStatus.accepted:
+        this.changeOrderStatus(OrderStatus.accepted);
         break;
-      case 'await':
+      case OrderStatus.waiting:
         this.showModal();
         break;
-      case 'cancel':
-        this.cancelRequest();
+      case OrderStatus.refused:
+        this.changeOrderStatus(OrderStatus.refused);
         break;
     }
   }
@@ -70,60 +69,39 @@ export class RequestPage {
 
     modal.onDidDismiss(accept => {
       if (accept) {
-        this.awaitRequest();
+        this.changeOrderStatus(OrderStatus.waiting);
       }
-    })
+    });
 
     modal.present();
   }
 
-  private acceptRequest() {
-    this.orderProvider.acceptOrder(this.driverOrder.id, this.userData.api_token)
-      .subscribe(response => {
-        console.log({response});
-        if (response.success) {
-          this.driverOrder.status = response.data.order.status
-          this.events.publish('updateOrders');
-
-        }
-        this.utils.showToast(response.message)
-      })
-  }
-
-  private awaitRequest() {
-    this.orderProvider.awaitOrder(this.driverOrder.id, this.userData.api_token)
+  private changeOrderStatus(orderStatus: OrderStatus):void {
+    this.orderProvider.changeOrderStatus(orderStatus, this.driverOrder.id, this.userData.api_token)
       .subscribe(response => {
         console.log({response});
         if (response.success) {
           this.driverOrder.status = response.data.order.status;
           this.events.publish('updateOrders');
-          this.navCtrl.push('WaitingordersPage')
+          if (orderStatus === OrderStatus.waiting) {
+            this.navCtrl.push('WaitingordersPage');
+          }
         }
         this.utils.showToast(response.message)
       })
-  }
 
-
-  private cancelRequest() {
-    this.orderProvider.refuseOrder(this.driverOrder.id, this.userData.api_token)
-      .subscribe(response => {
-        console.log({response});
-        if (response.success) {
-          this.driverOrder.status = response.data.order.status;
-          this.events.publish('updateOrders');
-
-        }
-        this.utils.showToast(response.message)
-
-      })
   }
 
   goToUserPage() {
-    this.navCtrl.push('UserPage', {user: this.driverOrder.order.user, orderId: this.driverOrder.id, orderStatus: this.driverOrder.status, driverOrder: this.driverOrder.order});
+    this.navCtrl.push('UserPage', {
+      user: this.driverOrder.order.user,
+      orderId: this.driverOrder.id,
+      orderStatus: this.driverOrder.status,
+      driverOrder: this.driverOrder.order
+    });
   }
 
   fillImgSrc(src: string): string {
-
-    return src.startsWith('/storage')?this.domainUrl.concat(src):src;
+    return src.startsWith('/storage') ? this.domainUrl.concat(src) : src;
   }
 }

@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ApiProvider} from "../api/api";
+import {Observable} from "rxjs";
+import {LoginData, LoginResponse, UserData} from "../types/app-types";
 
 @Injectable()
 export class AuthProvider {
@@ -7,30 +9,25 @@ export class AuthProvider {
   constructor(public api: ApiProvider) {
   }
 
-  login(loginData) {
-    
-    let body = new FormData();
-    Object.keys(loginData).forEach(key => body.append(key, loginData[key]));
-    return this.api.post('login', body)
+  login(loginData: LoginData): Observable<LoginResponse> {
+    return this.api.post('login', this.fillBody(loginData))
   }
 
-  getProfile(token) {
-    return this.api.get('get-profile',  {api_token: token})
+  updateProfile(userData: UserData | any, token) {
+    return this.api.post('update-profile', this.fillBody(userData), {api_token: token})
   }
 
-  updateProfile(userData, token) {
-    let body = new FormData();
-    Object.keys(userData).forEach(key => body.append(key, userData[key]));
-    return this.api.post('update-profile', body, {api_token: token})
+  updateLocation(location: { lat: number, long: number }, token: string) {
+    return this.api.post('change-location', this.fillBody(location), {api_token: token})
   }
 
-  updateLocation(location: {lat: number, long: number}, token: string) {
-    let body = new FormData();
-    Object.keys(location).forEach(key => body.append(key, location[key]));
-    return this.api.post('change-location', location, {api_token: token})
-  }
-
-  logout(token: string) {
+  logout(token: string): Observable<{ success: boolean }> {
     return this.api.post('logout', null, {api_token: token})
+  }
+
+  private fillBody(data: object): FormData {
+    let body = new FormData();
+    Object.keys(data).forEach(key => body.append(key, data[key]));
+    return body;
   }
 }

@@ -37,9 +37,9 @@
       </div>
       <ng-template [ngIf]="!fromPop">
         <div class="btns" margin-top *ngIf="driverOrder.status == 'init' || driverOrder?.status == 'waiting'">
-          <button ion-button round (click)="onClick('accept')" >{{'التوصيل الان' | translate}}</button>
-          <button ion-button round  (click)="onClick('await')" [hidden]="userData && (driverOrder?.status == 'waiting' || userData.isRestaurantDelegate)" >{{'التوصيل لاحقا' | translate}}</button>
-          <button ion-button round outline color="danger"  (click)="onClick('cancel')">{{'رفض' | translate}}</button>
+          <button ion-button round (click)="onClick('accepted')" >{{'التوصيل الان' | translate}}</button>
+          <button ion-button round  (click)="onClick('waiting')" [hidden]="userData && (driverOrder?.status == 'waiting' || userData.isRestaurantDelegate)" >{{'التوصيل لاحقا' | translate}}</button>
+          <button ion-button round outline color="danger"  (click)="onClick('refused')">{{'رفض' | translate}}</button>
         </div>
       </ng-template>
     </div>
@@ -54,10 +54,7 @@
     <div *ngIf="driverOrder.status == 'canceled'|| driverOrder.status == 'returned'">
       <p *ngIf="driverOrder.status == 'canceled'"><b>سبب الالغاء</b></p>
       <p *ngIf="driverOrder.status == 'returned'"><b>سبب ارجاع الطلب</b></p>
-
-      <p text-center>
-        {{driverOrder?.comment || driverOrder.order?.comment}}
-      </p>
+      <p text-center>{{driverOrder?.comment || driverOrder.order?.comment}}</p>
     </div>
   </div>
   </ng-template>

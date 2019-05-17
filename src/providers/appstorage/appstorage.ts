@@ -1,12 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Storage} from '@ionic/storage';
 import {appLangs, UserData} from "../types/app-types";
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 @Injectable()
 export class AppstorageProvider {
   _appLang: string | appLangs = 'ar';
-  private _user = new BehaviorSubject(null);
-  emittedUser = this._user.asObservable();
 
   constructor(public storage: Storage) {
   }
@@ -20,13 +18,11 @@ export class AppstorageProvider {
     return this._appLang = await this.storage.set('delivery:app:lang', lang);
   }
 
-
   getUserData(): Promise<UserData> {
     return this.storage.get('delivery:user:data');
   }
 
-  setUserData(user: UserData):Promise<UserData> {
-    this._user.next(user);
+  setUserData(user: UserData): Promise<UserData> {
     return this.storage.set('delivery:user:data', user);
   }
 
@@ -38,12 +34,12 @@ export class AppstorageProvider {
     return this.storage.set('delivery:api:token', token)
   }
 
-  getFcmToken() {
-    return this.storage.get('delivery:fcm:token')
-  }
+  // getFcmToken() {
+  //   return this.storage.get('delivery:fcm:token')
+  // }
 
   saveFcmToken(token) {
     return this.storage.set('delivery:fcm:token', token)
   }
-  
+
 }

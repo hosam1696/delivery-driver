@@ -1,9 +1,9 @@
-import { Component, Inject } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Events } from 'ionic-angular';
-import {User, UserData, Order} from "../../providers/types/app-types";
-import { OrdersProvider } from '../../providers/orders/orders';
-import { AppstorageProvider } from '../../providers/appstorage/appstorage';
-import { UtilsProvider } from '../../providers/utils/utils';
+import {Component, Inject} from '@angular/core';
+import {Events, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {Order, OrderStatus, User, UserData} from "../../providers/types/app-types";
+import {OrdersProvider} from '../../providers/orders/orders';
+import {AppstorageProvider} from '../../providers/appstorage/appstorage';
+import {UtilsProvider} from '../../providers/utils/utils';
 import {LaunchNavigator, LaunchNavigatorOptions} from "@ionic-native/launch-navigator";
 
 
@@ -20,15 +20,15 @@ export class UserPage {
   userData: UserData;
 
   constructor(
-              @Inject('DOMAIN_URL') public domainUrl,
-              public navCtrl: NavController,
-              private modalCtrl: ModalController,
-              private ordersProvider: OrdersProvider,
-              private launchNavigator: LaunchNavigator,
-              private events: Events,
-              private utils: UtilsProvider,
-              private appStorageProvider: AppstorageProvider,
-              public navParams: NavParams) {
+    @Inject('DOMAIN_URL') public domainUrl,
+    public navCtrl: NavController,
+    private modalCtrl: ModalController,
+    private ordersProvider: OrdersProvider,
+    private launchNavigator: LaunchNavigator,
+    private events: Events,
+    private utils: UtilsProvider,
+    private appStorageProvider: AppstorageProvider,
+    public navParams: NavParams) {
     // console.log({requestStatus: this.orderStatus})
     // console.log({driverOrder: this.driverOrder});
     // console.log({paramsData: this.navParams.data})
@@ -53,17 +53,17 @@ export class UserPage {
 
     modal.onDidDismiss(data => {
       if (data.msg && data.msg.trim()) {
-        this.refuseOffer(data.msg);
+        this.cancelOffer(data.msg);
       }
-    })
+    });
 
     modal.present();
   }
 
-  refuseOffer(msg) {
-    this.ordersProvider.cancelOrder(this.orderId, this.userData.api_token, msg)
-
-      .subscribe(response =>{ 
+  cancelOffer(msg) {
+    this.ordersProvider
+      .changeOrderStatus(OrderStatus.canceled, this.orderId, this.userData.api_token, msg)
+      .subscribe(response => {
         console.log(response);
         if (response.success) {
           this.events.publish('updateOrders');
@@ -76,94 +76,88 @@ export class UserPage {
   }
 
   onDeliver() {
-    this.ordersProvider.deliverOrder(this.orderId, this.userData.api_token)
-
-    .subscribe(response =>{ 
-      if (response.success) {
-        this.events.publish('updateOrders');
-        this.utils.showToast(response.message);
-        this.orderStatus = 'completed';
-        this.driverOrder.status = 'completed';
-        setTimeout(() => {
-          this.navCtrl.popToRoot();
-        }, 500)
-      }
-    })
+    this.ordersProvider
+      .changeOrderStatus(OrderStatus.completed,this.orderId, this.userData.api_token)
+      .subscribe(response => {
+        if (response.success) {
+          this.events.publish('updateOrders');
+          this.utils.showToast(response.message);
+          this.orderStatus = 'completed';
+          this.driverOrder.status = 'completed';
+          setTimeout(() => {
+            this.navCtrl.popToRoot();
+          }, 500)
+        }
+      })
   }
 
   onReceiving() {
-    this.ordersProvider.receiveOrder(this.orderId, this.userData.api_token)
-
-      .subscribe(response =>{
+    this.ordersProvider
+      .changeOrderStatus(OrderStatus.ongoing, this.orderId, this.userData.api_token)
+      .subscribe(response => {
         if (response.success) {
           this.events.publish('updateOrders');
           this.utils.showToast(response.message);
           this.driverOrder.status = 'ongoing';
           this.orderStatus = 'ongoing';
-
         }
       })
   }
-
 
   openCompanyLocation() {
     const location = [+this.driverOrder.company.lat, +this.driverOrder.company.long];
     console.log({location});
     this.showOnMaps(location);
-
     this.onProcessing();
   }
 
   onProcessing() {
-    this.ordersProvider.processOrder(this.orderId, this.userData.api_token)
-
-    .subscribe(response =>{
-      if (response.success) {
-        this.events.publish('updateOrders');
-        this.driverOrder.status = 'processing';
-        this.orderStatus = 'processing';
-
-      }
-    })
+    this.ordersProvider
+      .changeOrderStatus(OrderStatus.processing, this.orderId, this.userData.api_token)
+      .subscribe(response => {
+        if (response.success) {
+          this.events.publish('updateOrders');
+          this.driverOrder.status = 'processing';
+          this.orderStatus = 'processing';
+        }
+      })
   }
 
   openOrderLocation() {
     const location = [+this.driverOrder.lat, +this.driverOrder.lng];
-    console.log({OrderLocation: location})
+    console.log({OrderLocation: location});
     this.showOnMaps(location);
-
   }
 
   onReturned() {
-      const modal = this.modalCtrl.create('RefusemsgPage', {action: 'return'});
+    const modal = this.modalCtrl.create('RefusemsgPage', {action: 'return'});
 
-      modal.onDidDismiss(data => {
-        console.log({data});
-        if (data.msg && data.msg.trim() && data.action === 'return') {
-          this.returnRequest(data.msg);
-        }
-      })
+    modal.onDidDismiss(data => {
+      console.log({data});
+      if (data.msg && data.msg.trim() && data.action === 'return') {
+        this.returnOrder(data.msg);
+      }
+    });
 
-      modal.present();
+    modal.present();
   }
 
-  private returnRequest(msg) {
-    this.ordersProvider.returnOrder(this.orderId, this.userData.api_token, msg)
+  private returnOrder(msg: string): void {
+    this.ordersProvider
+      .changeOrderStatus(OrderStatus.returned, this.orderId, this.userData.api_token, msg)
       .subscribe(response => {
         console.log({response});
         if (response.success) {
           this.driverOrder.status = response.data.order.status;
           this.navCtrl.popToRoot();
           this.events.publish('updateOrders');
-
         }
         this.utils.showToast(response.message)
-
       })
   }
 
   fillImgSrc(src: string): string {
 
-    return src.startsWith('/storage')?this.domainUrl.concat(src):src;
+    return src.startsWith('/storage') ? this.domainUrl.concat(src) : src;
   }
 }

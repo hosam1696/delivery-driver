@@ -1,22 +1,22 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
+  AlertController,
+  AlertOptions,
+  Events,
   IonicPage,
   NavController,
   NavParams,
-  PopoverController,
-  Events,
-  AlertController,
-  AlertOptions
+  PopoverController
 } from 'ionic-angular';
-import { OrdersProvider } from '../../providers/orders/orders';
+import {OrdersProvider} from '../../providers/orders/orders';
 import {DriverOrder, OrderStatus, UserData} from '../../providers/types/app-types';
-import { AppstorageProvider } from '../../providers/appstorage/appstorage';
-import { UtilsProvider } from '../../providers/utils/utils';
-import { AudioProvider } from '../../providers/audio/audio';
-import { AuthProvider } from '../../providers/auth/auth';
-import { Network } from '@ionic-native/network';
-import { Geolocation, Geoposition } from "@ionic-native/geolocation";
-import { Diagnostic } from "@ionic-native/diagnostic";
+import {AppstorageProvider} from '../../providers/appstorage/appstorage';
+import {UtilsProvider} from '../../providers/utils/utils';
+import {AudioProvider} from '../../providers/audio/audio';
+import {AuthProvider} from '../../providers/auth/auth';
+import {Network} from '@ionic-native/network';
+import {Geolocation, Geoposition} from "@ionic-native/geolocation";
+import {Diagnostic} from "@ionic-native/diagnostic";
 
 @IonicPage()
 @Component({
@@ -52,15 +52,13 @@ export class RequestsPage {
                 this.disconnect$ = this.network.onDisconnect()
                 .subscribe(()=> {
                   this.utils.showToast('التطبيق يتطلب الاتصال بالانترنت');
-                })
+                });
           
                 this.connect$ = this.network.onDisconnect()
                 .subscribe(()=> {
           
                   setTimeout(() => {
-                    let connectionType = this.network.type;
                     this.getAllOrders();
-                    console.log({connectionType});
                   }, 3000);
                 })
           
@@ -103,12 +101,12 @@ export class RequestsPage {
     this.disconnect$ = this.network.onDisconnect()
       .subscribe(()=> {
         this.utils.showToast('تعذر الاتصال بالانترنت');
-      })
+      });
 
     this.connect$ = this.network.onDisconnect()
       .subscribe(()=> {
         setTimeout(() => this.getAllOrders(), 3000);
-      })
+      });
   }
 
   ionViewWillLeave() {
@@ -121,46 +119,31 @@ export class RequestsPage {
 
   private getAllOrders(withCheck = true) {
 
-    const orders$ = this.ordersProvider.getAllOrders(this.userData.api_token);
-
+    const orders$ = this.ordersProvider.getDriverOrders(this.userData.api_token);
     orders$.subscribe(response => {
-      // console.log({ordersResponse: response});
       if (response.success) {
         this.allRequests = this.requests = this.checkDelayedOrders(response.data.orders);
         withCheck && this.checkProcessingOrders();
       } else if (response.error == 'Unauthenticated' || response.error == 'Unauthenticated.') {
         // show Hint to app user the user has been logged before by this account, he have to login againg to refresh token
         this.utils.showToast('التطبيق يعمل على جهاز اخر.');
-
         // Try to Login Again
-        this.handleUnAuthenticatedResult();
+        this.events.publish('handle:unAuthorized', (data) => {
+          this.userData = data[0];
+          this.events.publish('update:storage');
+          this.getAllOrders();
+        });
+
       }
     }, err => {
       console.warn(err);
     })
   }
 
-  private handleUnAuthenticatedResult():void {
-    const authLogin$ = this.authProvider.login({username: this.userData.userName, password: this.userData.current_password});
-        
-    authLogin$.subscribe(response => {
-      if (response.success) {
-        Promise.all([
-          this.appStorageProvider.setUserData({...response.data.user}),
-          this.appStorageProvider.saveToken(response.data.user.api_token)
-        ]).then((data) => {
-          this.userData = data[0];
-          this.events.publish('update:storage');
-          this.getAllOrders();
-        })
-      }
-    })
-  }
-
   onToggleChange(event) {
     console.log(event.value);
     this.isReceivingRequests = event.value;
-    this.changeOrderStatus();
+    this.changeAvailabilityStatus();
   }
 
   private checkDelayedOrders(orders: DriverOrder[]): DriverOrder[] {
@@ -169,7 +152,7 @@ export class RequestsPage {
 
     allOrders = orders.filter(order => order.status != 'init' && (order.status =='accepted' || order.status == 'processing' || order.status == 'ongoing' ));
     // Change the status of exceeded delayed order
-    orders.filter(order => isExceededTime(order) && order.status == 'init').forEach(order => this.cancelRequest(order.id));
+    orders.filter(order => isExceededTime(order) && order.status == 'init').forEach(order => this.refuseOrder(order.id));
 
     return allOrders;
   }
@@ -185,7 +168,6 @@ export class RequestsPage {
   private getRequestDetails(requestId: number):void {
     const request$ = this.ordersProvider.getOrderDetails(requestId, this.userData.api_token);
 
-
     request$.subscribe(response => {
       if (response.success) {
         const currentProcessingdOrder: DriverOrder = response.data.order;
@@ -198,8 +180,9 @@ export class RequestsPage {
     this.navCtrl.push('UserPage', {user: driverOrder.order.user, orderId: driverOrder.id, orderStatus: driverOrder.status, driverOrder: driverOrder.order});
   } 
 
-  private cancelRequest(orderId) {
-    this.ordersProvider.refuseOrder(orderId, this.userData.api_token)
+  private refuseOrder(orderId) {
+    this.ordersProvider
+      .changeOrderStatus(OrderStatus.refused, orderId, this.userData.api_token)
       .subscribe(response => {
         // console.log({response});
         if (response.success) {
@@ -208,7 +191,7 @@ export class RequestsPage {
       })
   }
 
-  changeOrderStatus() {
+  changeAvailabilityStatus() {
     const deliveryStatus$ = this.authProvider.updateProfile({current_password: this.userData.current_password ,availability: +this.userData.availability}, this.userData.api_token);
     
     deliveryStatus$.subscribe(response=> {
@@ -238,7 +221,7 @@ export class RequestsPage {
           this.requests = this.allRequests.filter(req => req.status == OrderStatus[data]);
         }
       }
-    })
+    });
 
     popover.present({
       ev
@@ -271,7 +254,7 @@ export class RequestsPage {
       geolocate.then((data: Geoposition) => {
         this.currentLocation = {lat:data.coords.latitude, long:data.coords.longitude};
         this.updateDelegateLocation();
-      }).catch((err) => {
+      }).catch(() => {
         this.checkLocation();
       })
     }
@@ -311,6 +294,7 @@ export class RequestsPage {
               role: "cancel",
               handler: () => {
                 resolve("cancel");
+                reject('cancel');
               }
             },
             {

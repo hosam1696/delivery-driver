@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, Events} from 'ionic-angular';
-import {DriverOrder, UserData} from '../../providers/types/app-types';
+import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {DriverOrder, OrderStatus, UserData} from '../../providers/types/app-types';
 import {AppstorageProvider} from '../../providers/appstorage/appstorage';
 import {OrdersProvider} from '../../providers/orders/orders';
 import {UtilsProvider} from '../../providers/utils/utils';
 import {AuthProvider} from '../../providers/auth/auth';
-
+import {forkJoin} from "rxjs/observable/forkJoin";
 
 @IonicPage()
 @Component({
@@ -16,7 +16,7 @@ export class WaitingordersPage {
   isReceivingRequests: boolean;
   userData: UserData;
   allRequests: DriverOrder[];
-  pageStatus: string = this.navParams.get('pageStatus');
+  pageStatus:  OrderStatus = this.navParams.get('pageStatus');
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -26,137 +26,71 @@ export class WaitingordersPage {
               private events: Events,
               private utils: UtilsProvider,
   ) {
-    this.events.subscribe('getWaitingOrders', () => this.getWaitingOrders())
+    this.events.subscribe('getWaitingOrders', () => this.getWaitingOrders());
+    this.events.subscribe('update:storage', () => {
+      this.appStorageProvider.getUserData().then(userData => this.userData = userData)
+    });
   }
-
 
   async ionViewWillEnter() {
     this.userData = await this.appStorageProvider.getUserData();
   }
 
-
   async ionViewDidLoad() {
     this.userData = await this.appStorageProvider.getUserData();
-    console.log({userData: this.userData});
 
-    switch(this.pageStatus) {
-      case 'waiting':
-        this.getWaitingOrders();
-        break;
-      case 'completed':
-        this.getCompletedOrders();
-        break;
-      case 'canceled':
-        this.getCanceledOrders();
-        break;
-      case 'returned':
-        this.getReturnedOrders();
-        break;
-    }
-
-    this.events.subscribe('update:storage', () => {
-      this.appStorageProvider.getUserData()
-        .then(userData => this.userData = userData)
-    });
+    this.getAccordingOrders();
   }
 
+  private getAccordingOrders() {
 
-  
+    if (this.pageStatus == OrderStatus.canceled) {
+      this.getCanceledOrders();
+    } else {
+      this.getOrders();
+    }
+  }
+
+  private getOrders(): void {
+    const orders$ = this.ordersProvider.getDriverOrders(this.userData.api_token, this.pageStatus);
+
+    orders$.subscribe(response => {
+      console.log({waitingOrders: response});
+      if (response.success) {
+        this.allRequests = this.filterOrders(response.data.orders);
+      } else if (response.error == 'Unauthenticated') {
+        this.events.publish('handle:unAuthorized', (data) => {
+          this.userData = data[0];
+          this.getAccordingOrders();
+        })
+      }
+    })
+
+  }
+
   private getWaitingOrders() {
 
-    const orders$ = this.ordersProvider.getWaitingOrders(this.userData.api_token);
+    const orders$ = this.ordersProvider.getDriverOrders(this.userData.api_token, OrderStatus.waiting);
 
     orders$.subscribe(response => {
       console.log({waitingOrders: response});
       if (response.success) {
         this.allRequests = this.filterOrders(response.data.orders);
       } else if (response.error == 'Unauthenticated') {
-        const authLogin$ = this.authProvider.login({
-          username: this.userData.userName,
-          password: this.userData.current_password
-        });
-
-        authLogin$.subscribe(response => {
-          if (response.success) {
-
-            Promise.all([
-              this.appStorageProvider.setUserData({...response.data.user}),
-              this.appStorageProvider.saveToken(response.data.user.api_token)
-            ]).then((data) => {
-              this.userData = data[0];
-              this.getWaitingOrders();
-            })
-          }
-        })
+          this.events.publish('handle:unAuthorized', (data) => {
+            this.userData = data[0];
+            this.getAccordingOrders();
+          });
       }
     })
   }
 
-  
-  private getCompletedOrders() {
-
-    const orders$ = this.ordersProvider.getCompletedOrders(this.userData.api_token);
-
-    orders$.subscribe(response => {
-      console.log({waitingOrders: response});
-      if (response.success) {
-        this.allRequests = this.filterOrders(response.data.orders);
-      } else if (response.error == 'Unauthenticated') {
-        const authLogin$ = this.authProvider.login({
-          username: this.userData.userName,
-          password: this.userData.current_password
-        });
-
-        authLogin$.subscribe(response => {
-          if (response.success) {
-
-            Promise.all([
-              this.appStorageProvider.setUserData({...response.data.user}),
-              this.appStorageProvider.saveToken(response.data.user.api_token)
-            ]).then((data) => {
-              this.userData = data[0];
-              this.getWaitingOrders();
-            })
-          }
-        })
-      }
-    })
-  }
-
-
-  private getReturnedOrders() {
-
-    const orders$ = this.ordersProvider.getReturnedOrders(this.userData.api_token);
-
-    orders$.subscribe(response => {
-      console.log({waitingOrders: response});
-      if (response.success) {
-        this.allRequests = this.filterOrders(response.data.orders);
-      } else if (response.error == 'Unauthenticated') {
-        const authLogin$ = this.authProvider.login({
-          username: this.userData.userName,
-          password: this.userData.current_password
-        });
-
-        authLogin$.subscribe(response => {
-          if (response.success) {
-
-            Promise.all([
-              this.appStorageProvider.setUserData({...response.data.user}),
-              this.appStorageProvider.saveToken(response.data.user.api_token)
-            ]).then((data) => {
-              this.userData = data[0];
-              this.getWaitingOrders();
-            })
-          }
-        })
-      }
-    })
-  }
 
   private getCanceledOrders() {
 
-    const orders$ = this.ordersProvider.getCanceledOrders(this.userData.api_token);
+    const orders$ = forkJoin(
+      this.ordersProvider.getDriverOrders(this.userData.api_token, OrderStatus.refused),
+      this.ordersProvider.getDriverOrders(this.userData.api_token, OrderStatus.canceled));
 
     orders$.subscribe(responses => {
       console.log({cancelRequest: responses});
@@ -168,22 +102,9 @@ export class WaitingordersPage {
             this.allRequests = Array.from(new Set(this.allRequests.concat(response.data.orders)));
           })
         } else if (response.error == 'Unauthenticated') {
-          const authLogin$ = this.authProvider.login({
-            username: this.userData.userName,
-            password: this.userData.current_password
-          });
-          
-          authLogin$.subscribe(response => {
-            if (response.success) {
-              
-              Promise.all([
-                this.appStorageProvider.setUserData({...response.data.user}),
-                this.appStorageProvider.saveToken(response.data.user.api_token)
-              ]).then((data) => {
-                this.userData = data[0];
-                this.getWaitingOrders();
-              })
-            }
+          this.events.publish('handle:unAuthorized', (data) => {
+            this.userData = data[0];
+            this.getAccordingOrders();
           })
         }
       })
@@ -192,11 +113,10 @@ export class WaitingordersPage {
 
   onToggleChange(event) {
     this.isReceivingRequests = event.value;
-    this.changeOrderStatus();
+    this.changeAvailabilityStatus();
   }
 
-
-  changeOrderStatus() {
+  changeAvailabilityStatus() {
     const deliveryStatus$ = this.authProvider.updateProfile({
       current_password: this.userData.current_password,
       availability: +this.userData.availability
@@ -215,7 +135,6 @@ export class WaitingordersPage {
     })
   }
 
-
   goToRequestPage(request) {
     this.navCtrl.push('RequestPage', {request})
   }
@@ -224,7 +143,6 @@ export class WaitingordersPage {
     let waitingOrders, oneDay = 1000 * 60 * 60 * 24, dateNow = +Date.now();
 
     waitingOrders = orders.filter(order => dateNow - +new Date(order.updated_at) < oneDay);
-
     // Change the status of exceeded delayed order
     orders.filter(order => dateNow - +new Date(order.updated_at) > oneDay).forEach(order => {
       this.cancelRequest(order.id)
@@ -234,7 +152,7 @@ export class WaitingordersPage {
   }
 
   private cancelRequest(orderId) {
-    this.ordersProvider.refuseOrder(orderId, this.userData.api_token)
+    this.ordersProvider.changeOrderStatus(OrderStatus.refused, orderId, this.userData.api_token)
       .subscribe(response => {
         console.log({response});
         if (response.success) {

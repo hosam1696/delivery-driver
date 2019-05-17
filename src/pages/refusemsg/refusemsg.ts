@@ -13,10 +13,6 @@ export class RefusemsgPage {
   constructor(public viewCtrl: ViewController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad RefusemsgPage');
-  }
-
   dismiss(msg) {
     this.viewCtrl.dismiss({msg, action: this.navParams.data.action});
   }

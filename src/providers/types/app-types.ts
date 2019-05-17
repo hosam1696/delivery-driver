@@ -2,9 +2,7 @@ export type DocumentDirection = 'ltr' | 'rtl';
 
 export enum AppDirLang {
   'ar' = 'rtl',
-  'en' = 'ltr',
-  'rtl' = 'ar',
-  'ltr' = 'en'
+  'en' = 'ltr'
 }
 
 export interface RequestAction {
@@ -14,11 +12,16 @@ export interface RequestAction {
 }
 
 export enum OrderStatus {
-  all,
-  returned,
-  canceled,
-  completed,
-  refused
+  init = 'init',
+  returned = 'returned',
+  canceled = 'canceled',
+  completed = 'completed',
+  refused = 'refused',
+  accepted = 'accepted',
+  received = 'received',
+  processing = 'processing',
+  ongoing = 'ongoing',
+  waiting = 'waiting'
 }
 
 export enum appLangs {
@@ -52,8 +55,11 @@ export interface UserData {
   logistic_company_service?: any,
   order_count?: any,
   isRestaurantDelegate?: boolean
-
 }
+
+export interface  LoginData {userName: string, password: string, player_id: string}
+
+export interface LoginResponse { success: boolean, message: string, data: { user: UserData }}
 
 export interface Company {
   id: number;

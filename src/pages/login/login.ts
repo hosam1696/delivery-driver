@@ -16,7 +16,6 @@ import { Network } from '@ionic-native/network';
 })
 export class LoginPage {
   loginForm: FormGroup;
-  rememberCredentials;
   processing: boolean = false;
   showSplash: boolean = true;
 
@@ -32,18 +31,17 @@ export class LoginPage {
     public navParams: NavParams) {
     this.buildForm();
 
-  }
-  
-  ionViewDidLoad() {
-    
     this.events.subscribe('change:splash:screen', val => this.showSplash = val);
+  }
+
+  ionViewDidLoad() {
+
+    this.audioProvider.activateBtnSound();
+
     setTimeout(()=> {
       this.showSplash = false;
     }, 3000);
-
-    this.audioProvider.activateBtnSound();
   }
-  
 
 
   submitOnConnect() {
@@ -57,33 +55,30 @@ export class LoginPage {
   }
 
   submitForm() {
-    const validateForm = this.utils.validateForm(this.loginForm);
+    const isValidForm = this.utils.validateForm(this.loginForm);
 
-    if (validateForm) {
+    if (isValidForm) {
       const authLogin$ = this.AuthProvider.login(this.loginForm.value);
       this.processing = true;
       authLogin$.subscribe(response => {
         this.processing = false;
         if (response.success) {
-          // this.AuthProvider.getProfile(response.data.user.api_token)
-          //   .subscribe((response) => {
-          //     console.log({loginResponse: response})
-          //   });
-          const isRestaurantDelegate = response.data.user.logistic_company_service && response.data.user.logistic_company_service.service&& response.data.user.logistic_company_service.service.name == 'توصيل مطاعم';
+          const loggedUser = response.data.user,
+                isRestaurantDelegate = loggedUser.logistic_company_service.service && loggedUser.logistic_company_service.service.name == 'توصيل مطاعم';
+
           Promise.all([
-            this.appStorage.setUserData({...response.data.user, current_password: this.loginForm.get('password').value, isRestaurantDelegate}),
-            this.appStorage.saveToken(response.data.user.api_token)
+            this.appStorage.setUserData({...loggedUser, current_password: this.loginForm.get('password').value, isRestaurantDelegate}),
+            this.appStorage.saveToken(loggedUser.api_token)
           ]).then(() => {
-            this.events.publish('update:storage')
+            this.events.publish('update:storage');
             this.navCtrl.setRoot('RequestsPage');
           })
-
 
         } else {
           this.utils.showTranslatedToast(response.message == 'translation.auth failed' ? 'User Name or Password are not Correct' : response.message)
         }
 
-      }, err => {
+      }, () => {
         this.utils.showToast('Some thing not Correct, Please try again later');
         this.processing = false;
       })
@@ -102,7 +97,7 @@ export class LoginPage {
 
   async setToken() {
       // if The driver logged in from device then send the device token to login params
-      const fcmToken = await this.fcmProvider.getToken()
+      const fcmToken = await this.fcmProvider.getToken();
 
       if (fcmToken) {
         this.loginForm.get('player_id').setValue(fcmToken);
@@ -110,8 +105,5 @@ export class LoginPage {
       }
   }
 
-  goTo(page: string) {
-    this.navCtrl.push(page);
-  }
 
 }

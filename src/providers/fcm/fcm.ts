@@ -33,10 +33,8 @@ export class FcmProvider {
             this.openNotificationPopup(data);
             this.events.publish('updateOrders');
           }
-        };
+        }
       });
-      
-    // }
     
   }
 

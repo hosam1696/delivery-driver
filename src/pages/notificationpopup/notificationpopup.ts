@@ -1,10 +1,10 @@
-import { Component, Inject } from '@angular/core';
-import { IonicPage, NavParams, ViewController, ModalController, Events, NavController } from 'ionic-angular';
-import { AppstorageProvider } from '../../providers/appstorage/appstorage';
-import { OrdersProvider } from '../../providers/orders/orders';
-import { UtilsProvider } from '../../providers/utils/utils';
-import { RequestAction, UserData, DriverOrder } from '../../providers/types/app-types';
-import { AudioProvider } from '../../providers/audio/audio';
+import {Component, Inject} from '@angular/core';
+import {Events, IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
+import {AppstorageProvider} from '../../providers/appstorage/appstorage';
+import {OrdersProvider} from '../../providers/orders/orders';
+import {UtilsProvider} from '../../providers/utils/utils';
+import {DriverOrder, OrderStatus, RequestAction, UserData} from '../../providers/types/app-types';
+import {AudioProvider} from '../../providers/audio/audio';
 
 
 @IonicPage()
@@ -31,11 +31,11 @@ export class NotificationpopupPage {
     private utils: UtilsProvider,
     private audioProvider: AudioProvider,
     private events: Events
-) {
-}
+  ) {
+  }
+
   async ionViewDidLoad() {
-    
-    this.userData = await  this.appStorage.getUserData();
+    this.userData = await this.appStorage.getUserData();
     this.playCounter();
     this.getRequestDetails();
     this.audioProvider.activateNotifySound();
@@ -47,7 +47,7 @@ export class NotificationpopupPage {
       let [minutes, seconds] = [this.counter.getMinutes(), this.counter.getSeconds()];
       this.counter = new Date(this._next10 - +Date.now());
 
-      if(minutes <= 0 && seconds<= 0) {
+      if (minutes <= 0 && seconds <= 0) {
         clearInterval(interval);
         this.countIsOver = true;
         this.onClick('cancel');
@@ -64,7 +64,6 @@ export class NotificationpopupPage {
       if (response.success) {
         this.driverOrder = response.data.order;
       }
-
     })
   }
 
@@ -72,17 +71,17 @@ export class NotificationpopupPage {
     this.navCtrl.push('RequestPage', {request, ...params})
   }
 
-  
-  onClick(requetAction : keyof RequestAction) {
-    switch (requetAction) {
+
+  onClick(requestAction: keyof RequestAction) {
+    switch (requestAction) {
       case 'accept':
-        this.acceptRequest();
+        this.changeOrderStatus(OrderStatus.accepted);
         break;
       case 'await':
         this.showModal();
         break;
       case 'cancel':
-        this.cancelRequest();
+        this.changeOrderStatus(OrderStatus.refused);
         break;
     }
   }
@@ -91,68 +90,30 @@ export class NotificationpopupPage {
     const modal = this.modalCtrl.create('DelayorderPage');
 
     modal.onDidDismiss(accept => {
-      if (accept) {
-        this.awaitRequest();
-      }
-    })
+      accept && this.changeOrderStatus(OrderStatus.waiting);
+    });
 
     modal.present();
   }
 
-  private acceptRequest() {
-    this.orderProvider.acceptOrder(this.driverOrder.id, this.userData.api_token)
-      .subscribe(response => {
-        console.log({response});
-        if (response.success) {
-          this.driverOrder.status = response.data.order.status
-          this.events.publish('updateOrders');
-
-        }
-        this.utils.showToast(response.message);
-        this.dismiss();
-      })
-  }
-
-  private awaitRequest() {
-    this.orderProvider.awaitOrder(this.driverOrder.id, this.userData.api_token)
-      .subscribe(response => {
-        console.log({response});
-        if (response.success) {
-          this.driverOrder.status = response.data.order.status
-          this.events.publish('updateOrders');
-        }
-        this.utils.showToast(response.message);
-        this.dismiss();
-      })
-  }
-
-
-  private cancelRequest() {
-    this.orderProvider.refuseOrder(this.driverOrder.id, this.userData.api_token)
+  private changeOrderStatus(orderStatus: OrderStatus): void {
+    this.orderProvider.changeOrderStatus(orderStatus, this.driverOrder.id, this.userData.api_token)
       .subscribe(response => {
         console.log({response});
         if (response.success) {
           this.driverOrder.status = response.data.order.status;
           this.events.publish('updateOrders');
-
         }
         this.utils.showToast(response.message);
         this.dismiss();
-
       })
-  }
-
-  goToUserPage() {
-    this.navCtrl.push('UserPage', {user: this.driverOrder.order.user, orderId: this.driverOrder.id, orderStatus: this.driverOrder.status});
   }
 
   dismiss() {
     this.viewCtrl.dismiss();
   }
 
-  
   fillImgSrc(src: string): string {
-
-    return src.startsWith('/storage')?this.domainUrl.concat(src):src;
+    return src.startsWith('/storage') ? this.domainUrl.concat(src) : src;
   }
 }
