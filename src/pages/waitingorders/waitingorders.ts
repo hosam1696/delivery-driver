@@ -26,7 +26,12 @@ export class WaitingordersPage {
               private events: Events,
               private utils: UtilsProvider,
   ) {
-    this.events.subscribe('getWaitingOrders', () => this.getWaitingOrders());
+
+    this.events.subscribe('getWaitingOrders', () => {
+      this.pageStatus = OrderStatus.waiting;
+      this.getOrders();
+    });
+
     this.events.subscribe('update:storage', () => {
       this.appStorageProvider.getUserData().then(userData => this.userData = userData)
     });
@@ -57,7 +62,7 @@ export class WaitingordersPage {
     orders$.subscribe(response => {
       console.log({waitingOrders: response});
       if (response.success) {
-        this.allRequests = this.filterOrders(response.data.orders);
+        this.allRequests = response.data.orders;
       } else if (response.error == 'Unauthenticated') {
         this.events.publish('handle:unAuthorized', (data) => {
           this.userData = data[0];
@@ -67,24 +72,6 @@ export class WaitingordersPage {
     })
 
   }
-
-  private getWaitingOrders() {
-
-    const orders$ = this.ordersProvider.getDriverOrders(this.userData.api_token, OrderStatus.waiting);
-
-    orders$.subscribe(response => {
-      console.log({waitingOrders: response});
-      if (response.success) {
-        this.allRequests = this.filterOrders(response.data.orders);
-      } else if (response.error == 'Unauthenticated') {
-          this.events.publish('handle:unAuthorized', (data) => {
-            this.userData = data[0];
-            this.getAccordingOrders();
-          });
-      }
-    })
-  }
-
 
   private getCanceledOrders() {
 
@@ -137,28 +124,6 @@ export class WaitingordersPage {
 
   goToRequestPage(request) {
     this.navCtrl.push('RequestPage', {request})
-  }
-
-  private filterOrders(orders: any): any[] {
-    let waitingOrders, oneDay = 1000 * 60 * 60 * 24, dateNow = +Date.now();
-
-    waitingOrders = orders.filter(order => dateNow - +new Date(order.updated_at) < oneDay);
-    // Change the status of exceeded delayed order
-    orders.filter(order => dateNow - +new Date(order.updated_at) > oneDay).forEach(order => {
-      this.cancelRequest(order.id)
-    });
-
-    return waitingOrders;
-  }
-
-  private cancelRequest(orderId) {
-    this.ordersProvider.changeOrderStatus(OrderStatus.refused, orderId, this.userData.api_token)
-      .subscribe(response => {
-        console.log({response});
-        if (response.success) {
-          this.events.publish('updateOrders');
-        }
-      })
   }
 
 }

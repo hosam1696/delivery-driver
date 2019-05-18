@@ -72,6 +72,7 @@ export class LoginPage {
           ]).then(() => {
             this.events.publish('update:storage');
             this.navCtrl.setRoot('RequestsPage');
+            this.fcmProvider.handleNotifications();
           })
 
         } else {

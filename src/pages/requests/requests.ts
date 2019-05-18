@@ -3,7 +3,7 @@ import {
   AlertController,
   AlertOptions,
   Events,
-  IonicPage,
+  IonicPage, ModalController,
   NavController,
   NavParams,
   PopoverController
@@ -33,12 +33,14 @@ export class RequestsPage {
   connect$;
   currentLocation: {lat: number, long: number};
   locationInterval;
+  initOrders: DriverOrder[] = [];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public appStorageProvider: AppstorageProvider,
               private ordersProvider: OrdersProvider,
               private authProvider: AuthProvider,
+              private modalCtrl: ModalController,
               private utils: UtilsProvider,
               private popOverCtrl: PopoverController,
               private network: Network,
@@ -140,27 +142,29 @@ export class RequestsPage {
     })
   }
 
+  openInitOrder() {
+    let orderId = this.initOrders.shift().id;
+    const modal = this.modalCtrl.create('NotificationpopupPage', {orderData: {wasTapped: false, order_id: orderId}});
+
+    modal.present();
+  }
+
   onToggleChange(event) {
-    console.log(event.value);
     this.isReceivingRequests = event.value;
     this.changeAvailabilityStatus();
   }
 
   private checkDelayedOrders(orders: DriverOrder[]): DriverOrder[] {
-    let allOrders, supposedTime = 1000 * 60 * 10 , dateNow = +Date.now(),
-     isExceededTime = order => dateNow - +new Date(order.created_at) > supposedTime;
+    let actionOrders = orders.filter(order => order.status != 'init' && (order.status =='accepted' || order.status == 'processing' || order.status == 'ongoing' ));
 
-    allOrders = orders.filter(order => order.status != 'init' && (order.status =='accepted' || order.status == 'processing' || order.status == 'ongoing' ));
-    // Change the status of exceeded delayed order
-    orders.filter(order => isExceededTime(order) && order.status == 'init').forEach(order => this.refuseOrder(order.id));
+    this.initOrders = orders.filter(order => order.status == 'init');
 
-    return allOrders;
+    return actionOrders;
   }
 
   private checkProcessingOrders(): void {
     // get the first in delivering state order
     const processingOrder: DriverOrder = this.allRequests.find((order:DriverOrder) => order.status == 'ongoing' || order.status == 'processing');
-
     processingOrder && this.getRequestDetails(processingOrder.id);
   }
 
@@ -179,17 +183,6 @@ export class RequestsPage {
   private goToDeliveryPage(driverOrder: DriverOrder): void {
     this.navCtrl.push('UserPage', {user: driverOrder.order.user, orderId: driverOrder.id, orderStatus: driverOrder.status, driverOrder: driverOrder.order});
   } 
-
-  private refuseOrder(orderId) {
-    this.ordersProvider
-      .changeOrderStatus(OrderStatus.refused, orderId, this.userData.api_token)
-      .subscribe(response => {
-        // console.log({response});
-        if (response.success) {
-          this.events.publish('updateOrders');
-        }
-      })
-  }
 
   changeAvailabilityStatus() {
     const deliveryStatus$ = this.authProvider.updateProfile({current_password: this.userData.current_password ,availability: +this.userData.availability}, this.userData.api_token);
@@ -264,6 +257,7 @@ export class RequestsPage {
         if (!e) {
           this.showAlert().then(state => {
             if (state == "ok") {
+              this.diagnostic.requestLocationAuthorization();
               this.diagnostic.switchToLocationSettings();
               this.diagnostic.isLocationEnabled()
                 .then(() => {

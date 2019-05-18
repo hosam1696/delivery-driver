@@ -17,7 +17,6 @@ export class DelayorderPage {
   }
 
   dismiss(accept?:boolean ) {
-    console.log('click outside');
     this.viewCtrl.dismiss(accept);
   }
 

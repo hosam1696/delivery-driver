@@ -60,7 +60,6 @@ export class NotificationpopupPage {
     const request$ = this.orderProvider.getOrderDetails(this.data.order_id, this.userData.api_token);
 
     request$.subscribe(response => {
-      console.log(response);
       if (response.success) {
         this.driverOrder = response.data.order;
       }
@@ -99,7 +98,6 @@ export class NotificationpopupPage {
   private changeOrderStatus(orderStatus: OrderStatus): void {
     this.orderProvider.changeOrderStatus(orderStatus, this.driverOrder.id, this.userData.api_token)
       .subscribe(response => {
-        console.log({response});
         if (response.success) {
           this.driverOrder.status = response.data.order.status;
           this.events.publish('updateOrders');

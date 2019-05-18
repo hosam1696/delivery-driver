@@ -11,9 +11,8 @@ export class FcmProvider {
               public events: Events,
               private modalCtrl: ModalController) {
 
-    // this.handleNotifications();
+    this.events.subscribe('open:popup', (data?: any) => this.openNotificationPopup(data));
 
-    this.events.subscribe('open:popup', (data?:any) => this.openNotificationPopup(data))
   }
 
 

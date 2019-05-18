@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiProvider} from '../api/api';
-import {OrderStatus} from "../types/app-types";
+import {OrderStatus, OrderStatusResponse} from "../types/app-types";
+import {Observable} from "rxjs";
 
 @Injectable()
 export class OrdersProvider {
@@ -15,7 +16,7 @@ export class OrdersProvider {
     return this.api.get('order-details', {api_token: token, order_id: orderId})
   }
 
-  changeOrderStatus(orderStatus: OrderStatus, orderId: number, token: string, reason?: string) {
+  changeOrderStatus(orderStatus: OrderStatus, orderId: number, token: string, reason?: string): Observable<OrderStatusResponse> {
     let body = reason ? new FormData() : null;
     reason && body.append('reason', reason);
 

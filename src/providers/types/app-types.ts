@@ -60,6 +60,7 @@ export interface UserData {
 export interface  LoginData {userName: string, password: string, player_id: string}
 
 export interface LoginResponse { success: boolean, message: string, data: { user: UserData }}
+export interface OrderStatusResponse {success: boolean, message: string, data:{order: Order}}
 
 export interface Company {
   id: number;
