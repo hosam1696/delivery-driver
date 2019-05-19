@@ -2,6 +2,7 @@ import { FCM } from '@ionic-native/fcm';
 import { Injectable } from '@angular/core';
 import { AppstorageProvider } from '../appstorage/appstorage';
 import { Platform, ModalController, Events } from 'ionic-angular';
+import { EVENTS } from '../types/app-types';
 
 @Injectable()
 export class FcmProvider {
@@ -11,7 +12,7 @@ export class FcmProvider {
               public events: Events,
               private modalCtrl: ModalController) {
 
-    this.events.subscribe('open:popup', (data?: any) => this.openNotificationPopup(data));
+    this.events.subscribe(EVENTS.NOTIFICATION_POPUP, (data?: any) => this.openNotificationPopup(data));
 
   }
 
@@ -24,13 +25,13 @@ export class FcmProvider {
           console.log("Received in background");
           if (data.order_id) {
             this.openNotificationPopup(data);
-            this.events.publish('updateOrders');
+            this.events.publish(EVENTS.UPDATE_ORDERS);
           }
         } else {
           console.log("Received in foreground");
           if (data.order_id) {
             this.openNotificationPopup(data);
-            this.events.publish('updateOrders');
+            this.events.publish(EVENTS.UPDATE_ORDERS);
           }
         }
       });

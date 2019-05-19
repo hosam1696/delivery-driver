@@ -57,10 +57,39 @@ export interface UserData {
   isRestaurantDelegate?: boolean
 }
 
-export interface  LoginData {userName: string, password: string, player_id: string}
+export interface LoginData {
+  userName: string,
+  password: string,
+  player_id: string
+}
 
-export interface LoginResponse { success: boolean, message: string, data: { user: UserData }}
-export interface OrderStatusResponse {success: boolean, message: string, data:{order: Order}}
+export interface LoginResponse {
+  success: boolean,
+  message: string,
+  data: { user: UserData },
+  error?: string
+}
+
+export interface OrderStatusResponse {
+  success: boolean,
+  message: string,
+  data: { order: Order },
+  error?: string
+}
+
+export interface DriverOrderResponse {
+  message: string,
+  success: boolean,
+  data: {orders:Array<DriverOrder&Order>},
+  error?: string
+}
+
+export interface OrderDetailsResponse {
+  message: string,
+  success: boolean,
+  data: { order: DriverOrder & Order },
+  error?: string
+}
 
 export interface Company {
   id: number;
@@ -184,7 +213,7 @@ export interface Order {
   updated_at: string;
   deleted_at?: null;
   product_image: string;
-  first_item: FirstItem;
+  first_item?: FirstItem;
   user?: User,
   items?: Item[],
   lat?: number,
@@ -204,6 +233,13 @@ export interface Item {
   image: string;
 }
 
+export interface APP_PAGE {
+  title: string,
+  component: any,
+  icon: string,
+  pageStatus?: OrderStatus | string
+}
+
 export interface FirstItem {
   id: number;
   product_id: number;
@@ -215,3 +251,22 @@ export interface FirstItem {
   updated_at: string;
   deleted_at?: null;
 }
+
+export enum EVENTS {
+  UPDATE_STORAGE = 'update:storage',
+  UPDATE_LANG = 'update:lang',
+  HANDLE_UNAUTHORIZATION = 'handle:unauthorization',
+  UPDATE_ROOT = 'update:root',
+  UPDATE_ORDERS = 'update:orders',
+  GET_WAITING_ORDERS = 'get:waitingorders',
+  NOTIFICATION_POPUP = 'open-notification:popup',
+  UPDATE_SPLASH = 'update:splashscreen'
+
+}
+
+export enum LOCAL_STORAGE {
+  LANG = 'delivery:app:lang',
+  USERDATA = 'delivery:user:data',
+  API_TOKEN = 'delivery:api:token',
+  FCM_TOKEN = 'delivery:fcm:token'
+} 

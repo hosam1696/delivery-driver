@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {DriverOrder, OrderStatus, UserData} from '../../providers/types/app-types';
+import {DriverOrder, OrderStatus, UserData, EVENTS} from '../../providers/types/app-types';
 import {AppstorageProvider} from '../../providers/appstorage/appstorage';
 import {OrdersProvider} from '../../providers/orders/orders';
 import {UtilsProvider} from '../../providers/utils/utils';
@@ -27,12 +27,12 @@ export class WaitingordersPage {
               private utils: UtilsProvider,
   ) {
 
-    this.events.subscribe('getWaitingOrders', () => {
+    this.events.subscribe(EVENTS.GET_WAITING_ORDERS, () => {
       this.pageStatus = OrderStatus.waiting;
       this.getOrders();
     });
 
-    this.events.subscribe('update:storage', () => {
+    this.events.subscribe(EVENTS.UPDATE_STORAGE, () => {
       this.appStorageProvider.getUserData().then(userData => this.userData = userData)
     });
   }
@@ -63,8 +63,8 @@ export class WaitingordersPage {
       console.log({waitingOrders: response});
       if (response.success) {
         this.allRequests = response.data.orders;
-      } else if (response.error == 'Unauthenticated') {
-        this.events.publish('handle:unAuthorized', (data) => {
+      } else if (/(Unauthenticated+)/gi.test(response.error)) {
+        this.events.publish(EVENTS.HANDLE_UNAUTHORIZATION, (data) => {
           this.userData = data[0];
           this.getAccordingOrders();
         })
@@ -88,8 +88,8 @@ export class WaitingordersPage {
           responses.forEach(response => {
             this.allRequests = Array.from(new Set(this.allRequests.concat(response.data.orders)));
           })
-        } else if (response.error == 'Unauthenticated') {
-          this.events.publish('handle:unAuthorized', (data) => {
+        } else if (/(Unauthenticated+)/gi.test(response.error)) {
+          this.events.publish(EVENTS.HANDLE_UNAUTHORIZATION, (data) => {
             this.userData = data[0];
             this.getAccordingOrders();
           })
@@ -116,7 +116,7 @@ export class WaitingordersPage {
         this.appStorageProvider.setUserData({...this.userData, availability})
           .then((data) => {
             console.log({savedUserInWaitingOrders: data});
-            this.events.publish('update:storage');
+            this.events.publish(EVENTS.UPDATE_STORAGE);
           })
       }
     })

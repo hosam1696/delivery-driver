@@ -7,6 +7,7 @@ import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { FcmProvider } from '../../providers/fcm/fcm';
 import { AudioProvider } from '../../providers/audio/audio';
 import { Network } from '@ionic-native/network';
+import { EVENTS } from '../../providers/types/app-types';
 
 
 @IonicPage()
@@ -31,7 +32,7 @@ export class LoginPage {
     public navParams: NavParams) {
     this.buildForm();
 
-    this.events.subscribe('change:splash:screen', val => this.showSplash = val);
+    this.events.subscribe(EVENTS.UPDATE_SPLASH, val => this.showSplash = val);
   }
 
   ionViewDidLoad() {
@@ -70,7 +71,7 @@ export class LoginPage {
             this.appStorage.setUserData({...loggedUser, current_password: this.loginForm.get('password').value, isRestaurantDelegate}),
             this.appStorage.saveToken(loggedUser.api_token)
           ]).then(() => {
-            this.events.publish('update:storage');
+            this.events.publish(EVENTS.UPDATE_STORAGE);
             this.navCtrl.setRoot('RequestsPage');
             this.fcmProvider.handleNotifications();
           })

@@ -2,6 +2,7 @@ import {Injectable, Inject} from "@angular/core";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {TranslateService} from "@ngx-translate/core";
 import {Events} from "ionic-angular";
+import {EVENTS} from "../types/app-types";
 
 @Injectable()
 
@@ -9,8 +10,13 @@ export class ApiProvider {
   private API_URL: string = this.domainUrl.concat('/api/delivery-driver/');
   private chosenLang: 'en' | 'ar';
 
-  constructor( @Inject('DOMAIN_URL') private domainUrl,public http: HttpClient, private translate: TranslateService, private events: Events) {
-    this.events.subscribe('change:lang', lang => this.chosenLang = lang);
+  constructor(@Inject('DOMAIN_URL') private domainUrl,
+              public http: HttpClient,
+              private translate: TranslateService,
+              private events: Events) {
+
+    this.events.subscribe(EVENTS.UPDATE_LANG, lang => this.chosenLang = lang);
+
   }
 
   get(endpoint: string, params?: any) {

@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {Events, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {Order, OrderStatus, User, UserData} from "../../providers/types/app-types";
+import {Order, OrderStatus, User, UserData, EVENTS} from "../../providers/types/app-types";
 import {OrdersProvider} from '../../providers/orders/orders';
 import {AppstorageProvider} from '../../providers/appstorage/appstorage';
 import {UtilsProvider} from '../../providers/utils/utils';
@@ -66,7 +66,7 @@ export class UserPage {
       .subscribe(response => {
         console.log(response);
         if (response.success) {
-          this.events.publish('updateOrders');
+          this.events.publish(EVENTS.UPDATE_ORDERS);
           this.utils.showToast(response.message);
           setTimeout(() => {
             this.navCtrl.setRoot('RequestsPage')
@@ -80,7 +80,7 @@ export class UserPage {
       .changeOrderStatus(OrderStatus.completed,this.orderId, this.userData.api_token)
       .subscribe(response => {
         if (response.success) {
-          this.events.publish('updateOrders');
+          this.events.publish(EVENTS.UPDATE_ORDERS);
           this.utils.showToast(response.message);
           this.orderStatus = 'completed';
           this.driverOrder.status = 'completed';
@@ -96,7 +96,7 @@ export class UserPage {
       .changeOrderStatus(OrderStatus.ongoing, this.orderId, this.userData.api_token)
       .subscribe(response => {
         if (response.success) {
-          this.events.publish('updateOrders');
+          this.events.publish(EVENTS.UPDATE_ORDERS);
           this.utils.showToast(response.message);
           this.driverOrder.status = 'ongoing';
           this.orderStatus = 'ongoing';
@@ -116,7 +116,7 @@ export class UserPage {
       .changeOrderStatus(OrderStatus.processing, this.orderId, this.userData.api_token)
       .subscribe(response => {
         if (response.success) {
-          this.events.publish('updateOrders');
+          this.events.publish(EVENTS.UPDATE_ORDERS);
           this.driverOrder.status = 'processing';
           this.orderStatus = 'processing';
         }
@@ -150,7 +150,7 @@ export class UserPage {
         if (response.success) {
           this.driverOrder.status = response.data.order.status;
           this.navCtrl.popToRoot();
-          this.events.publish('updateOrders');
+          this.events.publish(EVENTS.UPDATE_ORDERS);
         }
         this.utils.showToast(response.message)
       })

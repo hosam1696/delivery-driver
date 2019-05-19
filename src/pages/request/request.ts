@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {Events, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {OrdersProvider} from "../../providers/orders/orders";
-import {DriverOrder, Order, OrderStatus, UserData} from "../../providers/types/app-types";
+import {DriverOrder, Order, OrderStatus, UserData, EVENTS} from "../../providers/types/app-types";
 import {AppstorageProvider} from "../../providers/appstorage/appstorage";
 import {UtilsProvider} from "../../providers/utils/utils";
 
@@ -82,7 +82,7 @@ export class RequestPage {
         console.log({response});
         if (response.success) {
           this.driverOrder.status = response.data.order.status;
-          this.events.publish('updateOrders');
+          this.events.publish(EVENTS.UPDATE_ORDERS);
           if (orderStatus === OrderStatus.waiting) {
             this.navCtrl.push('WaitingordersPage');
           }

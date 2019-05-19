@@ -9,7 +9,7 @@ import {
   PopoverController
 } from 'ionic-angular';
 import {OrdersProvider} from '../../providers/orders/orders';
-import {DriverOrder, OrderStatus, UserData} from '../../providers/types/app-types';
+import {DriverOrder, OrderStatus, UserData, EVENTS} from '../../providers/types/app-types';
 import {AppstorageProvider} from '../../providers/appstorage/appstorage';
 import {UtilsProvider} from '../../providers/utils/utils';
 import {AudioProvider} from '../../providers/audio/audio';
@@ -44,7 +44,7 @@ export class RequestsPage {
               private utils: UtilsProvider,
               private popOverCtrl: PopoverController,
               private network: Network,
-              private geolocate: Geolocation,
+              private geolocation: Geolocation,
               private diagnostic: Diagnostic,
               private alertCtrl: AlertController,
               private audioProvider: AudioProvider,
@@ -89,13 +89,12 @@ export class RequestsPage {
   }
 
   private subscribeToEvents() {
-    this.events.subscribe('updateOrders', () => {
+    this.events.subscribe(EVENTS.UPDATE_ORDERS, () => {
       this.getAllOrders(false);
     });
 
-    this.events.subscribe('update:storage', () => {
-      this.appStorageProvider.getUserData()
-        .then(userData => this.userData = userData)
+    this.events.subscribe(EVENTS.UPDATE_STORAGE, () => {
+      this.appStorageProvider.getUserData().then(userData => this.userData = userData)
     });
   }
 
@@ -130,9 +129,9 @@ export class RequestsPage {
         // show Hint to app user the user has been logged before by this account, he have to login againg to refresh token
         this.utils.showToast('التطبيق يعمل على جهاز اخر.');
         // Try to Login Again
-        this.events.publish('handle:unAuthorized', (data) => {
+        this.events.publish(EVENTS.HANDLE_UNAUTHORIZATION, (data) => {
           this.userData = data[0];
-          this.events.publish('update:storage');
+          this.events.publish(EVENTS.UPDATE_STORAGE);
           this.getAllOrders();
         });
 
@@ -174,8 +173,8 @@ export class RequestsPage {
 
     request$.subscribe(response => {
       if (response.success) {
-        const currentProcessingdOrder: DriverOrder = response.data.order;
-        this.goToDeliveryPage(currentProcessingdOrder);
+        const currentProcessingOrder: DriverOrder = response.data.order;
+        this.goToDeliveryPage(currentProcessingOrder);
       }
     })
   }
@@ -242,7 +241,7 @@ export class RequestsPage {
 
 
     private getCurrentLoaction() {
-      const geolocate = this.geolocate.getCurrentPosition();
+      const geolocate = this.geolocation.getCurrentPosition();
 
       geolocate.then((data: Geoposition) => {
         this.currentLocation = {lat:data.coords.latitude, long:data.coords.longitude};

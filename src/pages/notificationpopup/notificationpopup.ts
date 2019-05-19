@@ -3,7 +3,7 @@ import {Events, IonicPage, ModalController, NavController, NavParams, ViewContro
 import {AppstorageProvider} from '../../providers/appstorage/appstorage';
 import {OrdersProvider} from '../../providers/orders/orders';
 import {UtilsProvider} from '../../providers/utils/utils';
-import {DriverOrder, OrderStatus, RequestAction, UserData} from '../../providers/types/app-types';
+import {DriverOrder, OrderStatus, RequestAction, UserData, EVENTS} from '../../providers/types/app-types';
 import {AudioProvider} from '../../providers/audio/audio';
 
 
@@ -100,7 +100,7 @@ export class NotificationpopupPage {
       .subscribe(response => {
         if (response.success) {
           this.driverOrder.status = response.data.order.status;
-          this.events.publish('updateOrders');
+          this.events.publish(EVENTS.UPDATE_ORDERS);
         }
         this.utils.showToast(response.message);
         this.dismiss();

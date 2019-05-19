@@ -3,7 +3,7 @@ import {Events, Nav, Platform} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {TranslateService} from "@ngx-translate/core";
-import {AppDirLang, DocumentDirection, UserData, Langs, OrderStatus} from "../providers/types/app-types";
+import {AppDirLang, DocumentDirection, UserData, Langs, EVENTS, APP_PAGE} from "../providers/types/app-types";
 import {AppstorageProvider} from "../providers/appstorage/appstorage";
 import {AudioProvider} from '../providers/audio/audio';
 import {FcmProvider} from '../providers/fcm/fcm';
@@ -16,7 +16,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = 'LoginPage';
   defaultLang: Langs = 'ar';
-  pages: Array<{ title: string, component: any, icon: string, pageStatus?: OrderStatus | string }>;
+  pages: Array<APP_PAGE>;
   userData: UserData;
 
   constructor(@Inject('DOMAIN_URL') public domainUrl,
@@ -29,35 +29,19 @@ export class MyApp {
               public appStorage: AppstorageProvider,
               private authProvider: AuthProvider,
               public translate: TranslateService) {
-    this.initializeApp();
 
-    // used for an example of ngFor and navigation
     this.pages = [
       {title: 'بياناتى', component: 'ProfilePage', icon: 'man-user1.png'},
       {title: 'الطلبات', component: 'RequestsPage', icon: 'synchronization-arrows-couple1.png'},
       {title: 'الطلبات المؤجلة', component: 'WaitingordersPage', icon: 'sync.png', pageStatus: 'waiting'},
-      {
-        title: 'الطلبات المكتملة',
-        component: 'WaitingordersPage',
-        icon: 'synchronization-arrows-couple1.png',
-        pageStatus: 'completed'
-      },
-      {
-        title: 'الطلبات المرتجعة',
-        component: 'WaitingordersPage',
-        icon: 'synchronization-arrows-couple1.png',
-        pageStatus: 'returned'
-      },
-      {
-        title: 'الطلبات المرفوضة',
-        component: 'WaitingordersPage',
-        icon: 'synchronization-arrows-couple1.png',
-        pageStatus: 'canceled'
-      }
+      {title: 'الطلبات المكتملة', component: 'WaitingordersPage', icon: 'synchronization-arrows-couple1.png', pageStatus: 'completed'},
+      {title: 'الطلبات المرتجعة',component: 'WaitingordersPage',icon: 'synchronization-arrows-couple1.png',pageStatus: 'returned'},
+      {title: 'الطلبات المرفوضة',component: 'WaitingordersPage',icon: 'synchronization-arrows-couple1.png',pageStatus: 'canceled'}
     ];
 
-    this.subscribeEvents();
+    this.initializeApp();
 
+    this.subscribeEvents();
   }
 
   initializeApp() {
@@ -65,11 +49,8 @@ export class MyApp {
 
       this.statusBar.backgroundColorByHexString('#443279');
       this.splashScreen.hide();
-
       this.setRootPage();
-
       this.audioProvider.activateBtnSound();
-
       this.fcmProvider.handleNotifications();
 
     });
@@ -85,11 +66,11 @@ export class MyApp {
       const [lang, userData] = data;
       this.setDefaultLang(lang || this.defaultLang);
       if (userData) {
-        this.events.publish('update:storage');
-        this.events.publish('getWaitingOrders');
-        this.rootPage = 'RequestsPage';
+        this.events.publish(EVENTS.UPDATE_STORAGE);
+        this.events.publish(EVENTS.GET_WAITING_ORDERS);
+        this.events.publish(EVENTS.UPDATE_ROOT, 'RequestsPage');
       } else {
-        this.rootPage = 'LoginPage'
+        this.events.publish(EVENTS.UPDATE_ROOT, 'LoginPage');
       }
     })
   }
@@ -98,33 +79,38 @@ export class MyApp {
     this.authProvider.logout(this.userData.api_token)
       .subscribe(response => {
         if (response.success) {
-          Promise.all([
-            this.appStorage.storage.remove('delivery:user:data'),
-            this.appStorage.storage.remove('delivery:api:token'),
-            this.appStorage.storage.remove('delivery:fcm:token'),
-          ]).then(() => {
-            this.rootPage = 'LoginPage';
-            this.nav.setRoot('LoginPage');
-            this.events.publish('change:splash:screen', false);
-          })
+          // Promise.all([
+          //   this.appStorage.storage.remove(LOCAL_STORAGE.USERDATA),
+          //   this.appStorage.storage.remove(LOCAL_STORAGE.API_TOKEN),
+          //   this.appStorage.storage.remove(LOCAL_STORAGE.FCM_TOKEN),
+          // ])
+          this.appStorage.storage.clear()
+            .then(() => {
+              this.setDefaultLang(this.defaultLang);
+              this.events.publish(EVENTS.UPDATE_ROOT, 'LoginPage');
+              this.events.publish(EVENTS.UPDATE_SPLASH, false);
+              this.nav.setRoot('LoginPage');
+            })
         } else {
-          //TODO: Check error or network connection
           this.handleUnAuthorizedUser(() => this.logout());
         }
       })
   }
 
   private subscribeEvents() {
-    this.events.subscribe('change:root', page => this.rootPage = page);
-    this.events.subscribe('update:storage', () => {
+
+    this.events.subscribe(EVENTS.UPDATE_ROOT, page => this.rootPage = page);
+
+    this.events.subscribe(EVENTS.UPDATE_STORAGE, () => {
       this.appStorage.getUserData()
         .then(userData => this.userData = userData)
     });
-    this.events.subscribe('handle:unAuthorized', data => this.handleUnAuthorizedUser(data))
+
+    this.events.subscribe(EVENTS.HANDLE_UNAUTHORIZATION, data => this.handleUnAuthorizedUser(data))
 
     // Testing Notification Popup in Browser
     // setTimeout( () => {
-    //   this.events.publish('open:popup', {wasTapped: false, order_id: 137})
+    //   this.events.publish(EVENTS.NOTIFICATION_POPUP, {wasTapped: false, order_id: 137})
     // }, 3000)
   }
 
@@ -143,7 +129,7 @@ export class MyApp {
     this.openPage(page);
   }
 
-  private handleUnAuthorizedUser(successCb:(data:[UserData, string])=>any): void {
+  private handleUnAuthorizedUser(successCb: (data: [UserData, string]) => any): void {
     const authLogin$ = this.authProvider.login({
       userName: this.userData.userName,
       password: this.userData.current_password,
@@ -162,13 +148,12 @@ export class MyApp {
     })
   }
 
-  //TODO: To use later if we added second lang to the app
   private setDefaultLang(lang: Langs) {
-      this.translate.setDefaultLang(lang);
-      this.translate.use(lang);
-      this.platform.setDir(AppDirLang[lang] as DocumentDirection, true);
-      this.appStorage.getAppLang()
-        .then(lang => this.setDefaultLang(lang || this.defaultLang));
-    }
-
+    this.translate.setDefaultLang(lang);
+    this.translate.use(lang);
+    this.platform.setDir(AppDirLang[lang] as DocumentDirection, true);
+    this.appStorage.getAppLang()
+      .then(lang => this.setDefaultLang(lang || this.defaultLang));
   }
+
+}

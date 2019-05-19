@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Storage} from '@ionic/storage';
-import {appLangs, UserData} from "../types/app-types";
+import {appLangs, UserData, LOCAL_STORAGE} from "../types/app-types";
 
 @Injectable()
 export class AppstorageProvider {
@@ -10,28 +10,28 @@ export class AppstorageProvider {
   }
 
   async getAppLang() {
-    let appLang = await this.storage.get('delivery:app:lang');
+    let appLang = await this.storage.get(LOCAL_STORAGE.LANG);
     return this._appLang = appLang ? appLang : this.setAppLang('ar'); // default app language is arabic
   }
 
   async setAppLang(lang: appLangs | string) {
-    return this._appLang = await this.storage.set('delivery:app:lang', lang);
+    return this._appLang = await this.storage.set(LOCAL_STORAGE.LANG, lang);
   }
 
   getUserData(): Promise<UserData> {
-    return this.storage.get('delivery:user:data');
+    return this.storage.get(LOCAL_STORAGE.USERDATA);
   }
 
   setUserData(user: UserData): Promise<UserData> {
-    return this.storage.set('delivery:user:data', user);
+    return this.storage.set(LOCAL_STORAGE.USERDATA, user);
   }
 
   getSavedToken() {
-    return this.storage.get('delivery:api:token')
+    return this.storage.get(LOCAL_STORAGE.API_TOKEN)
   }
 
   saveToken(token) {
-    return this.storage.set('delivery:api:token', token)
+    return this.storage.set(LOCAL_STORAGE.API_TOKEN, token)
   }
 
   // getFcmToken() {
@@ -39,7 +39,7 @@ export class AppstorageProvider {
   // }
 
   saveFcmToken(token) {
-    return this.storage.set('delivery:fcm:token', token)
+    return this.storage.set(LOCAL_STORAGE.FCM_TOKEN, token)
   }
 
 }
