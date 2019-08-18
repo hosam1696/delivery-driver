@@ -2,7 +2,7 @@
   <!-- [exclude]="'button'" (clickOutside)="dismiss()" -->
 
 
-  <section class="pop-content" >
+  <section class="pop-content" [exclude]="'button'" (clickOutside)="dismiss()">
     <ng-template [ngIf]="driverOrder">
 
       <div class="item company-title">
@@ -45,9 +45,9 @@
           </button>
         </div>
       </div>
-      <p text-center *ngIf="!countIsOver">
+      <!-- <p text-center *ngIf="!countIsOver">
         {{counter.getSeconds()<10?'0':''}}{{counter.getSeconds()}} : {{counter.getMinutes()<10?'0':''}}{{counter.getMinutes()}}
-      </p>
+      </p> -->
 
     </ng-template>
 

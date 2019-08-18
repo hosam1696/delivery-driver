@@ -1,6 +1,9 @@
 page-request {
 
   ion-content {
+    .request-details {
+      padding-bottom: 32px;
+    }
     .total-cost {
       box-shadow: 2px 2px 10px #eee;
       border-radius: 8px;
@@ -31,6 +34,7 @@ page-request {
         bottom: -5px !important;
       }
       ion-slide {
+        padding-bottom: 10px;
         img {
           border-radius: 8px;
           height: 150px;
@@ -43,13 +47,32 @@ page-request {
 
         .product-title {
           margin-top: 5px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          ion-badge {
+            transform: scale(0.9);
+            background-color: rgba(68, 50, 121, .58) !important;
+            
+          }
         }
-
+        .food-extra {
+          @extend .total-cost;
+          min-width: 40%;
+          width: auto;
+          max-width: 75%;     
+          p {
+            margin-top: 5px;
+            margin-bottom: 5px;
+          }
+          span {
+            font-size: 1.2rem
+          }
+        }
         .info {
           display: flex;
           justify-content: space-between;
           padding: 8px 8px 16px;
-
           & > div {
             @extend .total-cost;
             margin: auto 0 ;

@@ -5,7 +5,7 @@
       <span *ngIf="orderStatus == 'accepted' || orderStatus == 'waiting'|| orderStatus == 'processing' && driverOrder?.status != 'ongoing'">
         الشركة
       </span>
-      <span *ngIf="driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' || orderStatus == 'completed'">
+      <span *ngIf="driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' || orderStatus == 'completed' || orderStatus == 'received'">
         العميل
       </span>
     </ion-title>
@@ -28,8 +28,15 @@
         <img [src]="fillImgSrc(driverOrder.company.logo)" alt="">
       </div>
       <h2>{{driverOrder.company.name}}</h2>
-      <p>{{driverOrder.company.phone}}</p>
-      <p>يرجى دفع مبلغ
+      <p class="phone-num">
+          <button ion-button small clear icon-only (click)="dialNumber(driverOrder.company.phone)">
+              <ion-icon name="call"></ion-icon>
+          </button>
+        {{driverOrder.company.phone}} 
+      </p>
+      <p class="notify-msg">
+        <ion-icon color="danger" name="alert"></ion-icon>
+        يرجى دفع مبلغ
         <b>
 
         {{driverOrder.total}}
@@ -67,29 +74,38 @@
   </ng-template>
 
 
-  <ng-template [ngIf]="requestUser && orderStatus != 'accepted' &&  orderStatus != 'waiting' &&  orderStatus != 'processing'  && (driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' || orderStatus == 'completed')">
+  <ng-template [ngIf]="requestUser && orderStatus != 'accepted' &&  orderStatus != 'waiting' &&  orderStatus != 'processing'  && (driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' ||  orderStatus == 'received' || orderStatus == 'completed')">
 
     <section class="avatar-section">
       <div class="avatar">
         <img [src]="fillImgSrc(requestUser?.logo)" alt="">
       </div>
       <h2>{{requestUser?.name}}</h2>
-      <p>{{requestUser?.phone}}</p>
-      <p>{{requestUser?.gender | translate}}</p>
-      <p>يرجى استلام مبلغ
+      <p class="phone-num">
+          <button ion-button small clear icon-only *ngIf="requestUser" (click)="dialNumber(requestUser.phone)">
+              <ion-icon name="call"></ion-icon>
+          </button>
+        {{requestUser?.phone}}
+      </p>
+      <p *ngIf="userData" class="notify-msg">
+        <ion-icon color="danger" name="alert"></ion-icon>
+        يرجى استلام مبلغ
+        
         <b>
-          {{driverOrder.total}}
-        </b>
-        +
-        <b>
-        {{userData?.logistic_company_service?.attributes?.priceForHour}}
-        </b>
-         ريال
+          {{driverOrder.total + userData.deliveryCost}}
+           ( {{driverOrder.total}}
+          </b>
+          +
+          <b>
+            {{userData.deliveryCost}})
+          </b>
+          ريال
          من
         {{requestUser.name}}
       </p>
       <p>الدفع عند الاستلام</p>
-      <p class="small" *ngIf="driverOrder.status && (driverOrder.status == 'processing' || driverOrder.status == 'ongoing') && driverOrder.status != 'completed'">
+
+      <p class="small" *ngIf="driverOrder.status && (driverOrder.status == 'processing' || driverOrder.status == 'received' || driverOrder.status == 'shipping' || driverOrder.status == 'ongoing') && driverOrder.status != 'completed'">
         {{orderStatus | translate}}
       </p>
     </section>

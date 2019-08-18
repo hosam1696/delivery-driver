@@ -5,6 +5,7 @@ import {OrdersProvider} from '../../providers/orders/orders';
 import {AppstorageProvider} from '../../providers/appstorage/appstorage';
 import {UtilsProvider} from '../../providers/utils/utils';
 import {LaunchNavigator, LaunchNavigatorOptions} from "@ionic-native/launch-navigator";
+import { CallNumber } from '@ionic-native/call-number';
 
 
 @IonicPage()
@@ -27,6 +28,7 @@ export class UserPage {
     private launchNavigator: LaunchNavigator,
     private events: Events,
     private utils: UtilsProvider,
+    private callNumber: CallNumber,
     private appStorageProvider: AppstorageProvider,
     public navParams: NavParams) {
     // console.log({requestStatus: this.orderStatus})
@@ -93,6 +95,19 @@ export class UserPage {
 
   onReceiving() {
     this.ordersProvider
+      .changeOrderStatus(OrderStatus.received, this.orderId, this.userData.api_token)
+      .subscribe(response => {
+        if (response.success) {
+          this.events.publish(EVENTS.UPDATE_ORDERS);
+          this.utils.showToast(response.message);
+          this.driverOrder.status = 'received';
+          this.orderStatus = 'received';
+        }
+      })
+  }
+
+  onOngoing() {
+    this.ordersProvider
       .changeOrderStatus(OrderStatus.ongoing, this.orderId, this.userData.api_token)
       .subscribe(response => {
         if (response.success) {
@@ -127,6 +142,7 @@ export class UserPage {
     const location = [+this.driverOrder.lat, +this.driverOrder.lng];
     console.log({OrderLocation: location});
     this.showOnMaps(location);
+    this.onOngoing();
   }
 
   onReturned() {
@@ -149,11 +165,16 @@ export class UserPage {
         console.log({response});
         if (response.success) {
           this.driverOrder.status = response.data.order.status;
+          this.orderStatus = this.driverOrder.status;
           this.navCtrl.popToRoot();
           this.events.publish(EVENTS.UPDATE_ORDERS);
         }
         this.utils.showToast(response.message)
       })
+  }
+
+  dialNumber(number: string): void {
+    this.callNumber.callNumber(number, true).then();
   }
 
   fillImgSrc(src: string): string {

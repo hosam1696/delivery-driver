@@ -54,7 +54,8 @@ export interface UserData {
   company?: Company,
   logistic_company_service?: any,
   order_count?: any,
-  isRestaurantDelegate?: boolean
+  isRestaurantDelegate?: boolean,
+  deliveryCost?: number
 }
 
 export interface LoginData {
@@ -66,7 +67,7 @@ export interface LoginData {
 export interface LoginResponse {
   success: boolean,
   message: string,
-  data: { user: UserData },
+  data: { user: UserData, deliveryCost?: number },
   error?: string
 }
 
@@ -231,6 +232,8 @@ export interface Item {
   updated_at: string;
   deleted_at?: any;
   image: string;
+  extra?:any,
+  serial?:string
 }
 
 export interface APP_PAGE {
@@ -250,6 +253,7 @@ export interface FirstItem {
   created_at: string;
   updated_at: string;
   deleted_at?: null;
+  serial?:string
 }
 
 export enum EVENTS {

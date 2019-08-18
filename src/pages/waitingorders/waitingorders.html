@@ -32,7 +32,9 @@
     </div>
 
     <ion-list margin *ngFor="let request of allRequests">
-      <driver-request [request]="request" (click)="goToRequestPage(request)"></driver-request>
+      <ng-template [ngIf]="request.order.first_item"> <!-- Add Check to requests that does not have details  -->
+        <driver-request [request]="request" (click)="goToRequestPage(request)"></driver-request>
+      </ng-template>
     </ion-list>
     
   </ion-content>

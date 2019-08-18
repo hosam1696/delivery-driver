@@ -19,6 +19,7 @@ export class NotificationpopupPage {
   private _next10 = +Date.now() + 1000 * 60 * 10;
   counter = new Date(this._next10 - +Date.now());
   countIsOver: boolean = false;
+  apiKey: string;
 
   constructor(
     @Inject('DOMAIN_URL') public domainUrl,
@@ -36,7 +37,8 @@ export class NotificationpopupPage {
 
   async ionViewDidLoad() {
     this.userData = await this.appStorage.getUserData();
-    this.playCounter();
+    this.apiKey = await this.appStorage.getSavedToken();
+    // this.playCounter();
     this.getRequestDetails();
     this.audioProvider.activateNotifySound();
   }
@@ -57,7 +59,7 @@ export class NotificationpopupPage {
   }
 
   getRequestDetails() {
-    const request$ = this.orderProvider.getOrderDetails(this.data.order_id, this.userData.api_token);
+    const request$ = this.orderProvider.getOrderDetails(this.data.order_id, this.userData.api_token || this.apiKey);
 
     request$.subscribe(response => {
       if (response.success) {
@@ -101,6 +103,14 @@ export class NotificationpopupPage {
         if (response.success) {
           this.driverOrder.status = response.data.order.status;
           this.events.publish(EVENTS.UPDATE_ORDERS);
+          if (orderStatus == OrderStatus.accepted) {
+            this.navCtrl.push('UserPage', {
+            user: this.driverOrder.order.user,
+            orderId: this.driverOrder.id,
+            orderStatus: this.driverOrder.status,
+            driverOrder: this.driverOrder.order
+            });
+          }
         }
         this.utils.showToast(response.message);
         this.dismiss();

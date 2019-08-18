@@ -18,7 +18,7 @@ export class FcmProvider {
 
 
   handleNotifications() {
-    // if (this.platform.is('cordova') ) {
+    if (this.platform.is('cordova') ) {
       this.fcm.onNotification().subscribe(data => {
 
         if(data.wasTapped){
@@ -35,7 +35,7 @@ export class FcmProvider {
           }
         }
       });
-    
+    }
   }
 
   private openNotificationPopup(data?:any) {

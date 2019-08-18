@@ -16,6 +16,7 @@ import { EVENTS } from '../../providers/types/app-types';
   templateUrl: 'login.html',
 })
 export class LoginPage {
+  private _splashScreenDuration: number = 3;
   loginForm: FormGroup;
   processing: boolean = false;
   showSplash: boolean = true;
@@ -41,7 +42,7 @@ export class LoginPage {
 
     setTimeout(()=> {
       this.showSplash = false;
-    }, 3000);
+    }, this._splashScreenDuration * 1000);
   }
 
 
@@ -68,7 +69,7 @@ export class LoginPage {
                 isRestaurantDelegate = loggedUser.logistic_company_service.service && loggedUser.logistic_company_service.service.name == 'توصيل مطاعم';
 
           Promise.all([
-            this.appStorage.setUserData({...loggedUser, current_password: this.loginForm.get('password').value, isRestaurantDelegate}),
+            this.appStorage.setUserData({...loggedUser, current_password: this.loginForm.get('password').value, isRestaurantDelegate, deliveryCost: response.data.deliveryCost}),
             this.appStorage.saveToken(loggedUser.api_token)
           ]).then(() => {
             this.events.publish(EVENTS.UPDATE_STORAGE);

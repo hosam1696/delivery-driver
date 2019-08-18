@@ -17,6 +17,8 @@ import {AuthProvider} from '../../providers/auth/auth';
 import {Network} from '@ionic-native/network';
 import {Geolocation, Geoposition} from "@ionic-native/geolocation";
 import {Diagnostic} from "@ionic-native/diagnostic";
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { map } from 'rxjs/operators';
 
 @IonicPage()
 @Component({
@@ -69,10 +71,29 @@ export class RequestsPage {
   async ionViewWillEnter() {
     this.userData = await this.appStorageProvider.getUserData();
     this.checkLocation();
-
+    this.getOrdersCount();
     this.locationInterval = setInterval(() => {
       this.checkLocation();
     }, 1000 * 60 * 5);
+  }
+
+  getOrdersCount() {
+    const ordersStatus: Array<OrderStatus> = [ OrderStatus.waiting,  OrderStatus.completed, OrderStatus.returned] 
+    const orders$ = forkJoin(
+    ...ordersStatus.map(status => this.ordersProvider.getDriverOrders(this.userData.api_token, status))
+    )
+    orders$.subscribe((responses:any[]) => {
+      let ordersCount = responses.map(response => {
+      if (response.success&&response.data.orders) {
+        return response.data.orders.length;
+      } else {
+        return 0
+      }
+    })
+      console.log(ordersCount)
+    })
+
+
   }
 
   async ionViewDidLoad() {
@@ -154,7 +175,7 @@ export class RequestsPage {
   }
 
   private checkDelayedOrders(orders: DriverOrder[]): DriverOrder[] {
-    let actionOrders = orders.filter(order => order.status != 'init' && (order.status =='accepted' || order.status == 'processing' || order.status == 'ongoing' ));
+    let actionOrders = orders.filter(order =>(order.status =='accepted'  || order.status == 'received' || order.status == 'processing' || order.status == 'ongoing' ) && order.order.first_item);
 
     this.initOrders = orders.filter(order => order.status == 'init');
 
@@ -163,7 +184,8 @@ export class RequestsPage {
 
   private checkProcessingOrders(): void {
     // get the first in delivering state order
-    const processingOrder: DriverOrder = this.allRequests.find((order:DriverOrder) => order.status == 'ongoing' || order.status == 'processing');
+    const processingOrder: DriverOrder = this.allRequests.find((order:DriverOrder) => order.status == 'ongoing' || order.status == 'received' || order.status == 'processing');
+    console.log(this.requests,{processingOrder})
     processingOrder && this.getRequestDetails(processingOrder.id);
   }
 
