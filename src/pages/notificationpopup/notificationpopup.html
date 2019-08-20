@@ -26,7 +26,10 @@
         </button>
 
       </div>
-      <div class="actions">
+      <p text-center *ngIf="driverOrder.status == 'canceled'">
+        تم تحويل الطلب الى مندوب اخر
+      </p>
+      <div class="actions" [hidden]="driverOrder.status == 'canceled'">
         <div class="top">
           <button ion-button round (click)="onClick('accept')">
             التوصيل الان

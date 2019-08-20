@@ -14,6 +14,7 @@
         <span>
           {{p.title | translate}}
         </span>
+        <ion-badge *ngIf="p.pageCount || p.pageCount>= 0" color="light">{{p.pageCount}}</ion-badge>
       </button>
 
       <button menuClose ion-item (click)="logout()">

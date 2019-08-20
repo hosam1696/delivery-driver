@@ -108,6 +108,13 @@ export class MyApp {
 
     this.events.subscribe(EVENTS.HANDLE_UNAUTHORIZATION, data => this.handleUnAuthorizedUser(data))
 
+    this.events.subscribe(EVENTS.UPDATE_PAGE_COUNT,numbers => {
+      for(let i = 2 ;i<numbers.length+2;i++) {
+        this.pages[i]['pageCount'] = numbers[i-2]
+      }
+
+      console.log({pages: this.pages})
+    })
     // Testing Notification Popup in Browser
     // setTimeout( () => {
     //   this.events.publish(EVENTS.NOTIFICATION_POPUP, {wasTapped: false, order_id: 624})

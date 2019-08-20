@@ -61,5 +61,14 @@ page-user {
         }
       }
     }
+    .actions {
+      div {
+        &:first-of-type {
+          button {
+            transform: scaleX(.96);
+          }
+        }
+      }
+    }
   }
 }

@@ -91,6 +91,7 @@ export class RequestsPage {
       }
     })
       console.log(ordersCount)
+      this.events.publish(EVENTS.UPDATE_PAGE_COUNT, ordersCount);
     })
 
 

@@ -240,7 +240,8 @@ export interface APP_PAGE {
   title: string,
   component: any,
   icon: string,
-  pageStatus?: OrderStatus | string
+  pageStatus?: OrderStatus | string,
+  pageCount?: number
 }
 
 export interface FirstItem {
@@ -264,7 +265,8 @@ export enum EVENTS {
   UPDATE_ORDERS = 'update:orders',
   GET_WAITING_ORDERS = 'get:waitingorders',
   NOTIFICATION_POPUP = 'open-notification:popup',
-  UPDATE_SPLASH = 'update:splashscreen'
+  UPDATE_SPLASH = 'update:splashscreen',
+  UPDATE_PAGE_COUNT = 'update:page:count'
 
 }
 

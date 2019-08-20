@@ -69,7 +69,7 @@
   </div>
   </ng-template>
 
-  <ion-fab bottom right *ngIf="driverOrder?.status == 'accepted' || driverOrder?.status == 'completed' || driverOrder?.status == 'ongoing' || driverOrder?.status == 'processing'">
+  <ion-fab bottom right *ngIf="driverOrder?.status == 'accepted' || driverOrder?.status == 'received' || driverOrder?.status == 'shipping' || driverOrder?.status == 'completed' || driverOrder?.status == 'ongoing' || driverOrder?.status == 'processing'">
     <button ion-fab mini (click)="goToUserPage()" [disabled]="!driverOrder.order.items">
       <img src="assets/imgs/map-pin.png" alt="">
     </button>
