@@ -47,10 +47,10 @@
         {{driverOrder.company.name}}
 
       </p>
-      <p class="small" *ngIf="orderStatus && orderStatus != 'waiting' && (orderStatus == 'processing' || orderStatus == 'ongoing')">
+      <!-- <p class="small" *ngIf="orderStatus && orderStatus != 'waiting' && (orderStatus == 'processing' || orderStatus == 'ongoing')">
         {{orderStatus | translate}}
         <span *ngIf="orderStatus == 'processing'"> {{driverOrder.company.name}}</span>      
-      </p>
+      </p> -->
 
     </section>
 
@@ -104,10 +104,10 @@
         {{requestUser.name}}
       </p>
       <p>الدفع عند الاستلام</p>
-
+<!-- 
       <p class="small" *ngIf="driverOrder.status && (driverOrder.status == 'processing' || driverOrder.status == 'received' || driverOrder.status == 'shipping' || driverOrder.status == 'ongoing') && driverOrder.status != 'completed'">
         {{orderStatus | translate}}
-      </p>
+      </p> -->
     </section>
     
     

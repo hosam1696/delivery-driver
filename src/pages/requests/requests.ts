@@ -18,7 +18,6 @@ import {Network} from '@ionic-native/network';
 import {Geolocation, Geoposition} from "@ionic-native/geolocation";
 import {Diagnostic} from "@ionic-native/diagnostic";
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { map } from 'rxjs/operators';
 
 @IonicPage()
 @Component({
@@ -177,7 +176,7 @@ export class RequestsPage {
 
   private checkDelayedOrders(orders: DriverOrder[]): DriverOrder[] {
     let actionOrders = orders.filter(order =>(order.status =='accepted'  || order.status == 'received' || order.status == 'processing' || order.status == 'ongoing' ) && order.order.first_item);
-
+    this.events.publish('update:allRequests:count', actionOrders.length);
     this.initOrders = orders.filter(order => order.status == 'init');
 
     return actionOrders;

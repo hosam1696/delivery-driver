@@ -115,6 +115,10 @@ export class MyApp {
 
       console.log({pages: this.pages})
     })
+
+    this.events.subscribe('update:allRequests:count', count => {
+      this.pages[1].pageCount = count;
+    });
     // Testing Notification Popup in Browser
     // setTimeout( () => {
     //   this.events.publish(EVENTS.NOTIFICATION_POPUP, {wasTapped: false, order_id: 624})

@@ -26,10 +26,14 @@
         </button>
 
       </div>
-      <p text-center *ngIf="driverOrder.status == 'canceled'">
+      <div hidden>
+        {{data|json}}
+      </div>
+      <p text-center *ngIf="data.order_status && data.order_status != 'init'">
         تم تحويل الطلب الى مندوب اخر
       </p>
-      <div class="actions" [hidden]="driverOrder.status == 'canceled'">
+
+      <div class="actions" *ngIf="driverOrder.status == 'init'">
         <div class="top">
           <button ion-button round (click)="onClick('accept')">
             التوصيل الان
