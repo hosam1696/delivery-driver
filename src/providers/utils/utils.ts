@@ -20,7 +20,7 @@ export class UtilsProvider {
     let toast = this.toastCtrl.create({
       message, ...{
         duration: 3000,
-        position: 'top',
+        position: 'bottom',
         cssClass: 'toast-sm'
       }, ...settings
     });

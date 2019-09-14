@@ -68,11 +68,10 @@ export class UserPage {
       .subscribe(response => {
         console.log(response);
         if (response.success) {
-          this.events.publish(EVENTS.UPDATE_ORDERS);
           this.utils.showToast(response.message);
-          setTimeout(() => {
-            this.navCtrl.setRoot('RequestsPage')
-          }, 1000)
+          this.navCtrl.pop();
+          this.events.publish(EVENTS.UPDATE_ROOT, 'RequestsPage');        
+          this.events.publish(EVENTS.UPDATE_ORDERS);
         }
       })
   }
@@ -166,7 +165,8 @@ export class UserPage {
         if (response.success) {
           this.driverOrder.status = response.data.order.status;
           this.orderStatus = this.driverOrder.status;
-          this.navCtrl.popToRoot();
+          this.navCtrl.pop();
+          this.events.publish(EVENTS.UPDATE_ROOT, 'RequestsPage');        
           this.events.publish(EVENTS.UPDATE_ORDERS);
         }
         this.utils.showToast(response.message)
