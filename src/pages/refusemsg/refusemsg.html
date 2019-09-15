@@ -7,10 +7,10 @@
     </ion-textarea>
 
     <div text-center>
-      <button ion-button round (click)="dismiss(msg)">
+      <button ion-button round (click)="dismiss(msg, 'ok')">
         موافق
       </button>
-      <button ion-button round color="light" (click)="dismiss()">
+      <button ion-button round color="light" (click)="dismiss(null, 'cancel')">
         الغاء
       </button>
     </div>
