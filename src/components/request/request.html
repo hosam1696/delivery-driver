@@ -8,8 +8,8 @@
       <b>{{request.order.first_item.title}}</b>
     </p>
     <p class="item-status">
-      {{request.status | translate}}
-      <span>{{request.created_at | date:'short'}}</span>
+      {{request.status == 'delayed'?request.comment:request.status | translate}}
+      <span [hidden]="request.status == 'delayed'">{{request.created_at | date:'short'}}</span>
     </p>
   </div>
 

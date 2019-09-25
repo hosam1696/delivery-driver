@@ -36,7 +36,8 @@ export class MyApp {
       {title: 'الطلبات المؤجلة', component: 'WaitingordersPage', icon: 'sync.png', pageStatus: 'waiting'},
       {title: 'الطلبات المكتملة', component: 'WaitingordersPage', icon: 'synchronization-arrows-couple1.png', pageStatus: 'completed'},
       {title: 'الطلبات المرتجعة',component: 'WaitingordersPage',icon: 'synchronization-arrows-couple1.png',pageStatus: 'returned'},
-      {title: 'الطلبات المرفوضة',component: 'WaitingordersPage',icon: 'synchronization-arrows-couple1.png',pageStatus: 'canceled'}
+      {title: 'الطلبات المحولة',component: 'WaitingordersPage',icon: 'synchronization-arrows-couple1.png',pageStatus: 'delayed'},
+      {title: 'الطلبات المرفوضة',component: 'WaitingordersPage',icon: 'synchronization-arrows-couple1.png',pageStatus: 'canceled'},
     ];
 
     this.initializeApp();
@@ -102,8 +103,7 @@ export class MyApp {
     this.events.subscribe(EVENTS.UPDATE_ROOT, page => this.rootPage = page);
 
     this.events.subscribe(EVENTS.UPDATE_STORAGE, () => {
-      this.appStorage.getUserData()
-        .then(userData => this.userData = userData)
+      this.appStorage.getUserData().then(userData => this.userData = userData)
     });
 
     this.events.subscribe(EVENTS.HANDLE_UNAUTHORIZATION, data => this.handleUnAuthorizedUser(data))
@@ -141,6 +141,18 @@ export class MyApp {
   }
 
   private handleUnAuthorizedUser(successCb: (data: [UserData, string]) => any): void {
+    // const authToken$ = this.authProvider.refreshToken(this.userData.api_token);
+    //
+    // authToken$.subscribe(response => {
+    //   if (response.success) {
+    //     this.userData = {...this.userData, api_token: response.data.new_token};
+    //     Promise.all([
+    //       this.appStorage.setUserData(this.userData),
+    //       this.appStorage.saveToken(response.data.new_token)
+    //     ]).then(successCb)
+    //   }
+    // })
+
     const authLogin$ = this.authProvider.login({
       userName: this.userData.userName,
       password: this.userData.current_password,

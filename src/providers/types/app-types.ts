@@ -21,7 +21,8 @@ export enum OrderStatus {
   received = 'received',
   processing = 'processing',
   ongoing = 'ongoing',
-  waiting = 'waiting'
+  waiting = 'waiting',
+  delayed = 'delayed'
 }
 
 export enum appLangs {

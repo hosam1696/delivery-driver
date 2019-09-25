@@ -57,7 +57,7 @@ export function createTranslateLoader(http: HttpClient) {
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    {provide: 'DOMAIN_URL', useValue: 'https://developer.moovstore.com'},
+    {provide: 'DOMAIN_URL', useValue: 'https://www.moovstore.com'},
     AuthProvider,
     AppstorageProvider,
     UtilsProvider,

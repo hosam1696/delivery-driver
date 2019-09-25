@@ -66,7 +66,7 @@
         <ion-label>
           {{userData?.order_count}}
           &nbsp;
-          {{'طلب' | translate}}
+          {{userData?.order_count>2?'طلبات':'طلب' | translate}}
         </ion-label>
       </ion-item>
     </ion-list>

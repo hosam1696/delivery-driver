@@ -21,6 +21,10 @@ export class AuthProvider {
     return this.api.post('change-location', this.fillBody(location), {api_token: token})
   }
 
+  refreshToken(token) {
+    return this.api.get('auth/refresh', {api_token: token});
+  }
+
   logout(token: string): Observable<{ success: boolean }> {
     return this.api.post('logout', null, {api_token: token})
   }
