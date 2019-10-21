@@ -68,11 +68,11 @@ export class UserPage {
       .subscribe(response => {
         console.log(response);
         if (response.success) {
-          this.utils.showToast(response.message);
           this.navCtrl.pop();
           this.events.publish(EVENTS.UPDATE_ROOT, 'RequestsPage');        
           this.events.publish(EVENTS.UPDATE_ORDERS);
         }
+        response.message && this.utils.showToast(response.message);
       })
   }
 
@@ -82,13 +82,13 @@ export class UserPage {
       .subscribe(response => {
         if (response.success) {
           this.events.publish(EVENTS.UPDATE_ORDERS);
-          this.utils.showToast(response.message);
           this.orderStatus = 'completed';
           this.driverOrder.status = 'completed';
           setTimeout(() => {
             this.navCtrl.popToRoot();
           }, 500)
         }
+        response.message && this.utils.showToast(response.message);
       })
   }
 
@@ -98,10 +98,10 @@ export class UserPage {
       .subscribe(response => {
         if (response.success) {
           this.events.publish(EVENTS.UPDATE_ORDERS);
-          this.utils.showToast(response.message);
           this.driverOrder.status = 'received';
           this.orderStatus = 'received';
         }
+        response.message && this.utils.showToast(response.message);
       })
   }
 
@@ -111,10 +111,10 @@ export class UserPage {
       .subscribe(response => {
         if (response.success) {
           this.events.publish(EVENTS.UPDATE_ORDERS);
-          this.utils.showToast(response.message);
           this.driverOrder.status = 'ongoing';
           this.orderStatus = 'ongoing';
         }
+        response.message && this.utils.showToast(response.message);
       })
   }
 
@@ -169,10 +169,21 @@ export class UserPage {
           this.events.publish(EVENTS.UPDATE_ROOT, 'RequestsPage');        
           this.events.publish(EVENTS.UPDATE_ORDERS);
         }
-        this.utils.showToast(response.message)
+        response.message && this.utils.showToast(response.message)
       })
   }
 
+
+  private distanceTo(location: { lat: number, lng: number }): number {
+    const EARTH_RADIUS_KM = 6371;
+    const toRad = x => x * (Math.PI / 180);
+    let [lat1, lat2] = [toRad(+this.userData.lat), toRad(location.lat)];
+    let deltalng = toRad(location.lng - +this.userData.long);
+    return 1000 * Math.acos(
+        Math.sin(lat1) * Math.sin(lat2) +
+        Math.cos(lat1) * Math.cos(lat2) * Math.cos(deltalng)) * EARTH_RADIUS_KM;
+
+      } 
   dialNumber(number: string): void {
     this.callNumber.callNumber(number, true).then();
   }

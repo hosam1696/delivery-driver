@@ -87,7 +87,7 @@ export class RequestPage {
             this.navCtrl.push('WaitingordersPage');
           }
         }
-        this.utils.showToast(response.message)
+        response.message && this.utils.showToast(response.message)
       })
 
   }
@@ -99,6 +99,14 @@ export class RequestPage {
       orderStatus: this.driverOrder.status,
       driverOrder: this.driverOrder.order
     });
+  }
+
+  isLinkUrl(link: string): boolean {
+    return link.startsWith('http') || link.startsWith('https') 
+  }
+
+  isNumber(num): boolean {
+    return  Number.isInteger(Number(num))
   }
 
   fillImgSrc(src: string): string {

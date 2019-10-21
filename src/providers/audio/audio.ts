@@ -16,7 +16,7 @@ export class AudioProvider {
 
   preload(key: string, asset: string): void {
 
-    if(this.platform.is('cordova') && !this.forceWebAudio){
+    if((this.platform.is('cordova') || this.platform.is('android')) && !this.forceWebAudio){
 
       this.nativeAudio.preloadSimple(key, asset);
 

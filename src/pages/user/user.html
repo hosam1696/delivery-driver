@@ -34,7 +34,7 @@
         يرجى دفع مبلغ
         <b>
 
-        {{driverOrder.total}}
+        {{driverOrder.total | number:'.1-2'}}
           {{'SAR' | translate}}
         </b>
 
@@ -85,20 +85,42 @@
       <p *ngIf="userData" class="notify-msg">
         <ion-icon color="danger" name="alert"></ion-icon>
         يرجى استلام مبلغ
-        
         <b>
-          {{driverOrder.total + userData.deliveryCost}}
-           ( {{driverOrder.total}}
-          </b>
-          +
-          <b>
-            {{userData.deliveryCost}})
+          {{(driverOrder.total + userData.deliveryCost - (driverOrder.moov_coupon?driverOrder.moov_coupon.amount:0)) | number:'.1-2'}}
           </b>
           ريال
          من
         {{requestUser.name}}
+        <br>
+        المسافة المتوقعة: {{distanceTo({lat: driverOrder.lat, lng: driverOrder.lng })}}
       </p>
-      <p>الدفع عند الاستلام</p>
+      <div *ngIf="userData" class="notify-msg price-list">
+          <ion-icon color="danger" name="alert"></ion-icon>
+
+        <p>
+          <span>السعر</span>:
+          <span>{{driverOrder.total | number:'.1-2'}} ريال</span>
+        </p>
+        <p *ngIf="driverOrder.moov_coupon">
+            <span>الخصم المقدم من موف</span>:
+            <span>{{driverOrder.moov_coupon.amount | number:'.1-2'}} ريال</span>
+        </p>
+        <p>
+            <span>الشحن</span>:
+            <span>{{userData.deliveryCost | number:'.1-2'}} ريال</span>
+          </p>
+          <p>
+            <span>الاجمالى</span>:
+            <span>
+                {{(driverOrder.total + userData.deliveryCost - (driverOrder.moov_coupon?driverOrder.moov_coupon.amount:0)) | number:'.1-2'}} ريال
+            </span>
+          </p>
+
+          <br>
+          <div class="payment-type">
+            الدفع عند الاستلام
+          </div>
+      </div>
 <!-- 
       <p class="small" *ngIf="driverOrder.status && (driverOrder.status == 'processing' || driverOrder.status == 'received' || driverOrder.status == 'shipping' || driverOrder.status == 'ongoing') && driverOrder.status != 'completed'">
         {{orderStatus | translate}}

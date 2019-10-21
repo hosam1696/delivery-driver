@@ -22,15 +22,29 @@
           </div>
           <div>
             <span>{{'Price' | translate}}</span>
-            <span>{{item.price}} {{'SAR' | translate}}</span>
+            <span>{{item.price | number:'.1-2'}} {{'SAR' | translate}}</span>
           </div>
         </div>
         <div class="food-extra" *ngIf="item.extra && item.extra.length">
             <span>{{'الاضافات' | translate}}</span>
-            <p *ngFor="let x of item.extra">
-              <span>{{x.attribute}}</span> : 
-              <span>{{x.value}}</span> {{'sar' | translate}}
-            </p>
+            <ng-template [ngIf]="userData && userData.isRestaurantDelegate">
+              <p *ngFor="let x of item.extra">
+                <span>{{x.attribute}}</span> : 
+                <span>{{x.value}}</span> {{'sar' | translate}}
+              </p>
+            </ng-template>
+            <ng-template [ngIf]="userData && !userData.isRestaurantDelegate">
+              <p *ngFor="let x of item.extra" class="has-images">
+                <ng-template [ngIf]="isLinkUrl(x.value)">
+                <span>{{'Color' | translate}}</span> : 
+                <img [src]="x.value" alt="{{x.attribute}}">
+              </ng-template>
+              <ng-template [ngIf]="isNumber(x.value)">
+                  <span>{{'Size' | translate}}</span> : 
+                  <span>{{x.attribute}}</span>
+                </ng-template>
+              </p>
+            </ng-template>
           </div>
       </ion-slide>
     </ion-slides>
@@ -42,7 +56,7 @@
       <div class="total-cost">
         <span>{{'Total' | translate}}</span>
         <span>
-          {{driverOrder.order.total}} {{'SAR' | translate}}
+          {{driverOrder.order.total | number:'.1-2'}} {{'SAR' | translate}}
         </span>
       </div>
       <ng-template [ngIf]="!fromPop">

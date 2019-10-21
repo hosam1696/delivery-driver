@@ -59,6 +59,7 @@ export class RequestsPage {
   async ionViewWillEnter() {
     this.userData = await this.appStorageProvider.getUserData();
     this.getOrdersCount();
+    this.checkLocation();
     this.locationInterval = setInterval(() => {
       this.checkLocation();
     }, 1000 * 60 * 5);
@@ -108,7 +109,7 @@ export class RequestsPage {
   }
 
   private checkConnection() {
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') || this.platform.is('android')) {
       this.disconnect$ = this.network.onDisconnect()
         .subscribe(() => {
           this.utils.showToast('تعذر الاتصال بالانترنت');
@@ -122,11 +123,11 @@ export class RequestsPage {
   }
 
   ionViewWillLeave() {
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') || this.platform.is('android')) {
 
       this.disconnect$.unsubscribe();
       this.connect$.unsubscribe();
-      
+
       clearInterval(this.locationInterval);
     }
 
@@ -206,10 +207,9 @@ export class RequestsPage {
       if (response.success) {
         const availability = +response.data.driver.availability;
         console.log(this.userData.availability, response.data.driver.availability);
-        this.utils.showToast(response.message, { position: 'bottom' });
         this.appStorageProvider.setUserData({ ...this.userData, availability });
-
       }
+      response.message && this.utils.showToast(response.message, { position: 'bottom' });
 
     })
   }
@@ -267,7 +267,7 @@ export class RequestsPage {
   }
 
   private checkLocation() {
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') || this.platform.is('android')) {
       this.diagnostic.isGpsLocationEnabled().then(e => {
         if (!e) {
           this.showAlert().then(state => {

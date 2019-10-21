@@ -18,7 +18,7 @@ export class FcmProvider {
 
 
   handleNotifications() {
-    if (this.platform.is('cordova') ) {
+    if (this.platform.is('cordova') || this.platform.is('android') ) {
       this.fcm.onNotification().subscribe(data => {
 
         if(data.wasTapped){
@@ -45,9 +45,7 @@ export class FcmProvider {
   }
 
   async getToken() {
-    if (!this.platform.is('cordova')) {
-      return 'TEST TOKEN FROM BROWSER';  
-    }
+
     const fcmToken = await this.fcm.getToken();
     
     return this.storageProvider.saveFcmToken(fcmToken);

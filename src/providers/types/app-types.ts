@@ -219,7 +219,8 @@ export interface Order {
   user?: User,
   items?: Item[],
   lat?: number,
-  lng?: number
+  lng?: number,
+  moov_coupon?: any
 }
 
 export interface Item {

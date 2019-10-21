@@ -112,7 +112,7 @@ export class NotificationpopupPage {
             });
           }
         }
-        this.utils.showToast(response.message);
+        response.message && this.utils.showToast(response.message);
         this.dismiss();
       })
   }

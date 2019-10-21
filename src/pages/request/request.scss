@@ -61,6 +61,15 @@ page-request {
           min-width: 40%;
           width: auto;
           max-width: 75%;     
+          .has-images {
+            img {
+              width: 20px !important;
+              height: 20px !important;
+              max-height: 20px !important;
+              min-height: 20px !important;
+              transform: translateY(5px);
+            }
+          }
           p {
             margin-top: 5px;
             margin-bottom: 5px;

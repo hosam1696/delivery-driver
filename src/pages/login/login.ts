@@ -82,7 +82,8 @@ export class LoginPage {
         }
 
       }, () => {
-        this.utils.showToast('Some thing not Correct, Please try again later');
+        
+        this.utils.showToast('الرجاء المحاولة لاحقا.');
         this.processing = false;
       })
     }
