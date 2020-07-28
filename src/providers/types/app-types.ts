@@ -203,6 +203,13 @@ export interface DriverOrder {
   order: Order;
 }
 
+export enum cameraType {
+  PHOTOLIBRARY,
+  CAMERA,
+  SAVEDPHOTOALBUM
+}
+
+export type UploadedPhoto = 'photo' | 'idenity_image';
 export interface Order {
   id: number;
   user_id: number;
@@ -220,7 +227,14 @@ export interface Order {
   items?: Item[],
   lat?: number,
   lng?: number,
-  moov_coupon?: any
+  moov_coupon?: any,
+  user_total?: number,
+  delivery_cost?: number,
+  online_payment?: boolean,
+  shipment?: boolean,
+  added_value?: number,
+  company_total?: number,
+  original_total?: number
 }
 
 export interface Item {

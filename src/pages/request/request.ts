@@ -4,6 +4,7 @@ import {OrdersProvider} from "../../providers/orders/orders";
 import {DriverOrder, Order, OrderStatus, UserData, EVENTS} from "../../providers/types/app-types";
 import {AppstorageProvider} from "../../providers/appstorage/appstorage";
 import {UtilsProvider} from "../../providers/utils/utils";
+import { LaunchNavigator, LaunchNavigatorOptions } from "@ionic-native/launch-navigator";
 
 
 @IonicPage()
@@ -21,6 +22,7 @@ export class RequestPage {
               public navCtrl: NavController,
               public navParams: NavParams,
               private modalCtrl: ModalController,
+              private launchNavigator: LaunchNavigator,
               private appStorage: AppstorageProvider,
               private orderProvider: OrdersProvider,
               private utils: UtilsProvider,
@@ -111,5 +113,25 @@ export class RequestPage {
 
   fillImgSrc(src: string): string {
     return src.startsWith('/storage') ? this.domainUrl.concat(src) : src;
+  }
+
+  openCompanyLocation() {
+    const location = [+this.driverOrder.order.company.lat, +this.driverOrder.order.company.long];
+    console.log({ location });
+    this.showOnMaps(location);
+  }
+
+
+  openOrderLocation() {
+    const location = [+this.driverOrder.order.lat, +this.driverOrder.order.lng];
+    console.log({ OrderLocation: location });
+    this.showOnMaps(location);
+  }
+
+  showOnMaps(destination) {
+    let options: LaunchNavigatorOptions = {
+      app: this.launchNavigator.APP.GOOGLE_MAPS
+    };
+    this.launchNavigator.navigate(destination, options);
   }
 }

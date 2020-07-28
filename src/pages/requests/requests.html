@@ -10,8 +10,11 @@
 <ion-content no-padding>
 
 
+  <ion-item class="toolbar-toggle hint" *ngIf="userData && userData.active === 0">
+    <ion-label>    يرجى الانتظار لحين موافقة الادارة</ion-label>
+  </ion-item>
 
-  <ion-item no-lines *ngIf="userData" class="toolbar-toggle">
+  <ion-item no-lines *ngIf="userData && userData.active" class="toolbar-toggle">
     <ion-label>
       {{'تفعيل استقبال الطلبات' | translate}}
     </ion-label>
@@ -52,9 +55,12 @@
     <ion-refresher (ionRefresh)="onRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
+
     <ion-list no-lines margin *ngFor="let request of requests">
       <driver-request [request]="request" (click)="goToRequestPage(request)"></driver-request>
     </ion-list>
   </ion-content>
 
 </ion-content>
+
+

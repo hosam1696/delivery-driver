@@ -19,7 +19,7 @@ driver-request {
     }
     .item-info {
       margin-right: 10px;
-      width: 100%;
+      width: calc(100% - 80px);
       p {
         ion-badge {
           transform: scale(0.9);

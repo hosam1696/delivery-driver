@@ -76,5 +76,11 @@
   "waiting": "مؤجلة",
   "returned": "مرتجع",
   "processing": "فى طريقه لاستلام الطلب من شركة",
-  "ongoing": "جارى التوصيل"
+  "ongoing": "جارى التوصيل",
+  "fullName": "الاسم",
+  "phoneNumber": "رقم الجوال",
+  "nationalId": "رقم الهوية",
+  "service": "مقدم الخدمة",
+  "photo": "الصورة الشخصية",
+  "identity_image": "صورة الهوية"
 }

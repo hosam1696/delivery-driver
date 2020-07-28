@@ -13,6 +13,10 @@ export class AuthProvider {
     return this.api.post('login', this.fillBody(loginData))
   }
 
+  getServices() {
+    return this.api.get('services-info')
+  }
+
   updateProfile(userData: UserData | any, token) {
     return this.api.post('update-profile', this.fillBody(userData), {api_token: token})
   }
@@ -27,6 +31,10 @@ export class AuthProvider {
 
   logout(token: string): Observable<{ success: boolean }> {
     return this.api.post('logout', null, {api_token: token})
+  }
+
+  createAccount(data) {
+    return this.api.post('register', this.fillBody(data))
   }
 
   private fillBody(data: object): FormData {

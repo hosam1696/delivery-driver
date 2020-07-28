@@ -5,7 +5,7 @@ import {OrdersProvider} from '../../providers/orders/orders';
 import {UtilsProvider} from '../../providers/utils/utils';
 import {DriverOrder, OrderStatus, RequestAction, UserData, EVENTS} from '../../providers/types/app-types';
 import {AudioProvider} from '../../providers/audio/audio';
-
+import { CallNumber } from '@ionic-native/call-number';
 
 @IonicPage()
 @Component({
@@ -31,6 +31,7 @@ export class NotificationpopupPage {
     private orderProvider: OrdersProvider,
     private utils: UtilsProvider,
     private audioProvider: AudioProvider,
+    private callNumber: CallNumber,
     private events: Events
   ) {
   }
@@ -117,6 +118,32 @@ export class NotificationpopupPage {
       })
   }
 
+  dialNumber(number: string): void {
+    this.callNumber.callNumber(number, true).then();
+  }
+
+  distanceInKmBetweenEarthCoordinates(lat2, lon2) {
+    function degreesToRadians(degrees) {
+      return degrees * Math.PI / 180;
+    }
+    const earthRadiusKm = 6371;
+  
+    const dLat = degreesToRadians(lat2- +this.userData.lat);
+    const dLon = degreesToRadians(lon2 - +this.userData.long);
+  
+    const lat1 = degreesToRadians(this.userData.lat);
+    lat2 = degreesToRadians(lat2);
+  
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    return earthRadiusKm * c;
+  }
+
+  estimateDistance(lat, lng) {
+    let distance = this.distanceInKmBetweenEarthCoordinates(lat, lng);
+    return distance > 1 ? distance.toFixed(1) + ' كم' : + (distance * 1000).toFixed(0) + ' متر'
+  }
   dismiss() {
     this.viewCtrl.dismiss();
   }

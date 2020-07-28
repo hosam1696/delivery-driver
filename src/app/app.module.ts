@@ -26,6 +26,8 @@ import { Network } from '@ionic-native/network';
 import {Diagnostic} from "@ionic-native/diagnostic";
 import {Geolocation} from "@ionic-native/geolocation";
 import { CallNumber } from '@ionic-native/call-number';
+import { AppcameraProvider } from '../providers/appcamera/appcamera';
+import { Camera } from '@ionic-native/camera';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -57,7 +59,7 @@ export function createTranslateLoader(http: HttpClient) {
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    {provide: 'DOMAIN_URL', useValue: 'https://www.moovstore.com'},
+    {provide: 'DOMAIN_URL', useValue: 'https://moovstore.com'},
     AuthProvider,
     AppstorageProvider,
     UtilsProvider,
@@ -72,7 +74,9 @@ export function createTranslateLoader(http: HttpClient) {
     Network,
     Geolocation,
     Diagnostic,
-    CallNumber
+    CallNumber,
+    AppcameraProvider,
+    Camera
   ]
 })
 export class AppModule {}

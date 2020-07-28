@@ -1,6 +1,13 @@
 page-requests {
     .toolbar-toggle {
         box-shadow: 1px 1px 7px #ccc;
+        &.hint {
+            background-color: #ffedae;
+            ion-label {
+                font-size: 13px;
+                justify-content: center;
+            }
+        }
     }
     ion-toggle {
         .toggle-icon {
@@ -26,8 +33,11 @@ page-requests {
         ion-label {
             display: flex;
             align-items: center;
-            justify-content: space-between
+            justify-content: space-between;
+
+            
         }
+
     }
     ion-content {
         .scroll-content {
@@ -36,6 +46,14 @@ page-requests {
         
         ion-content {
             transform: translateY(6px)
+        }
+
+        .item-info {
+            p {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
         .requests-states {
             box-shadow: 1px 1px 7px #ccc;

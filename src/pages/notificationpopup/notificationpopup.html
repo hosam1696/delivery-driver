@@ -1,7 +1,5 @@
 <ion-content padding>
   <!-- [exclude]="'button'" (clickOutside)="dismiss()" -->
-
-
   <section class="pop-content" [exclude]="'button'" (clickOutside)="dismiss()">
     <ng-template [ngIf]="driverOrder">
 
@@ -12,11 +10,23 @@
           {{driverOrder.order.company.name}}
         </p>
       </div>
+      <p class="phone-num">
+          <button ion-button small clear icon-only (click)="dialNumber(driverOrder.order.company.phone)">
+            <ion-icon name="call"></ion-icon>
+          </button>
+          {{driverOrder.order.company.phone}}
+        </p>
       <div class="item  order-owner">
         <img [src]="fillImgSrc(driverOrder.order.user.logo)" alt="">
         <p>{{driverOrder.order.user.name}}</p>
       </div>
       <div class="body" text-center>
+          <p *ngIf="userData">
+              <span>المسافة المتوقعة للشركة</span> :
+              <span>
+                {{estimateDistance(driverOrder.order.company.lat, driverOrder.order.company.long )}} 
+              </span>
+            </p>
         <p>
           الدفع عند الاستلام
         </p>
@@ -26,9 +36,9 @@
         </button>
 
       </div>
-      <div hidden>
+      <!-- <div hidden>
         {{data|json}}
-      </div>
+      </div> -->
       <p text-center *ngIf="data.order_status && data.order_status != 'init'">
         تم تحويل الطلب الى مندوب اخر
       </p>

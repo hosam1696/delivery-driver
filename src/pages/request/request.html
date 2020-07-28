@@ -1,7 +1,7 @@
 
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>{{'Request Details' | translate}}</ion-title>
+    <ion-title>#{{ driverOrder?.order?.id}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -49,14 +49,24 @@
       </ion-slide>
     </ion-slides>
 
+    <section class="loc" *ngIf="driverOrder && driverOrder.order">
+      <button ion-button round outline (click)="openCompanyLocation()">
+        موقع الشركة
+      </button>
+      <button ion-button round outline (click)="openOrderLocation()">
+        موقع التوصيل
+      </button>
+
+    </section>
+  
     <div class="order-action" text-center>
       <p color="primary">
-        {{'Pay On Delivery' | translate}}
+        {{driverOrder.order.online_payment ? 'دفع الكترونى' : 'دفع عند الاستلام' | translate}}
       </p>
       <div class="total-cost">
         <span>{{'Total' | translate}}</span>
         <span>
-          {{driverOrder.order.total | number:'.1-2'}} {{'SAR' | translate}}
+          {{driverOrder.order.original_total | number:'.1-2'}} {{'SAR' | translate}}
         </span>
       </div>
       <ng-template [ngIf]="!fromPop">
@@ -68,6 +78,7 @@
       </ng-template>
     </div>
   </section>
+
   <ng-template [ngIf]="!fromPop">
 
   <div class="reason" margin-vertical padding *ngIf="driverOrder?.status == 'returned' || driverOrder?.status == 'refused' || driverOrder?.status == 'canceled'">

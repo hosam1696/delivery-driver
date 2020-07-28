@@ -96,6 +96,18 @@ export class RequestsPage {
 
     this.subscribeToEvents();
 
+    if (this.userData.active == 0) {
+      this.events.publish(EVENTS.HANDLE_UNAUTHORIZATION, (data) => {
+        this.userData = data[0];
+        this.appStorageProvider.setUserData(this.userData)
+          .then(() => {
+            this.events.publish(EVENTS.UPDATE_STORAGE);
+            this.getAllOrders();
+
+          })
+      });
+    }
+
   }
 
   private subscribeToEvents() {
@@ -142,8 +154,6 @@ export class RequestsPage {
         withCheck && this.checkProcessingOrders();
       } else if (response.error == 'Unauthenticated' || response.error == 'Unauthenticated.') {
         // show Hint to app user the user has been logged before by this account, he have to login againg to refresh token
-        this.utils.showToast('التطبيق يعمل على جهاز اخر.');
-        // Try to Login Again
         this.events.publish(EVENTS.HANDLE_UNAUTHORIZATION, (data) => {
           this.userData = data[0];
           this.events.publish(EVENTS.UPDATE_STORAGE);

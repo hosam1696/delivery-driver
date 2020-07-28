@@ -1,0 +1,56 @@
+page-createaccount {
+    .nav-btn {
+        position: fixed;
+        top: 8px;
+        right: 8px;
+    }
+
+    .avatar-image {
+        .selected-avatar {
+            position: relative;
+            img {
+                &:first-child {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 50%;
+                }
+                &:last-child {
+                    position: absolute;
+                    bottom: 0;
+                    right: calc(50% - 90px);
+                    width: 60px;
+                    height: 60px;
+                }
+            }
+        }
+    }
+    .form-errors {
+        div {
+            background-color: $yellow;
+            border-radius: 5px;
+            padding: 4px 12px;
+            margin-bottom: 8px;
+            color: #635300
+        }
+    }
+    .hero {
+        background-image:  url(../assets/imgs/moovlogo.png),linear-gradient(45deg, $danger, $primary);
+        height: 200px;
+        background-position: center;
+        background-size: 300px  auto, cover;
+        background-repeat: no-repeat
+      }
+      .form-control {
+          & > span {
+              color: #999
+          } 
+      }
+
+      .form-group {
+          ion-select {
+                min-width: 85%;
+              position: relative;
+          }
+      }
+    
+}

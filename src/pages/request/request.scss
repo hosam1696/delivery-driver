@@ -4,6 +4,10 @@ page-request {
     .request-details {
       padding-bottom: 32px;
     }
+    .loc {
+      display: flex;
+      justify-content: center;
+    }
     .total-cost {
       box-shadow: 2px 2px 10px #eee;
       border-radius: 8px;
@@ -39,7 +43,7 @@ page-request {
           border-radius: 8px;
           height: 150px;
           min-height: 150px;
-          width: 100% !important;;
+          width: 100%;
           max-height: 180px !important;
 
           background: #eee;

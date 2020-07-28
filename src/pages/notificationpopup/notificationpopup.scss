@@ -9,6 +9,15 @@ page-notificationpopup {
             justify-content: center;
             align-items: center;
         }
+        .phone-num {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            background-color: #f6f6f6;
+            direction: ltr;
+            padding: 4px;
+        }
         .loader {
             background-color: #fff;
             width: 96%;
