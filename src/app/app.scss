@@ -17,6 +17,12 @@
   font-family: "Cairo-Regular", Roboto, sans-serif;
 }
 
+.text-selectable {
+  -webkit-user-select: text;
+-moz-user-select: text;
+-ms-user-select: text;
+user-select: text;
+}
 
 $primary: color($colors, primary);
 $light: color($colors, light);

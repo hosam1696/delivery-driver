@@ -74,7 +74,6 @@ export class LoginPage {
           ]).then(() => {
             this.events.publish(EVENTS.UPDATE_STORAGE);
             this.navCtrl.setRoot('RequestsPage');
-            this.fcmProvider.handleNotifications();
           })
 
         } else {
@@ -106,7 +105,6 @@ export class LoginPage {
   async setToken() {
       // if The driver logged in from device then send the device token to login params
       const fcmToken = await this.fcmProvider.getToken();
-      alert("FCMTOKEN:"+fcmToken)
       if (fcmToken) {
         this.loginForm.get('player_id').setValue(fcmToken);
         this.appStorage.saveFcmToken(fcmToken);

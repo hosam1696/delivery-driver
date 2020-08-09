@@ -1,5 +1,5 @@
 import {Component, ViewChild, Inject} from '@angular/core';
-import {Events, Nav, Platform} from 'ionic-angular';
+import {Events, Nav, Platform } from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {TranslateService} from "@ngx-translate/core";
@@ -8,6 +8,7 @@ import {AppstorageProvider} from "../providers/appstorage/appstorage";
 import {AudioProvider} from '../providers/audio/audio';
 import {FcmProvider} from '../providers/fcm/fcm';
 import {AuthProvider} from "../providers/auth/auth";
+import { FCM } from '@ionic-native/fcm';
 
 @Component({
   templateUrl: 'app.html'
@@ -18,18 +19,24 @@ export class MyApp {
   defaultLang: Langs = 'ar';
   pages: Array<APP_PAGE>;
   userData: UserData;
+  firebasePlugin;
+  fcmPlugin;
 
   constructor(@Inject('DOMAIN_URL') public domainUrl,
               public platform: Platform,
               public statusBar: StatusBar,
               public splashScreen: SplashScreen,
               public events: Events,
+              private fcm: FCM,
               private audioProvider: AudioProvider,
               public fcmProvider: FcmProvider,
               public appStorage: AppstorageProvider,
               private authProvider: AuthProvider,
               public translate: TranslateService) {
 
+                this.firebasePlugin = (<any>window).FirebasePlugin;
+                
+                this.fcmPlugin = (<any>window).FCMPlugin;
     this.pages = [
       {title: 'بياناتى', component: 'ProfilePage', icon: 'man-user1.png'},
       {title: 'الطلبات', component: 'RequestsPage', icon: 'synchronization-arrows-couple1.png'},
@@ -52,7 +59,18 @@ export class MyApp {
       this.splashScreen.hide();
       this.setRootPage();
       this.audioProvider.activateBtnSound();
-      this.fcmProvider.handleNotifications();
+      // this.fcmProvider.handleNotifications();
+      this.firebasePlugin.onMessageReceived((message) => {
+        // alert(JSON.stringify(message))
+        if (message.order_id) {
+          // this.openNotificationPopup(message);
+          this.events.publish(EVENTS.UPDATE_ORDERS);
+        }
+      })
+
+      this.fcm.onNotification().subscribe(data => {
+        // alert(JSON.stringify(data))
+      });
 
     });
   }

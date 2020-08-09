@@ -73,7 +73,6 @@ export class CreateaccountPage {
                 ]).then(() => {
                   this.events.publish(EVENTS.UPDATE_STORAGE);
                   this.navCtrl.setRoot('RequestsPage');
-                  this.fcmProvider.handleNotifications();
                 })
       
               } else {

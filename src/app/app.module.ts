@@ -28,6 +28,8 @@ import {Geolocation} from "@ionic-native/geolocation";
 import { CallNumber } from '@ionic-native/call-number';
 import { AppcameraProvider } from '../providers/appcamera/appcamera';
 import { Camera } from '@ionic-native/camera';
+import { Firebase } from '@ionic-native/firebase';
+import { BackgroundMode } from "@ionic-native/background-mode";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -76,7 +78,9 @@ export function createTranslateLoader(http: HttpClient) {
     Diagnostic,
     CallNumber,
     AppcameraProvider,
-    Camera
+    Camera,
+    Firebase,
+    BackgroundMode
   ]
 })
 export class AppModule {}

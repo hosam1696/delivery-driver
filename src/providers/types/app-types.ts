@@ -234,7 +234,8 @@ export interface Order {
   shipment?: boolean,
   added_value?: number,
   company_total?: number,
-  original_total?: number
+  original_total?: number,
+  discount?: number
 }
 
 export interface Item {

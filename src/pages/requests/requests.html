@@ -10,6 +10,8 @@
 <ion-content no-padding>
 
 
+  <p hidden class="text-selectable">{{userData?.player_id}}</p>
+
   <ion-item class="toolbar-toggle hint" *ngIf="userData && userData.active === 0">
     <ion-label>    يرجى الانتظار لحين موافقة الادارة</ion-label>
   </ion-item>

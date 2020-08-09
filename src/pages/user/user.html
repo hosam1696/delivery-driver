@@ -55,7 +55,7 @@
               <span>سعر المنتج
                 <div class="info"> شامل القيمة المضافة</div>
               </span>:
-              <span>{{driverOrder.original_total | number:'.1-2'}} ريال</span>
+              <span>{{(driverOrder.discount && driverOrder.discount > 0) ? driverOrder.original_total - driverOrder.discount : driverOrder.original_total | number:'.1-2'}} ريال</span>
             </p>
             <p *ngIf="driverOrder.moov_coupon">
               <span>الخصم المقدم من موف</span>:
@@ -68,7 +68,7 @@
             <ion-icon color="danger" name="alert"></ion-icon>
             يرجى دفع مبلغ 
             <b>
-              {{driverOrder.company_total | number:'.1-2'}}
+              {{driverOrder.total| number:'.1-2'}}
               {{'SAR' | translate}}
             </b>
             الى شركة
@@ -166,7 +166,7 @@
           <span>سعر المنتج
             <div class="info"> شامل القيمة المضافة</div>
           </span>:
-          <span>{{driverOrder.original_total | number:'.1-2'}} ريال</span>
+          <span>{{(driverOrder.discount && driverOrder.discount > 0) ? driverOrder.original_total - driverOrder.discount : driverOrder.original_total | number:'.1-2'}} ريال</span>
         </p>
         <p *ngIf="driverOrder.moov_coupon">
           <span>الخصم المقدم من موف</span>:

@@ -182,7 +182,9 @@ export class RequestsPage {
     let actionOrders = orders.filter(order => (order.status == 'accepted' || order.status == 'received' || order.status == 'processing' || order.status == 'ongoing') && order.order.first_item);
     this.events.publish('update:allRequests:count', actionOrders.length);
     this.initOrders = orders.filter(order => order.status == 'init');
-
+    if (this.initOrders.length > 0) {
+      this.openInitOrder();
+    }
     return actionOrders;
   }
 
