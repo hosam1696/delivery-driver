@@ -30,6 +30,8 @@ export enum appLangs {
   'en'
 }
 
+export type CheckPhase = 'mobilePhone' | 'verifyCode' | 'changePassword';
+
 export type Langs = 'ar' | 'en';
 
 export interface UserData {

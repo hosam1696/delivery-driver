@@ -33,6 +33,18 @@ export class AuthProvider {
     return this.api.post('logout', null, {api_token: token})
   }
 
+  checkPhoneNumber(phone) {
+    return this.api.post('password', {phone}, null, null)
+  }
+
+  verifyCode(phone, code) {
+    return this.api.post('password/verify', {phone, code})
+  }
+
+  updatePassword(token, password, confirm_password) {
+    return this.api.post('update-forget-password', this.fillBody({password, confirm_password}), {api_token: token})
+  }
+
   createAccount(data) {
     return this.api.post('register', this.fillBody(data))
   }

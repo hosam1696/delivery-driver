@@ -92,6 +92,10 @@ export class LoginPage {
     this.navCtrl.push('CreateaccountPage')
   }
 
+  goToForgetPassword() {
+    this.navCtrl.push('ForgetpasswordPage')
+  }
+
   private buildForm() {
     this.loginForm = this.formBuilder.group({
       userName: ['', Validators.required],

@@ -31,7 +31,7 @@ export class ApiProvider {
     return this.http.get<any>(this.API_URL + endpoint, {params: httpParams})
   }
 
-  post(endpoint: string, body?: any, params?: any, headers?: any) {
+  post(endpoint: string, body?: any, params?: any, headers?: any, withFullAPI = '') {
     let httpParams: HttpParams = new HttpParams({});
     let httpHeaders: HttpHeaders = new HttpHeaders({});
 
@@ -51,7 +51,7 @@ export class ApiProvider {
         }
       }
     }
-    return this.http.post<any>(this.API_URL + endpoint, body, {
+    return this.http.post<any>(withFullAPI ? withFullAPI: (this.API_URL + endpoint), body, {
       params: httpParams,
       headers: httpHeaders
     })

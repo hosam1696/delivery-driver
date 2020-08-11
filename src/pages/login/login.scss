@@ -9,10 +9,8 @@ page-login {
   }
 
   .create-account {
-    p {
-      color: #999;
-      margin-bottom: -10px;
-    }
+    display: flex;
+    flex-direction: column;
   }
 
   form {
