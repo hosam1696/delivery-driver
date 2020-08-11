@@ -1,9 +1,11 @@
 <ion-content no-padding>
 
-  <button ion-button navPop clear class="nav-btn">
-    <ion-icon name="arrow-back" color="light"></ion-icon>
-  </button>
-  <section class="hero"></section>
+
+  <section class="hero">
+    <button ion-button navPop clear class="nav-btn">
+      <ion-icon name="arrow-back" color="light"></ion-icon>
+    </button>
+  </section>
 
 
   <form action="" padding [formGroup]="createAccountForm" (ngSubmit)="submitForm()">
@@ -102,7 +104,7 @@
       </div>
     </section>
     <div class="submit-button" text-center>
-      <button ion-button round class="app-bg-btn" [class.loading]="processing" color="primary">
+      <button ion-button round class="app-bg-btn app-height-btn" [class.loading]="processing" color="primary">
         <span>
           {{'تسجيل' |translate}}
         </span>

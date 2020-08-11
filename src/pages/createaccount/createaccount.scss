@@ -1,9 +1,5 @@
 page-createaccount {
-    .nav-btn {
-        position: fixed;
-        top: 8px;
-        right: 8px;
-    }
+
 
     .avatar-image {
         .selected-avatar {
@@ -38,7 +34,13 @@ page-createaccount {
         height: 200px;
         background-position: center;
         background-size: 300px  auto, cover;
-        background-repeat: no-repeat
+        background-repeat: no-repeat;
+        position: relative;
+        .nav-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
       }
       .form-control {
           & > span {

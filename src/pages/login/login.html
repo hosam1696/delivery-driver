@@ -18,7 +18,7 @@
     </div>
 
     <div class="submit-button" text-center>
-      <button ion-button round class="app-bg-btn" [class.loading]="processing" color="primary">
+      <button ion-button round class="app-bg-btn app-height-btn" [class.loading]="processing" color="primary">
         <span>
           {{'دخول' |translate}}
         </span>
@@ -27,7 +27,7 @@
     </div>
 
     <div class="create-account" text-center>
-      <button type="button" ion-button clear color="dark" (click)="goToForgetPassword()">نسيت كلمة المرور </button>
+      <button type="button" ion-button clear color="dark" (click)="goToForgetPassword()">نسيت كلمة المرور ؟</button>
       <button type="button" ion-button clear (click)="goToCreateAccount()">انشاء حساب جديد</button>
     </div>
   </form>

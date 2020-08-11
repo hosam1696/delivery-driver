@@ -11,6 +11,7 @@ page-login {
   .create-account {
     display: flex;
     flex-direction: column;
+    margin-top: 8px;
   }
 
   form {
@@ -26,9 +27,6 @@ page-login {
 
     .submit-button {
       margin-top: 40px;
-      button {
-        height: 40px !important;
-      }
     }
     @keyframes fill {
       from {

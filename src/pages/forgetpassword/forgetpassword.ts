@@ -90,15 +90,22 @@ export class ForgetpasswordPage {
       }
     } else {
       if (this.checkPhase == 'changePassword') {
-        const updatePassword$ = this.authProvider.updatePassword(this.apiKey, formValue.password, formValue.confirm_password)
+        this.processing = true;
 
+        const updatePassword$ = this.authProvider.updatePassword(this.apiKey, formValue.password, formValue.confirm_password)
         updatePassword$.subscribe((res) => {
           if (res.success) {
             if (res.message) {
               this.utils.showToast(res.message);
-              this.navCtrl.pop();
             }
+            this.navCtrl.pop();
+          } else {
+            this.utils.showToast('يرجى التأكد من تطابق كلمات المرور')
           }
+        }, err => {
+
+        }, () => {
+          this.processing = false;
         })
       }
     }
