@@ -53,14 +53,15 @@
       <button ion-button round outline (click)="openCompanyLocation()">
         موقع الشركة
       </button>
-      <button ion-button round outline (click)="openOrderLocation()">
-        موقع التوصيل
+      <button ion-button round outline [disabled]="driverOrder.type == 'shipment'" (click)="openOrderLocation()">
+        {{driverOrder.type == 'shipment' ? 'الى : شركة موف' : 'موقع التوصيل'}}
       </button>
 
     </section>
   
     <div class="order-action" text-center>
       <p color="primary">
+        نوع الدفع : 
         {{driverOrder.order.online_payment ? 'دفع الكترونى' : 'دفع عند الاستلام' | translate}}
       </p>
       <div class="total-cost">
@@ -68,6 +69,12 @@
         <span>
           {{driverOrder.order.total | number:'.1-2'}} {{'SAR' | translate}}
         </span>
+      </div>
+      <div class="order-type">
+        <p>
+          <ion-icon name="alert" color="primary"></ion-icon>  &nbsp;
+          نوع الطلب</p>
+        <p><span class="color=primary">></span> {{driverOrder.type | translate}}</p> 
       </div>
       <ng-template [ngIf]="!fromPop">
         <div class="btns" margin-top *ngIf="driverOrder.status == 'init' || driverOrder?.status == 'waiting'">

@@ -58,10 +58,27 @@
       <div class="form-icon">
         <img src="assets/imgs/form/Group 5.png" alt="">
       </div> 
-      <ion-select placeholder="مقدم الخدمة" class="form-control" okText="موافق" cancelText="الغاء" formControlName="service">
+      <ion-select [disabled]="!services" placeholder="مقدم الخدمة" class="form-control" okText="موافق" cancelText="الغاء" formControlName="service">
         <ion-option [value]="service.pivot.id" *ngFor="let service of services">{{service.name}}</ion-option>
       </ion-select>
     </div>
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 5.png" alt="">
+      </div> 
+      <ion-select [disabled]="!areas" placeholder=" المنطقة" class="form-control" okText="موافق" cancelText="الغاء" formControlName="state_id">
+        <ion-option [value]="area.id" *ngFor="let area of areas">{{area.name}}</ion-option>
+      </ion-select>
+    </div>
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 5.png" alt="">
+      </div> 
+      <ion-select [disabled]="!cities" placeholder="المدينة" class="form-control" okText="موافق" cancelText="الغاء" formControlName="city_id">
+        <ion-option [value]="city.id" *ngFor="let city of cities">{{city.name}}</ion-option>
+      </ion-select>
+    </div>
+
     <div class="form-group ">
       <div class="form-icon">
         <img src="assets/imgs/form/Group 3.png" alt="">

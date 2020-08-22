@@ -82,5 +82,7 @@
   "nationalId": "رقم الهوية",
   "service": "مقدم الخدمة",
   "photo": "الصورة الشخصية",
-  "identity_image": "صورة الهوية"
+  "identity_image": "صورة الهوية",
+  "delivery": "التوصيل",
+  "shipment": "الشحن"
 }

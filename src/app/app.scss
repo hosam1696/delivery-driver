@@ -141,6 +141,10 @@ ion-menu {
   }
 }
 
+.color-primary {
+  color: $primary
+}
+
 .svg-color-primary {
   fill: $primary;
   svg {

@@ -22,6 +22,8 @@ export class CreateaccountPage {
   services;
   imgName: string;
   isSelectedAvatar: boolean = false;
+  areas;
+  cities;
 
   constructor(public navCtrl: NavController,
       private formBuilder: FormBuilder,
@@ -44,7 +46,30 @@ export class CreateaccountPage {
           console.log(this.services);
         }
       });
+      this.auth.getAreas()
+      .subscribe(response => {
+        console.log({response})
+        if (response.success) {
+          this.areas = response.data.filter;
+          console.log(this.areas);
+        }
+      });
 
+      this.createAccountForm.get('state_id').valueChanges.subscribe(stateId => {
+        this.getCities(stateId)
+      })
+  }
+
+
+  getCities(stateId) {
+    this.auth.getCities(stateId)
+      .subscribe(response => {
+        console.log({response})
+        if (response.success) {
+          this.cities = response.data.filter;
+          console.log(this.cities);
+        }
+      })
   }
 
   submitForm() {
@@ -151,6 +176,8 @@ export class CreateaccountPage {
       photo: ['', Validators.required],
       identity_image: ['', Validators.required],
       player_id: [''],
+      city_id: [''],
+      state_id: ['']
     });
     
     this.setToken();

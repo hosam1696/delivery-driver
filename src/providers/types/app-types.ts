@@ -203,6 +203,7 @@ export interface DriverOrder {
   waiting_time?: null;
   comment?: string,
   order: Order;
+  type?: string
 }
 
 export enum cameraType {

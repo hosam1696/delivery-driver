@@ -30,6 +30,7 @@ import { AppcameraProvider } from '../providers/appcamera/appcamera';
 import { Camera } from '@ionic-native/camera';
 import { Firebase } from '@ionic-native/firebase';
 import { BackgroundMode } from "@ionic-native/background-mode";
+import { NotificationsProvider } from '../providers/notifications/notifications';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -80,7 +81,8 @@ export function createTranslateLoader(http: HttpClient) {
     AppcameraProvider,
     Camera,
     Firebase,
-    BackgroundMode
+    BackgroundMode,
+    NotificationsProvider
   ]
 })
 export class AppModule {}

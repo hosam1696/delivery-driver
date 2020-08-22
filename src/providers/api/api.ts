@@ -19,7 +19,7 @@ export class ApiProvider {
 
   }
 
-  get(endpoint: string, params?: any) {
+  get(endpoint: string, params?: any, fullUrl = null) {
     let httpParams: HttpParams = new HttpParams({});
     httpParams = httpParams.set('local', this.translate.currentLang);
     if (params) {
@@ -28,7 +28,7 @@ export class ApiProvider {
           httpParams = httpParams.set(param, params[param])
       }
     }
-    return this.http.get<any>(this.API_URL + endpoint, {params: httpParams})
+    return this.http.get<any>(fullUrl ? fullUrl : (this.API_URL + endpoint), {params: httpParams})
   }
 
   post(endpoint: string, body?: any, params?: any, headers?: any, withFullAPI = '') {

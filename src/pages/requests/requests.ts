@@ -221,7 +221,7 @@ export class RequestsPage {
         console.log(this.userData.availability, response.data.driver.availability);
         this.appStorageProvider.setUserData({ ...this.userData, availability });
       }
-      response.message && this.utils.showToast(response.message, { position: 'bottom' });
+      // response.message && this.utils.showToast(response.message, { position: 'bottom' });
 
     })
   }

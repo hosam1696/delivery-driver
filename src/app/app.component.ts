@@ -40,6 +40,7 @@ export class MyApp {
     this.pages = [
       {title: 'بياناتى', component: 'ProfilePage', icon: 'man-user1.png'},
       {title: 'الطلبات', component: 'RequestsPage', icon: 'synchronization-arrows-couple1.png'},
+      {title: 'الاشعارات', component: 'NotificationsPage', icon: 'synchronization-arrows-couple1.png'},
       {title: 'الطلبات المؤجلة', component: 'WaitingordersPage', icon: 'sync.png', pageStatus: 'waiting'},
       {title: 'الطلبات المكتملة', component: 'WaitingordersPage', icon: 'synchronization-arrows-couple1.png', pageStatus: 'completed'},
       {title: 'الطلبات المرتجعة',component: 'WaitingordersPage',icon: 'synchronization-arrows-couple1.png',pageStatus: 'returned'},
@@ -180,7 +181,7 @@ export class MyApp {
     authLogin$.subscribe(response => {
       if (response.success) {
         const loggedUser = response.data.user;
-        this.userData = {...this.userData, api_token: loggedUser.api_token};
+        this.userData = {...this.userData, ...loggedUser};
         Promise.all([
           this.appStorage.setUserData(this.userData),
           this.appStorage.saveToken(loggedUser.api_token)
