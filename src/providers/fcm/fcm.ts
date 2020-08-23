@@ -29,7 +29,7 @@ export class FcmProvider {
       });
   }
 
-  private openNotificationPopup(data?:any) {
+  openNotificationPopup(data?:any) {
     const modal = this.modalCtrl.create('NotificationpopupPage', {orderData: data});
 
     modal.present();

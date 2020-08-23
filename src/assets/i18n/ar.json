@@ -84,5 +84,6 @@
   "photo": "الصورة الشخصية",
   "identity_image": "صورة الهوية",
   "delivery": "التوصيل",
-  "shipment": "الشحن"
+  "shipment": "الشحن",
+  "passwords must be identical": "كلمات المرور يجب ان تكون متطابقة"
 }

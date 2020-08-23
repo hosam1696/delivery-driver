@@ -61,7 +61,7 @@
   
     <div class="order-action" text-center>
       <p color="primary">
-        نوع الدفع : 
+        طريقة الدفع : 
         {{driverOrder.order.online_payment ? 'دفع الكترونى' : 'دفع عند الاستلام' | translate}}
       </p>
       <div class="total-cost">
@@ -74,12 +74,12 @@
         <p>
           <ion-icon name="alert" color="primary"></ion-icon>  &nbsp;
           نوع الطلب</p>
-        <p><span class="color=primary">></span> {{driverOrder.type | translate}}</p> 
+        <p>{{driverOrder.type | translate}}</p> 
       </div>
       <ng-template [ngIf]="!fromPop">
         <div class="btns" margin-top *ngIf="driverOrder.status == 'init' || driverOrder?.status == 'waiting'">
           <button ion-button round (click)="onClick('accepted')" >{{'التوصيل الان' | translate}}</button>
-          <button ion-button round  (click)="onClick('waiting')" [hidden]="userData && (driverOrder?.status == 'waiting' || userData.isRestaurantDelegate)" >{{'التوصيل لاحقا' | translate}}</button>
+          <!-- <button ion-button round  (click)="onClick('waiting')" [hidden]="userData && (driverOrder?.status == 'waiting' || userData.isRestaurantDelegate)" >{{'التوصيل لاحقا' | translate}}</button> -->
           <button ion-button round outline color="danger"  (click)="onClick('refused')">{{'رفض' | translate}}</button>
         </div>
       </ng-template>

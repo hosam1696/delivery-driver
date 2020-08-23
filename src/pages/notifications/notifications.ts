@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { NotificationsProvider } from '../../providers/notifications/notifications';
 import { UserData } from '../../providers/types/app-types';
@@ -18,7 +18,8 @@ export class NotificationsPage {
   constructor(public navCtrl: NavController,
      public navParams: NavParams,
      private appStorageProvider: AppstorageProvider,
-     private api: NotificationsProvider
+     private api: NotificationsProvider,
+     private modalCtrl: ModalController
      ) {
   }
 
@@ -36,6 +37,12 @@ export class NotificationsPage {
           this.notifications = response.data.notifications;
         }
       })
+  }
+
+  openNotification(notification) {
+    const modal = this.modalCtrl.create('NotificationpopupPage', { orderData: { wasTapped: false, order_id: notification.data.delivery_order.id } });
+
+    modal.present();
   }
 
 }

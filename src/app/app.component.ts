@@ -64,13 +64,17 @@ export class MyApp {
       this.firebasePlugin.onMessageReceived((message) => {
         // alert(JSON.stringify(message))
         if (message.order_id) {
-          // this.openNotificationPopup(message);
+          this.fcmProvider.openNotificationPopup(message);
           this.events.publish(EVENTS.UPDATE_ORDERS);
         }
       })
 
       this.fcm.onNotification().subscribe(data => {
         // alert(JSON.stringify(data))
+        if (data.order_id) {
+          this.fcmProvider.openNotificationPopup(data);
+        }
+
       });
 
     });
@@ -129,7 +133,7 @@ export class MyApp {
 
     this.events.subscribe(EVENTS.UPDATE_PAGE_COUNT,numbers => {
       for(let i = 2 ;i<numbers.length+2;i++) {
-        this.pages[i]['pageCount'] = numbers[i-2]
+        this.pages[i+1]['pageCount'] = numbers[i-2]
       }
 
       console.log({pages: this.pages})

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { cameraType, UploadedPhoto, EVENTS } from '../../providers/types/app-types';
 import { AppcameraProvider } from '../../providers/appcamera/appcamera';
@@ -72,6 +72,15 @@ export class CreateaccountPage {
       })
   }
 
+  insurePass(input:FormControl ):{ [s: string]: boolean } {
+    if (!input.root || !input.root.value) {
+      return null;
+    }
+    const exactMatch = input.root.value.password === input.value;
+
+    return exactMatch ? null: {unconfirmedpass: true};
+  }
+
   submitForm() {
     this.errorMessages = null;
     console.log({form: this.createAccountForm})
@@ -79,7 +88,6 @@ export class CreateaccountPage {
 
     if (isValid) {
       let accountData = this.createAccountForm.value;
-      accountData.password_confirmation = accountData.password;
       this.auth.createAccount(accountData)
         .subscribe(response => {
           if (response.success) {
@@ -173,6 +181,7 @@ export class CreateaccountPage {
       email: ['', Validators.required],
       service: ['', Validators.required],
       password: ['',[Validators.required, Validators.minLength(8)]],
+      password_confirmation: ['', this.insurePass],
       photo: ['', Validators.required],
       identity_image: ['', Validators.required],
       player_id: [''],

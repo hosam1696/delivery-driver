@@ -19,6 +19,7 @@ import { Network } from '@ionic-native/network';
 import { Geolocation, Geoposition } from "@ionic-native/geolocation";
 import { Diagnostic } from "@ionic-native/diagnostic";
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { NotificationsProvider } from '../../providers/notifications/notifications';
 
 @IonicPage()
 @Component({
@@ -50,6 +51,7 @@ export class RequestsPage {
     private diagnostic: Diagnostic,
     private alertCtrl: AlertController,
     private audioProvider: AudioProvider,
+    private notificationsProvider: NotificationsProvider,
     private events: Events,
     public platform: Platform
   ) {
@@ -167,11 +169,17 @@ export class RequestsPage {
   }
 
   openInitOrder() {
-    let orderId = this.initOrders.shift().id;
+    const order = this.initOrders.shift();
+    console.log({order})
+    let orderId = order.id;
+    if (order.data && order.data.delivery_order) {
+      orderId = order.data.delivery_order.id
+    }
     const modal = this.modalCtrl.create('NotificationpopupPage', { orderData: { wasTapped: false, order_id: orderId } });
 
     modal.present();
   }
+  
 
   onToggleChange(event) {
     this.isReceivingRequests = event.value;
@@ -182,10 +190,41 @@ export class RequestsPage {
     let actionOrders = orders.filter(order => (order.status == 'accepted' || order.status == 'received' || order.status == 'processing' || order.status == 'ongoing') && order.order.first_item);
     this.events.publish('update:allRequests:count', actionOrders.length);
     this.initOrders = orders.filter(order => order.status == 'init');
+    this.checkInitOrdersFromNotifications();
     if (this.initOrders.length > 0) {
       this.openInitOrder();
     }
     return actionOrders;
+  }
+
+  checkInitOrdersFromNotifications() {
+    this.notificationsProvider.getNotifications(this.userData.api_token)
+      .subscribe(response => {
+        console.log(response);
+        if (response.success) {
+          if (response.data.notifications && response.data.notifications.length) {
+            const notifyOrder = response.data.notifications.find(order => order.data.status == 'init');
+            console.log({notifyOrder})
+            const request$ = this.ordersProvider.getOrderDetails(notifyOrder.data.delivery_order.id, this.userData.api_token);
+            
+            request$.subscribe(res => {
+              console.log({orderRes: res})
+              if (res.success && res.data.order.status === 'init') {
+                this.openNotification(notifyOrder.data.delivery_order.id);
+              }
+            })
+            // this.initOrders = [...this.initOrders, ...response.data.notifications.find(order => order.data.status == 'init')];
+            console.log({initOrder: this.initOrders})
+          }
+
+        }
+      })
+  }
+
+  openNotification(orderId) {
+    const modal = this.modalCtrl.create('NotificationpopupPage', { orderData: { wasTapped: false, order_id: orderId } });
+
+    modal.present();
   }
 
   private checkProcessingOrders(): void {

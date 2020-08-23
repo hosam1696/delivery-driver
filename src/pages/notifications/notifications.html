@@ -6,9 +6,12 @@
 </ion-header>
 <ion-content no-padding>
 
+  <p text-center *ngIf="notifications && !notifications.length">
+    لا يوجد اشعارات
+  </p>
 
   <ion-list no-lines>
-    <ion-item *ngFor="let n of notifications">
+    <ion-item *ngFor="let n of notifications" (click)="openNotification(n)">
       <ion-avatar>
         <img src="{{n.data.order.company.logo}}" alt="">
       </ion-avatar>

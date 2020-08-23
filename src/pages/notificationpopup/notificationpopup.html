@@ -1,6 +1,6 @@
 <ion-content padding>
   <!-- [exclude]="'button'" (clickOutside)="dismiss()" -->
-  <section class="pop-content" [exclude]="'button'" (clickOutside)="dismiss()">
+  <section class="pop-content" [exclude]="'button, ion-item, ion-list'" (clickOutside)="dismiss()">
     <ng-template [ngIf]="driverOrder">
 
       <div class="item company-title">
@@ -28,7 +28,8 @@
               </span>
             </p>
         <p>
-          الدفع عند الاستلام
+            طريقة الدفع : 
+            {{driverOrder.order.online_payment ? 'دفع الكترونى' : 'دفع عند الاستلام'}}
         </p>
 
         <button ion-button large outline round (click)="goToRequestPage(driverOrder, {fromPop: true})">
@@ -48,19 +49,19 @@
           <button ion-button round (click)="onClick('accept')">
             التوصيل الان
           </button>
-          <button ion-button round (click)="onClick('await')" [hidden]="userData.isRestaurantDelegate">
+          <!-- <button ion-button round (click)="onClick('await')" [hidden]="userData.isRestaurantDelegate">
             التوصيل لاحقا
-          </button>
-          <button ion-button round outline color="danger" (click)="onClick('cancel')" *ngIf="userData.isRestaurantDelegate">
+          </button> -->
+          <button ion-button round outline color="danger" (click)="onClick('cancel')" >
             رفض
           </button>
         </div>
 
-        <div text-center [hidden]="userData.isRestaurantDelegate">
+        <!-- <div text-center [hidden]="userData.isRestaurantDelegate">
           <button ion-button round outline color="danger" (click)="onClick('cancel')">
             رفض
           </button>
-        </div>
+        </div> -->
       </div>
       <!-- <p text-center *ngIf="!countIsOver">
         {{counter.getSeconds()<10?'0':''}}{{counter.getSeconds()}} : {{counter.getMinutes()<10?'0':''}}{{counter.getMinutes()}}
