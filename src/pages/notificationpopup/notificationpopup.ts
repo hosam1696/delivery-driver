@@ -65,6 +65,9 @@ export class NotificationpopupPage {
     request$.subscribe(response => {
       if (response.success) {
         this.driverOrder = response.data.order;
+      } else {
+        this.utils.showTranslatedToast(response.message)
+        this.dismiss()
       }
     })
   }
@@ -145,6 +148,7 @@ export class NotificationpopupPage {
     return distance > 1 ? distance.toFixed(1) + ' كم' : + (distance * 1000).toFixed(0) + ' متر'
   }
   dismiss() {
+    this.audioProvider.stop();
     this.viewCtrl.dismiss();
   }
 

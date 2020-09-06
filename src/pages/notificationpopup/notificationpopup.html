@@ -37,11 +37,13 @@
         </button>
 
       </div>
-      <!-- <div hidden>
-        {{data|json}}
-      </div> -->
-      <p text-center *ngIf="data.order_status && data.order_status != 'init'">
+
+      <p text-center *ngIf="driverOrder.status && (driverOrder.status == 'refused' || driverOrder.status == 'canceled')">
         تم تحويل الطلب الى مندوب اخر
+      </p>
+
+      <p text-center *ngIf="driverOrder.status && (driverOrder.status == 'accepted' || driverOrder.status == 'proccessing' || driverOrder.status == 'ongoing' || driverOrder.status == 'recieved')">
+        تم الاستلام
       </p>
 
       <div class="actions" *ngIf="driverOrder.status == 'init'">
@@ -49,19 +51,16 @@
           <button ion-button round (click)="onClick('accept')">
             التوصيل الان
           </button>
-          <!-- <button ion-button round (click)="onClick('await')" [hidden]="userData.isRestaurantDelegate">
+          <button ion-button round (click)="onClick('await')" [hidden]="userData.isRestaurantDelegate">
             التوصيل لاحقا
-          </button> -->
-          <button ion-button round outline color="danger" (click)="onClick('cancel')" >
-            رفض
           </button>
         </div>
 
-        <!-- <div text-center [hidden]="userData.isRestaurantDelegate">
+        <div text-center [hidden]="userData.isRestaurantDelegate">
           <button ion-button round outline color="danger" (click)="onClick('cancel')">
             رفض
           </button>
-        </div> -->
+        </div>
       </div>
       <!-- <p text-center *ngIf="!countIsOver">
         {{counter.getSeconds()<10?'0':''}}{{counter.getSeconds()}} : {{counter.getMinutes()<10?'0':''}}{{counter.getMinutes()}}

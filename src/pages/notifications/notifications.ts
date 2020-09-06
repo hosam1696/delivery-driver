@@ -45,4 +45,11 @@ export class NotificationsPage {
     modal.present();
   }
 
+  onRefresh(event) {
+    this.getNotifications();
+    setTimeout(() => {
+      event.complete()
+    }, 2000)
+  }
+
 }

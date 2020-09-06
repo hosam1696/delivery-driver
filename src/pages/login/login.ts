@@ -66,15 +66,21 @@ export class LoginPage {
         this.processing = false;
         if (response.success) {
           const loggedUser = response.data.user,
-                isRestaurantDelegate = loggedUser.logistic_company_service.service && loggedUser.logistic_company_service.service.name == 'توصيل مطاعم';
+                isRestaurantDelegate = false;
+                // isRestaurantDelegate = loggedUser.logistic_company_service.service && loggedUser.logistic_company_service.service.name == 'توصيل مطاعم';
 
-          Promise.all([
-            this.appStorage.setUserData({...loggedUser, current_password: this.loginForm.get('password').value, isRestaurantDelegate, deliveryCost: response.data.deliveryCost}),
-            this.appStorage.saveToken(loggedUser.api_token)
-          ]).then(() => {
-            this.events.publish(EVENTS.UPDATE_STORAGE);
-            this.navCtrl.setRoot('RequestsPage');
-          })
+                if (loggedUser.active == 1) {
+                  Promise.all([
+                    this.appStorage.setUserData({...loggedUser, current_password: this.loginForm.get('password').value, isRestaurantDelegate, deliveryCost: response.data.deliveryCost}),
+                    this.appStorage.saveToken(loggedUser.api_token)
+                  ]).then(() => {
+                    this.events.publish(EVENTS.UPDATE_STORAGE);
+                    this.navCtrl.setRoot('RequestsPage');
+                  })
+                } else {
+                  this.utils.showTranslatedToast('يرجى الانتظار لحين موافقة الادارة')
+                }
+
 
         } else {
           this.utils.showTranslatedToast(response.message == 'translation.auth failed' ? 'User Name or Password are not Correct' : response.message)

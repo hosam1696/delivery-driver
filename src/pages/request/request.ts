@@ -125,7 +125,17 @@ export class RequestPage {
   openOrderLocation() {
     const location = [+this.driverOrder.order.lat, +this.driverOrder.order.lng];
     console.log({ OrderLocation: location });
-    this.showOnMaps(location);
+    if (this.driverOrder.type == 'shipment') {
+      this.orderProvider.getMoovLocation()
+        .subscribe(response => {
+          if (response.success) {
+            let latLng = response.data.result;
+            this.showOnMaps([+latLng.latitude, +latLng.longitude])
+          }
+        })
+    } else {
+      this.showOnMaps(location);
+    }
   }
 
   showOnMaps(destination) {

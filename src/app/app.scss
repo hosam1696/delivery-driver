@@ -84,6 +84,10 @@ ion-menu {
         border-radius: 50%;
         width: 100px;
         height: 100px;
+        min-width: 100px;
+        min-height: 100px;
+        max-width: 100px;
+        max-height: 100px;
         overflow: hidden;
         background-color: $light;
         img {

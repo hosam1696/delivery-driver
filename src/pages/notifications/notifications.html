@@ -9,7 +9,9 @@
   <p text-center *ngIf="notifications && !notifications.length">
     لا يوجد اشعارات
   </p>
-
+  <ion-refresher (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list no-lines>
     <ion-item *ngFor="let n of notifications" (click)="openNotification(n)">
       <ion-avatar>

@@ -68,7 +68,7 @@ export class RequestsPage {
   }
 
   getOrdersCount() {
-    const ordersStatus: Array<OrderStatus> = [OrderStatus.waiting, OrderStatus.completed, OrderStatus.returned, OrderStatus.delayed]
+    const ordersStatus: Array<OrderStatus> = [OrderStatus.completed, OrderStatus.waiting, OrderStatus.returned, OrderStatus.delayed]
     const orders$ = forkJoin(
       ...ordersStatus.map(status => this.ordersProvider.getDriverOrders(this.userData.api_token, status))
     )
@@ -200,7 +200,6 @@ export class RequestsPage {
   checkInitOrdersFromNotifications() {
     this.notificationsProvider.getNotifications(this.userData.api_token)
       .subscribe(response => {
-        console.log(response);
         if (response.success) {
           if (response.data.notifications && response.data.notifications.length) {
             const notifyOrder = response.data.notifications.find(order => order.data.status == 'init');

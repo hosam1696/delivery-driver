@@ -193,6 +193,9 @@ export class UserPage {
 
   estimateDistance(lat, lng) {
     let distance = this.distanceInKmBetweenEarthCoordinates(lat, lng);
+    if (distance == 0) {
+      return 'نفس الموقغ'
+    }
     return distance > 1 ? distance.toFixed(1) + ' كم' : + (distance * 1000).toFixed(0) + ' متر'
   }
   

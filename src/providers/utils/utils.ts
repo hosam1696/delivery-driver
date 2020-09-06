@@ -83,4 +83,19 @@ export class UtilsProvider {
     return actionSheetCtrl.present();
   }
 
+  formatPhoneNumber(phoneNumber: string) {
+
+    let number = phoneNumber;
+    if (number[0] == '0') {
+      number = number.substr(1);
+    }
+    if (/^\966/.test(number)) {
+      number = '+' + number;
+    }
+    if (!/^\+966/.test(number) && !/^\+/.test(number)) {
+      number = '+966' + number
+    }
+    return number
+  }
+
 }

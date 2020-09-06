@@ -64,6 +64,24 @@ export class AudioProvider {
 
   }
 
+  stop() {
+
+    this.sounds.forEach(sound => {
+      if(sound.isNative){
+
+        this.nativeAudio.stop(sound.asset).then((res) => {
+          console.log(res);
+        }, (err) => {
+          console.log(err);
+        });
+  
+      } else {
+  
+        this.audioPlayer.pause();
+  
+      }
+    })
+  }
   
   activateBtnSound() {
     this.preload('btnClick', '../assets/sounds/cs.mp3');

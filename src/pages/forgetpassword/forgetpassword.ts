@@ -34,7 +34,7 @@ export class ForgetpasswordPage {
     const formValue = this.forgetForm.value;
 
     if (this.checkPhase == 'mobilePhone') {
-      const phoneValue = formValue.phone;
+      const phoneValue = this.utils.formatPhoneNumber(formValue.phone);
 
       console.log(phoneValue)
       if (phoneValue) {

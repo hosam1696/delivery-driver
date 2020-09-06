@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { UtilsProvider } from '../../providers/utils/utils';
-import { cameraType, UploadedPhoto, EVENTS } from '../../providers/types/app-types';
+import { cameraType, UploadedPhoto } from '../../providers/types/app-types';
 import { AppcameraProvider } from '../../providers/appcamera/appcamera';
 import { AuthProvider } from '../../providers/auth/auth';
 import { FcmProvider } from '../../providers/fcm/fcm';
@@ -29,8 +29,8 @@ export class CreateaccountPage {
       private formBuilder: FormBuilder,
       private utils: UtilsProvider,
       private auth: AuthProvider,
-      private events: Events,
       private fcmProvider: FcmProvider,
+      private loadingCtrl: LoadingController,
       private appStorage: AppstorageProvider,
       private cameraProvider: AppcameraProvider,
       public navParams: NavParams) {
@@ -83,35 +83,42 @@ export class CreateaccountPage {
 
   submitForm() {
     this.errorMessages = null;
+
     console.log({form: this.createAccountForm})
     const isValid = this.utils.validateForm(this.createAccountForm);
 
     if (isValid) {
+      const loader = this.loadingCtrl.create()
+      loader.present();
+      this.createAccountForm.get('phoneNumber').setValue(this.utils.formatPhoneNumber(this.createAccountForm.value.phoneNumber));
       let accountData = this.createAccountForm.value;
+
       this.auth.createAccount(accountData)
         .subscribe(response => {
+          loader.dismiss();
           if (response.success) {
             this.utils.showToast(response.message);
+            this.processing = false;
 
-            const authLogin$ = this.auth.login({userName: accountData.userName, password: accountData.password, player_id: accountData.player_id});
-            authLogin$.subscribe(response => {
-              this.processing = false;
-              if (response.success) {
-                const loggedUser = response.data.user,
-                      isRestaurantDelegate = loggedUser.logistic_company_service.service && loggedUser.logistic_company_service.service.name == 'توصيل مطاعم';
+            this.navCtrl.pop();
+            // const authLogin$ = this.auth.login({userName: accountData.userName, password: accountData.password, player_id: accountData.player_id});
+            // authLogin$.subscribe(response => {
+            //   if (response.success) {
+            //     const loggedUser = response.data.user,
+            //           isRestaurantDelegate = loggedUser.logistic_company_service.service && loggedUser.logistic_company_service.service.name == 'توصيل مطاعم';
       
-                Promise.all([
-                  this.appStorage.setUserData({...loggedUser, current_password: this.createAccountForm.get('password').value, isRestaurantDelegate, deliveryCost: response.data.deliveryCost}),
-                  this.appStorage.saveToken(loggedUser.api_token)
-                ]).then(() => {
-                  this.events.publish(EVENTS.UPDATE_STORAGE);
-                  this.navCtrl.setRoot('RequestsPage');
-                })
+            //     Promise.all([
+            //       this.appStorage.setUserData({...loggedUser, current_password: this.createAccountForm.get('password').value, isRestaurantDelegate, deliveryCost: response.data.deliveryCost}),
+            //       this.appStorage.saveToken(loggedUser.api_token)
+            //     ]).then(() => {
+            //       this.events.publish(EVENTS.UPDATE_STORAGE);
+            //       this.navCtrl.setRoot('RequestsPage');
+            //     })
       
-              } else {
-                this.utils.showTranslatedToast(response.message == 'translation.auth failed' ? 'User Name or Password are not Correct' : response.message)
-              }
-            })
+            //   } else {
+            //     this.utils.showTranslatedToast(response.message == 'translation.auth failed' ? 'User Name or Password are not Correct' : response.message)
+            //   }
+            // })
             
           } else {
             if (response.errors) {
@@ -125,6 +132,7 @@ export class CreateaccountPage {
           }
           // console.log(response);
         }, err => {
+          loader.dismiss();
           this.utils.showToast(err.message);
         })
     }

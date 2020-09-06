@@ -18,12 +18,12 @@ export class AuthProvider {
   }
 
   getAreas() {
-    return this.api.get('', null, 'https://developer.moovstore.com/geo/children/102358')
+    return this.api.get('', null, this.api.domainUrl + '/geo/children/102358')
 
   }
 
   getCities(stateId) {
-    return this.api.get('', null, 'https://developer.moovstore.com/geo/children/' + stateId)
+    return this.api.get('', null, this.api.domainUrl + '/geo/children/' + stateId)
   }
 
   updateProfile(userData: UserData | any, token) {

@@ -53,7 +53,7 @@
       <button ion-button round outline (click)="openCompanyLocation()">
         موقع الشركة
       </button>
-      <button ion-button round outline [disabled]="driverOrder.type == 'shipment'" (click)="openOrderLocation()">
+      <button ion-button round outline (click)="openOrderLocation()">
         {{driverOrder.type == 'shipment' ? 'الى : شركة موف' : 'موقع التوصيل'}}
       </button>
 
@@ -79,7 +79,7 @@
       <ng-template [ngIf]="!fromPop">
         <div class="btns" margin-top *ngIf="driverOrder.status == 'init' || driverOrder?.status == 'waiting'">
           <button ion-button round (click)="onClick('accepted')" >{{'التوصيل الان' | translate}}</button>
-          <!-- <button ion-button round  (click)="onClick('waiting')" [hidden]="userData && (driverOrder?.status == 'waiting' || userData.isRestaurantDelegate)" >{{'التوصيل لاحقا' | translate}}</button> -->
+          <button ion-button round  (click)="onClick('waiting')" [hidden]="userData && (driverOrder?.status == 'waiting' || userData.isRestaurantDelegate)" >{{'التوصيل لاحقا' | translate}}</button>
           <button ion-button round outline color="danger"  (click)="onClick('refused')">{{'رفض' | translate}}</button>
         </div>
       </ng-template>

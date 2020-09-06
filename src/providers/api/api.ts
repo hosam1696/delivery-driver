@@ -10,7 +10,7 @@ export class ApiProvider {
   private API_URL: string = this.domainUrl.concat('/api/delivery-driver/');
   private chosenLang: 'en' | 'ar';
 
-  constructor(@Inject('DOMAIN_URL') private domainUrl,
+  constructor(@Inject('DOMAIN_URL') public domainUrl,
               public http: HttpClient,
               private translate: TranslateService,
               private events: Events) {

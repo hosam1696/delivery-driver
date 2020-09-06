@@ -85,5 +85,6 @@
   "identity_image": "صورة الهوية",
   "delivery": "التوصيل",
   "shipment": "الشحن",
-  "passwords must be identical": "كلمات المرور يجب ان تكون متطابقة"
+  "passwords must be identical": "كلمات المرور يجب ان تكون متطابقة",
+  "order not found": "الطلب غير متوفر"
 }
