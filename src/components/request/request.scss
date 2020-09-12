@@ -19,12 +19,32 @@ driver-request {
     }
     .item-info {
       margin-right: 10px;
-      width: 100%;
+      width: calc(100% - 80px);
       p {
+        ion-badge {
+          transform: scale(0.9);
+          background-color: rgba(68, 50, 121, .58) !important;
+        }
+      }
+      .item-status {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        b {
+          text-overflow: ellipsis;
+          // overflow: auto;
+          text-overflow: ellipsis;
+          white-space: normal;
+          line-height: 1.2;
+          // max-width: 40%;
+          // flex: 1;
+
+        }
         span {
-          color: #ccc
+          color: #ccc;
+          flex: 1;
+          text-align: end;
+          padding: 0 2px;
         }
       }
     }

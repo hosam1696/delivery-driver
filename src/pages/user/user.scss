@@ -1,6 +1,53 @@
 page-user {
 
   ion-content {
+    .notify-msg {
+      box-shadow: 2px 2px 10px #eee;
+      padding: 20px 16px 16px;
+      border-radius: 8px;
+      position: relative;
+      margin: 3rem auto !important;
+      
+      ion-icon {
+        font-size: 3rem;
+        position: absolute;
+        top: -1.2rem;
+        left: calc(50% - 1rem);
+      }
+    }
+    .price-list {
+      p {
+        margin-bottom: 0;
+        margin-top: 4px;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        &:first-of-type {
+          direction: rtl;
+        }
+        span {
+          width: 48%;
+          display: inline-block;
+          padding: 0 12px;
+          & > div {
+            font-size: 1rem;
+            color: #888;
+          }
+          &:first-child {
+            text-align: end;
+          }
+          &:last-of-type {
+            text-align: start;
+          }
+        }
+
+      }
+
+    }
+    .div-splitter {
+      border-top: 1px solid #f6f6f6;
+      padding-top: 12px;
+    }
     .avatar-section {
       text-align: center;
       color: $dark;
@@ -8,11 +55,26 @@ page-user {
       h2 {
         margin-bottom: 0;
       }
-      p {
-        &:first-of-type {
+      .phone-num {
+        display: flex;
+        justify-content: center;
+        box-shadow: 2px 2px 10px #eee;
+        padding: 8px;
+        border-radius: 8px;
+        margin-top: 16px;
+        flex-direction: column;
+        .phone {
+          display: flex;
+          align-items: center;
+          justify-content: center;
           direction: ltr;
         }
+        & > span {
+          font-size: 1.1rem;
+          color: #888
+        }
       }
+  
       .avatar {
         margin: 0 auto;
         border-radius: 50%;
@@ -35,6 +97,16 @@ page-user {
       button {
         img {
           transform: scale(.6);
+        }
+      }
+    }
+    .actions {
+      margin-bottom: 16px;
+      div {
+        &:first-of-type {
+          button {
+            transform: scaleX(.96);
+          }
         }
       }
     }

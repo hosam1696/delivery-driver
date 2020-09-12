@@ -21,13 +21,16 @@ export enum OrderStatus {
   received = 'received',
   processing = 'processing',
   ongoing = 'ongoing',
-  waiting = 'waiting'
+  waiting = 'waiting',
+  delayed = 'delayed'
 }
 
 export enum appLangs {
   'ar',
   'en'
 }
+
+export type CheckPhase = 'mobilePhone' | 'verifyCode' | 'changePassword';
 
 export type Langs = 'ar' | 'en';
 
@@ -54,7 +57,8 @@ export interface UserData {
   company?: Company,
   logistic_company_service?: any,
   order_count?: any,
-  isRestaurantDelegate?: boolean
+  isRestaurantDelegate?: boolean,
+  deliveryCost?: number
 }
 
 export interface LoginData {
@@ -66,7 +70,7 @@ export interface LoginData {
 export interface LoginResponse {
   success: boolean,
   message: string,
-  data: { user: UserData },
+  data: { user: UserData, deliveryCost?: number },
   error?: string
 }
 
@@ -199,8 +203,17 @@ export interface DriverOrder {
   waiting_time?: null;
   comment?: string,
   order: Order;
+  type?: string;
+  data?: any
 }
 
+export enum cameraType {
+  PHOTOLIBRARY,
+  CAMERA,
+  SAVEDPHOTOALBUM
+}
+
+export type UploadedPhoto = 'photo' | 'idenity_image';
 export interface Order {
   id: number;
   user_id: number;
@@ -217,7 +230,16 @@ export interface Order {
   user?: User,
   items?: Item[],
   lat?: number,
-  lng?: number
+  lng?: number,
+  moov_coupon?: any,
+  user_total?: number,
+  delivery_cost?: number,
+  online_payment?: boolean,
+  shipment?: boolean,
+  added_value?: number,
+  company_total?: number,
+  original_total?: number,
+  discount?: number
 }
 
 export interface Item {
@@ -231,13 +253,16 @@ export interface Item {
   updated_at: string;
   deleted_at?: any;
   image: string;
+  extra?:any,
+  serial?:string
 }
 
 export interface APP_PAGE {
   title: string,
   component: any,
   icon: string,
-  pageStatus?: OrderStatus | string
+  pageStatus?: OrderStatus | string,
+  pageCount?: number
 }
 
 export interface FirstItem {
@@ -250,6 +275,7 @@ export interface FirstItem {
   created_at: string;
   updated_at: string;
   deleted_at?: null;
+  serial?:string
 }
 
 export enum EVENTS {
@@ -260,7 +286,8 @@ export enum EVENTS {
   UPDATE_ORDERS = 'update:orders',
   GET_WAITING_ORDERS = 'get:waitingorders',
   NOTIFICATION_POPUP = 'open-notification:popup',
-  UPDATE_SPLASH = 'update:splashscreen'
+  UPDATE_SPLASH = 'update:splashscreen',
+  UPDATE_PAGE_COUNT = 'update:page:count'
 
 }
 

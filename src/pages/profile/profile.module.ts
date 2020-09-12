@@ -4,6 +4,7 @@ import { ProfilePage } from './profile';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppstorageProvider } from '../../providers/appstorage/appstorage';
 import { AudioProvider } from '../../providers/audio/audio';
+import { AuthProvider } from "../../providers/auth/auth";
 
 @NgModule({
   declarations: [
@@ -15,7 +16,9 @@ import { AudioProvider } from '../../providers/audio/audio';
   ],
   providers: [
     AppstorageProvider,
-    AudioProvider
+    AudioProvider,
+    AuthProvider,
+
   ]
 })
 export class ProfilePageModule {}

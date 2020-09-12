@@ -1,8 +1,6 @@
 <ion-content padding>
   <!-- [exclude]="'button'" (clickOutside)="dismiss()" -->
-
-
-  <section class="pop-content" >
+  <section class="pop-content" [exclude]="'button, ion-item, ion-list'" (clickOutside)="dismiss()">
     <ng-template [ngIf]="driverOrder">
 
       <div class="item company-title">
@@ -12,13 +10,26 @@
           {{driverOrder.order.company.name}}
         </p>
       </div>
+      <p class="phone-num">
+          <button ion-button small clear icon-only (click)="dialNumber(driverOrder.order.company.phone)">
+            <ion-icon name="call"></ion-icon>
+          </button>
+          {{driverOrder.order.company.phone}}
+        </p>
       <div class="item  order-owner">
         <img [src]="fillImgSrc(driverOrder.order.user.logo)" alt="">
         <p>{{driverOrder.order.user.name}}</p>
       </div>
       <div class="body" text-center>
+          <p *ngIf="userData">
+              <span>المسافة المتوقعة للشركة</span> :
+              <span>
+                {{estimateDistance(driverOrder.order.company.lat, driverOrder.order.company.long )}} 
+              </span>
+            </p>
         <p>
-          الدفع عند الاستلام
+            طريقة الدفع : 
+            {{driverOrder.order.online_payment ? 'دفع الكترونى' : 'دفع عند الاستلام'}}
         </p>
 
         <button ion-button large outline round (click)="goToRequestPage(driverOrder, {fromPop: true})">
@@ -26,16 +37,22 @@
         </button>
 
       </div>
-      <div class="actions">
+
+      <p text-center *ngIf="driverOrder.status && (driverOrder.status == 'refused' || driverOrder.status == 'canceled')">
+        تم تحويل الطلب الى مندوب اخر
+      </p>
+
+      <p text-center *ngIf="driverOrder.status && (driverOrder.status == 'accepted' || driverOrder.status == 'proccessing' || driverOrder.status == 'ongoing' || driverOrder.status == 'recieved')">
+        تم الاستلام
+      </p>
+
+      <div class="actions" *ngIf="driverOrder.status == 'init'">
         <div class="top">
           <button ion-button round (click)="onClick('accept')">
             التوصيل الان
           </button>
           <button ion-button round (click)="onClick('await')" [hidden]="userData.isRestaurantDelegate">
             التوصيل لاحقا
-          </button>
-          <button ion-button round outline color="danger" (click)="onClick('cancel')" *ngIf="userData.isRestaurantDelegate">
-            رفض
           </button>
         </div>
 
@@ -45,9 +62,9 @@
           </button>
         </div>
       </div>
-      <p text-center *ngIf="!countIsOver">
+      <!-- <p text-center *ngIf="!countIsOver">
         {{counter.getSeconds()<10?'0':''}}{{counter.getSeconds()}} : {{counter.getMinutes()<10?'0':''}}{{counter.getMinutes()}}
-      </p>
+      </p> -->
 
     </ng-template>
 

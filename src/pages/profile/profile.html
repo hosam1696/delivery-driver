@@ -34,7 +34,7 @@
         </ion-label>
       </ion-item>
 
-      <ion-item>
+      <ion-item *ngIf="userData && userData.age != '0'">
         <ion-label>
           {{'العمر'|translate}}
         </ion-label>
@@ -42,6 +42,14 @@
           {{userData?.age}}
         </ion-label>
       </ion-item>
+      <ion-item>
+          <ion-label>
+            {{'الخدمة'|translate}}
+          </ion-label>
+          <ion-label>
+            {{userData?.logistic_company_service?.service?.name == 'توصيل مطاعم' ? 'توصيل منتجات': userData?.logistic_company_service?.service?.name}}
+          </ion-label>
+        </ion-item>
       <ion-item>
         <ion-label>
           {{'الحالة'|translate}}
@@ -55,14 +63,16 @@
         <ion-label>
           {{'Total Orders'|translate}}
         </ion-label>
-        <ion-label>
+        <ion-label *ngIf="userData && userData.order_count">
           {{userData?.order_count}}
           &nbsp;
-          {{'طلب' | translate}}
+          {{userData?.order_count>2?'طلبات':'طلب' | translate}}
+        </ion-label>
+        <ion-label *ngIf="userData && (!userData.order_count || userData.order_count == 0)">
+          لا يوجد طلبات
         </ion-label>
       </ion-item>
     </ion-list>
-
 
   </div>
 

@@ -4,11 +4,12 @@
   </ion-avatar>
   <div class="item-info">
     <p>
+      <ion-badge color="secondary" *ngIf="request.order.first_item.serial">{{request.order.first_item.serial}}</ion-badge> &nbsp;
       <b>{{request.order.first_item.title}}</b>
-      <span>{{request.created_at | date:'short'}}</span>
     </p>
-    <p>
-      {{request.status | translate}}
+    <p class="item-status">
+      {{request.status == 'delayed'?request.comment:request.status | translate}}
+      <span [hidden]="request.status == 'delayed'">{{request.created_at | date:'short'}}</span>
     </p>
   </div>
 

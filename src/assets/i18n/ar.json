@@ -52,6 +52,11 @@
   "SAR": "ريال",
   "Request Details": "تفاصيل الطلب",
   "completed": "تم التوصيل",
+  "received": "تم الاستلام",
+  "shipping": "جارى التوصيل",
+  "sar": "ريال",
+  "Color": "اللون",
+  "Size": "الحجم",
   "Requests in their way to you, Get Ready": "الطلبات فى طريقها اليك, استعد!",
   "Quantity": "الكمية",
   "Price": "السعر",
@@ -71,5 +76,15 @@
   "waiting": "مؤجلة",
   "returned": "مرتجع",
   "processing": "فى طريقه لاستلام الطلب من شركة",
-  "ongoing": "جارى التوصيل"
+  "ongoing": "جارى التوصيل",
+  "fullName": "الاسم",
+  "phoneNumber": "رقم الجوال",
+  "nationalId": "رقم الهوية",
+  "service": "مقدم الخدمة",
+  "photo": "الصورة الشخصية",
+  "identity_image": "صورة الهوية",
+  "delivery": "التوصيل",
+  "shipment": "الشحن",
+  "passwords must be identical": "كلمات المرور يجب ان تكون متطابقة",
+  "order not found": "الطلب غير متوفر"
 }

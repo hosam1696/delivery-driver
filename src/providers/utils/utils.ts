@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {
   ToastController,
-  ToastOptions
+  ToastOptions,
+  ActionSheetController
 } from "ionic-angular";
 import {TranslateService} from "@ngx-translate/core";
 import {FormGroup} from "@angular/forms";
@@ -13,6 +14,7 @@ export class UtilsProvider {
   constructor(
     private toastCtrl: ToastController,
     private translate: TranslateService,
+    private actionCtrl: ActionSheetController
   ) {
   }
 
@@ -20,7 +22,7 @@ export class UtilsProvider {
     let toast = this.toastCtrl.create({
       message, ...{
         duration: 3000,
-        position: 'top',
+        position: 'bottom',
         cssClass: 'toast-sm'
       }, ...settings
     });
@@ -52,6 +54,48 @@ export class UtilsProvider {
         return true;
       }
     });
+  }
+
+
+  openImageAlert(cameraHandler, photoAlbumHandler): Promise<any> {
+    let actionSheetCtrl = this.actionCtrl.create({
+      title: this.translate.instant('رفع الصورة عن طريق'),
+      buttons: [
+        {
+          icon: 'camera',
+          text: this.translate.instant('الكاميرا'),
+          handler: cameraHandler
+        },
+        {
+          icon: 'images',
+          text: this.translate.instant('معرض الصور'),
+          handler: photoAlbumHandler
+        },
+        {
+          text: this.translate.instant('الغاء'),
+          role: "cancel",
+          handler: () => {
+            console.log("Cancel clicked");
+          }
+        }
+      ]
+    });
+    return actionSheetCtrl.present();
+  }
+
+  formatPhoneNumber(phoneNumber: string) {
+
+    let number = phoneNumber;
+    if (number[0] == '0') {
+      number = number.substr(1);
+    }
+    if (/^\966/.test(number)) {
+      number = '+' + number;
+    }
+    if (!/^\+966/.test(number) && !/^\+/.test(number)) {
+      number = '+966' + number
+    }
+    return number
   }
 
 }

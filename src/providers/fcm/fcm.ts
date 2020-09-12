@@ -1,13 +1,17 @@
-import { FCM } from '@ionic-native/fcm';
 import { Injectable } from '@angular/core';
 import { AppstorageProvider } from '../appstorage/appstorage';
 import { Platform, ModalController, Events } from 'ionic-angular';
 import { EVENTS } from '../types/app-types';
+import { Firebase } from '@ionic-native/firebase';
+import { Observable } from 'rxjs/Observable';
+import { FCM } from '@ionic-native/fcm';
 
 @Injectable()
 export class FcmProvider {
 
-  constructor(public fcm: FCM, public platform: Platform,
+  constructor(public firebase: Firebase,
+              public fcm: FCM,
+              public platform: Platform,
               private storageProvider: AppstorageProvider,
               public events: Events,
               private modalCtrl: ModalController) {
@@ -17,39 +21,23 @@ export class FcmProvider {
   }
 
 
-  handleNotifications() {
-    // if (this.platform.is('cordova') ) {
-      this.fcm.onNotification().subscribe(data => {
-
-        if(data.wasTapped){
-          console.log("Received in background");
-          if (data.order_id) {
-            this.openNotificationPopup(data);
-            this.events.publish(EVENTS.UPDATE_ORDERS);
-          }
-        } else {
-          console.log("Received in foreground");
-          if (data.order_id) {
-            this.openNotificationPopup(data);
-            this.events.publish(EVENTS.UPDATE_ORDERS);
-          }
-        }
+  onNotificationOpen() {
+    return new Observable(observer => {
+          (window as any).FirebasePlugin.onMessageReceived((response) => {
+              observer.next(response);
+          });
       });
-    
   }
 
-  private openNotificationPopup(data?:any) {
+  openNotificationPopup(data?:any) {
     const modal = this.modalCtrl.create('NotificationpopupPage', {orderData: data});
 
     modal.present();
   }
 
   async getToken() {
-    if (!this.platform.is('cordova')) {
-      return 'TEST TOKEN FROM BROWSER';  
-    }
-    const fcmToken = await this.fcm.getToken();
-    
+
+    const fcmToken = await this.firebase.getToken();
     return this.storageProvider.saveFcmToken(fcmToken);
   }
 }

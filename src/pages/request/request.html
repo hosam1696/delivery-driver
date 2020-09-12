@@ -1,7 +1,7 @@
 
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>{{'Request Details' | translate}}</ion-title>
+    <ion-title>#{{ driverOrder?.order?.id}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -11,7 +11,10 @@
     <ion-slides [pager]="driverOrder.order.items && driverOrder.order.items.length>1" dir="rtl">
       <ion-slide  *ngFor="let item of driverOrder.order.items">
       <img [src]="fillImgSrc(item.image)" alt="">
-        <h3 class="product-title"><b>{{item.title}}</b></h3>
+        <h3 class="product-title">
+          <ion-badge color="secondary" *ngIf="item.serial">{{item.serial}}</ion-badge>
+          <b>{{item.title}}</b>
+        </h3>
         <div class="info">
           <div>
             <span>{{'Quantity' | translate}}</span>
@@ -19,21 +22,59 @@
           </div>
           <div>
             <span>{{'Price' | translate}}</span>
-            <span>{{item.price}} {{'SAR' | translate}}</span>
+            <span>{{item.price | number:'.1-2'}} {{'SAR' | translate}}</span>
           </div>
         </div>
+        <div class="food-extra" *ngIf="item.extra && item.extra.length">
+            <span>{{'الاضافات' | translate}}</span>
+            <ng-template [ngIf]="userData && userData.isRestaurantDelegate">
+              <p *ngFor="let x of item.extra">
+                <span>{{x.attribute}}</span> : 
+                <span>{{x.value}}</span> {{'sar' | translate}}
+              </p>
+            </ng-template>
+            <ng-template [ngIf]="userData && !userData.isRestaurantDelegate">
+              <p *ngFor="let x of item.extra" class="has-images">
+                <ng-template [ngIf]="isLinkUrl(x.value)">
+                <span>{{'Color' | translate}}</span> : 
+                <img [src]="x.value" alt="{{x.attribute}}">
+              </ng-template>
+              <ng-template [ngIf]="isNumber(x.value)">
+                  <span>{{'Size' | translate}}</span> : 
+                  <span>{{x.attribute}}</span>
+                </ng-template>
+              </p>
+            </ng-template>
+          </div>
       </ion-slide>
     </ion-slides>
 
+    <section class="loc" *ngIf="driverOrder && driverOrder.order">
+      <button ion-button round outline (click)="openCompanyLocation()">
+        موقع الشركة
+      </button>
+      <button ion-button round outline (click)="openOrderLocation()">
+        {{driverOrder.type == 'shipment' ? 'الى : شركة موف' : 'موقع التوصيل'}}
+      </button>
+
+    </section>
+  
     <div class="order-action" text-center>
       <p color="primary">
-        {{'Pay On Delivery' | translate}}
+        طريقة الدفع : 
+        {{driverOrder.order.online_payment ? 'دفع الكترونى' : 'دفع عند الاستلام' | translate}}
       </p>
       <div class="total-cost">
         <span>{{'Total' | translate}}</span>
         <span>
-          {{driverOrder.order.total}} {{'SAR' | translate}}
+          {{driverOrder.order.total | number:'.1-2'}} {{'SAR' | translate}}
         </span>
+      </div>
+      <div class="order-type">
+        <p>
+          <ion-icon name="alert" color="primary"></ion-icon>  &nbsp;
+          نوع الطلب</p>
+        <p>{{driverOrder.type | translate}}</p> 
       </div>
       <ng-template [ngIf]="!fromPop">
         <div class="btns" margin-top *ngIf="driverOrder.status == 'init' || driverOrder?.status == 'waiting'">
@@ -44,6 +85,7 @@
       </ng-template>
     </div>
   </section>
+
   <ng-template [ngIf]="!fromPop">
 
   <div class="reason" margin-vertical padding *ngIf="driverOrder?.status == 'returned' || driverOrder?.status == 'refused' || driverOrder?.status == 'canceled'">
@@ -59,8 +101,8 @@
   </div>
   </ng-template>
 
-  <ion-fab bottom right *ngIf="driverOrder?.status == 'accepted' || driverOrder?.status == 'waiting' || driverOrder?.status == 'completed' || driverOrder?.status == 'ongoing' || driverOrder?.status == 'processing'">
-    <button ion-fab mini (click)="goToUserPage()">
+  <ion-fab bottom right *ngIf="driverOrder?.status == 'accepted' || driverOrder?.status == 'received' || driverOrder?.status == 'shipping' || driverOrder?.status == 'completed' || driverOrder?.status == 'ongoing' || driverOrder?.status == 'processing'">
+    <button ion-fab mini (click)="goToUserPage()" [disabled]="!driverOrder.order.items">
       <img src="assets/imgs/map-pin.png" alt="">
     </button>
   </ion-fab>

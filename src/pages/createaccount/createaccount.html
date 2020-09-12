@@ -1,0 +1,124 @@
+<ion-content no-padding>
+
+
+  <section class="hero">
+    <button ion-button navPop clear class="nav-btn">
+      <ion-icon name="arrow-back" color="light"></ion-icon>
+    </button>
+  </section>
+
+
+  <form action="" padding [formGroup]="createAccountForm" (ngSubmit)="submitForm()">
+    
+
+<label for="photoInput">
+
+
+  <div class="avatar-image" padding text-center>
+    <div class="selected-avatar" [hidden]="!isSelectedAvatar">
+      <img id="img-preview" src="" alt="">
+      <img src="assets/imgs/form/Group 11.png" alt="">
+    </div>
+
+    <img width="120" src="assets/imgs/form/Group 12.png" alt="" [hidden]="isSelectedAvatar">
+  </div>
+</label>
+    
+    <input hidden id="photoInput" accept="image/*" type="file" (change)="imageChange($event, 'photo')">
+    
+    <div class="form-group">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 9.png" alt="">
+      </div>
+      <input class="form-control" type="text" name="moov-name" formControlName="fullName" placeholder="{{'الاسم'|translate}}">
+    </div>
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 9.png" alt="">
+      </div>
+      <input class="form-control" type="text" formControlName="userName" placeholder="{{'اسم المستخدم'|translate}}">
+    </div>
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 8.png" alt="">
+      </div>
+      <input class="form-control" type="tel" formControlName="phoneNumber" placeholder="{{'رقم الجوال'|translate}}">
+    </div>
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 7.png" alt="">
+      </div>
+      <input class="form-control" type="number" formControlName="nationalId" placeholder="{{'رقم الهوية'|translate}}">
+    </div>
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 6.png" alt="">
+      </div>
+      <input class="form-control" type="email" formControlName="email" placeholder="{{'البريد الالكترونى'|translate}}">
+    </div>
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 5.png" alt="">
+      </div> 
+      <ion-select [disabled]="!services" placeholder="مقدم الخدمة" class="form-control" okText="موافق" cancelText="الغاء" formControlName="service">
+        <ion-option [value]="service.pivot.id" *ngFor="let service of services">{{service.name}}</ion-option>
+      </ion-select>
+    </div>
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 5.png" alt="">
+      </div> 
+      <ion-select [disabled]="!areas" placeholder=" المنطقة" class="form-control" okText="موافق" cancelText="الغاء" formControlName="state_id">
+        <ion-option [value]="area.id" *ngFor="let area of areas">{{area.name}}</ion-option>
+      </ion-select>
+    </div>
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 5.png" alt="">
+      </div> 
+      <ion-select [disabled]="!cities" placeholder="المدينة" class="form-control" okText="موافق" cancelText="الغاء" formControlName="city_id">
+        <ion-option [value]="city.id" *ngFor="let city of cities">{{city.name}}</ion-option>
+      </ion-select>
+    </div>
+
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 3.png" alt="">
+      </div>
+      <input class="form-control" type="password" formControlName="password" placeholder="{{'كلمة المرور'|translate}}">
+    </div>
+
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 3.png" alt="">
+      </div>
+      <input class="form-control" type="password" formControlName="password_confirmation" placeholder="{{'تأكيد كلمة المرور'|translate}}">
+    </div>
+
+    <div class="form-group ">
+      <div class="form-icon">
+        <img src="assets/imgs/form/Group 4.png" alt="">
+      </div>
+
+      <input id="identityImage" hidden accept="image/*" type="file" (change)="imageChange($event, 'identity_image')">
+    
+      <label for="identityImage" class="form-control" >
+        <span>{{imgName ? imgName: 'رفع صورة الهوية'}}</span>
+      </label>
+    </div>
+    <section class="form-errors" >
+      <div *ngFor="let error of errorMessages">
+        {{error}}
+      </div>
+    </section>
+    <div class="submit-button" text-center>
+      <button ion-button round class="app-bg-btn app-height-btn" [class.loading]="processing" color="primary">
+        <span>
+          {{'تسجيل' |translate}}
+        </span>
+        <ion-spinner color="light" [hidden]="!processing"></ion-spinner>
+      </button>
+    </div>
+
+    </form>
+</ion-content>

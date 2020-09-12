@@ -2,25 +2,23 @@
 
   <ion-navbar color="primary">
     <ion-title>
-      <span *ngIf="orderStatus == 'accepted' || orderStatus == 'waiting'|| orderStatus == 'processing' && driverOrder?.status != 'ongoing'">
+      <span
+        *ngIf="orderStatus == 'accepted' || orderStatus == 'waiting'|| orderStatus == 'processing' && driverOrder?.status != 'ongoing'">
         الشركة
       </span>
-      <span *ngIf="driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' || orderStatus == 'completed'">
+      <span
+        *ngIf="driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' || orderStatus == 'completed' || orderStatus == 'received'">
         العميل
       </span>
     </ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only menuToggle>
-        <ion-icon color="dark" name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content padding>
 
-  <ng-template [ngIf]="driverOrder && driverOrder.company && (orderStatus == 'accepted' || orderStatus == 'waiting' || orderStatus == 'processing')">
+  <ng-template
+    [ngIf]="driverOrder && driverOrder.company && (orderStatus == 'accepted' || orderStatus == 'waiting' || orderStatus == 'processing')">
 
 
     <section class="avatar-section">
@@ -28,22 +26,67 @@
         <img [src]="fillImgSrc(driverOrder.company.logo)" alt="">
       </div>
       <h2>{{driverOrder.company.name}}</h2>
-      <p>{{driverOrder.company.phone}}</p>
-      <p>يرجى دفع مبلغ
-        <b>
+      <div class="phone-num">
+        <div *ngIf="userData" class="price-list">
+          <p>
+            <span>رقم الطلب</span>:
+            <span>{{driverOrder?.id}} </span>
+          </p>
+          <p>
+            <span>طريقة الدفع</span>:
+            <span>{{driverOrder.online_payment ? 'دفع الكترونى' : 'دفع عند الاستلام'}}</span>
+          </p>
+        </div>
+        <br>
+        <div class="phone div-splitter" (click)="dialNumber(driverOrder.company.phone)">
+          <button ion-button small clear icon-only>
+            <ion-icon name="call"></ion-icon>
+          </button>
+          {{driverOrder.company.phone}}
+        </div>
+        <span>
+          برجاء التواصل مع المتجر مسبقا لتجهيز الطلب
+        </span>
+      </div>
+      <div class="notify-msg">
+        <ng-template [ngIf]="!driverOrder.online_payment">
+          <div *ngIf="userData" class="price-list">
+            <p>
+              <span>سعر المنتج
+                <div class="info"> شامل القيمة المضافة</div>
+              </span>:
+              <span>{{(driverOrder.discount && driverOrder.discount > 0) ? driverOrder.original_total - driverOrder.discount : driverOrder.original_total | number:'.1-2'}} ريال</span>
+            </p>
+            <p *ngIf="driverOrder.moov_coupon">
+              <span>الخصم المقدم من موف</span>:
+              <span>{{driverOrder.moov_coupon.amount | number:'.1-2'}} ريال</span>
+            </p>
+            <br>
+            <div class="div-splitter"></div>
+          </div>
+          <div *ngIf="!driverOrder.moov_coupon || (driverOrder.moov_coupon && driverOrder.moov_coupon.amount < driverOrder.original_total)" [class.div-splitter]="driverOrder.moov_coupon && driverOrder.moov_coupon.amount != 0 && driverOrder.moov_coupon.amount < driverOrder.original_total ">
+            <ion-icon color="danger" name="alert"></ion-icon>
+            يرجى دفع مبلغ 
+            <b>
+              {{driverOrder.total| number:'.1-2'}}
+              {{'SAR' | translate}}
+            </b>
+            الى شركة
+            {{driverOrder.company.name}}
+            <br>
+          </div>
+        </ng-template>
 
-        {{driverOrder.total}}
-          {{'SAR' | translate}}
-        </b>
 
-        الى شركة
-        {{driverOrder.company.name}}
-
-      </p>
-      <p class="small" *ngIf="orderStatus && orderStatus != 'waiting' && (orderStatus == 'processing' || orderStatus == 'ongoing')">
-        {{orderStatus | translate}}
-        <span *ngIf="orderStatus == 'processing'"> {{driverOrder.company.name}}</span>      
-      </p>
+        <div class="price-list" [class.div-splitter]="driverOrder.moov_coupon && driverOrder.moov_coupon.amount >= driverOrder.original_total " *ngIf="userData">
+          <p>
+            <span>المسافة المتوقعة</span>:
+            <span>
+              {{estimateDistance( driverOrder.company.lat, driverOrder.company.long ) }}
+            </span>
+          </p>
+        </div>
+      </div>
 
     </section>
 
@@ -55,7 +98,7 @@
         </button>
       </div>
       <div text-center [hidden]="orderStatus == 'waiting'">
-        <button ion-button outline round (click)="onReceiving()" >
+        <button ion-button outline round (click)="onReceiving()">
           تم الاستلام
         </button>
         <button ion-button outline color="danger" round (click)="showModal()">
@@ -67,34 +110,83 @@
   </ng-template>
 
 
-  <ng-template [ngIf]="requestUser && orderStatus != 'accepted' &&  orderStatus != 'waiting' &&  orderStatus != 'processing'  && (driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' || orderStatus == 'completed')">
+  <ng-template
+    [ngIf]="requestUser && orderStatus != 'accepted' &&  orderStatus != 'waiting' &&  orderStatus != 'processing'  && (driverOrder?.status == 'ongoing' || orderStatus == 'ongoing' ||  orderStatus == 'received' || orderStatus == 'completed')">
 
     <section class="avatar-section">
       <div class="avatar">
         <img [src]="fillImgSrc(requestUser?.logo)" alt="">
       </div>
       <h2>{{requestUser?.name}}</h2>
-      <p>{{requestUser?.phone}}</p>
-      <p>{{requestUser?.gender | translate}}</p>
-      <p>يرجى استلام مبلغ
-        <b>
-          {{driverOrder.total}}
-        </b>
-        +
-        <b>
-        {{userData?.logistic_company_service?.attributes?.priceForHour}}
-        </b>
-         ريال
-         من
-        {{requestUser.name}}
-      </p>
-      <p>الدفع عند الاستلام</p>
-      <p class="small" *ngIf="driverOrder.status && (driverOrder.status == 'processing' || driverOrder.status == 'ongoing') && driverOrder.status != 'completed'">
-        {{orderStatus | translate}}
-      </p>
+      <div class="phone-num">
+        <div *ngIf="userData" class="price-list">
+          <p>
+            <span>رقم الطلب</span>:
+            <span>{{driverOrder?.id}} </span>
+          </p>
+          <p>
+            <span>طريقة الدفع</span>:
+            <span>{{driverOrder.online_payment ? 'دفع الكترونى' : 'دفع عند الاستلام'}}</span>
+          </p>
+        </div>
+        <br>
+        <div class="phone div-splitter" (click)="dialNumber(requestUser.phone)" *ngIf="requestUser">
+          <button ion-button small clear icon-only>
+            <ion-icon name="call"></ion-icon>
+          </button>
+          <span dir="ltr">{{requestUser?.phone}}</span>
+        </div>
+      </div>
+      <div *ngIf="userData" class="notify-msg">
+        <ng-template [ngIf]="!driverOrder.online_payment">
+          <ion-icon color="danger" name="alert"></ion-icon>
+          يرجى استلام مبلغ
+          <b>
+            {{driverOrder.user_total | number:'.1-2'}}
+          </b>
+          ريال
+          من
+          {{requestUser.name}}
+        </ng-template>
+        <br>
+        <div class="price-list" *ngIf="userData">
+          <p>
+            <span>المسافة المتوقعة</span>:
+            <span>
+              {{estimateDistance(driverOrder.lat, driverOrder.lng )}}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div *ngIf="userData" class="notify-msg price-list">
+        <ion-icon color="danger" name="alert"></ion-icon>
+
+        <p>
+          <span>سعر المنتج
+            <div class="info"> شامل القيمة المضافة</div>
+          </span>:
+          <span>{{(driverOrder.discount && driverOrder.discount > 0) ? driverOrder.original_total - driverOrder.discount : driverOrder.original_total | number:'.1-2'}} ريال</span>
+        </p>
+        <p *ngIf="driverOrder.moov_coupon">
+          <span>الخصم المقدم من موف</span>:
+          <span>{{driverOrder.moov_coupon.amount | number:'.1-2'}} ريال</span>
+        </p>
+        <p>
+          <span>قيمة التوصيل</span>:
+          <span>{{driverOrder.delivery_cost | number:'.1-2'}} ريال</span>
+        </p>
+        <p>
+          <span>الاجمالى</span>:
+          <span>
+            {{driverOrder.user_total | number:'.1-2'}}
+            ريال
+          </span>
+        </p>
+      </div>
+
     </section>
-    
-    
+
     <div class="actions" *ngIf="orderStatus != 'completed'">
       <div text-center>
         <button ion-button round (click)="openOrderLocation()">

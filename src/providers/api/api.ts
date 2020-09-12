@@ -10,7 +10,7 @@ export class ApiProvider {
   private API_URL: string = this.domainUrl.concat('/api/delivery-driver/');
   private chosenLang: 'en' | 'ar';
 
-  constructor(@Inject('DOMAIN_URL') private domainUrl,
+  constructor(@Inject('DOMAIN_URL') public domainUrl,
               public http: HttpClient,
               private translate: TranslateService,
               private events: Events) {
@@ -19,7 +19,7 @@ export class ApiProvider {
 
   }
 
-  get(endpoint: string, params?: any) {
+  get(endpoint: string, params?: any, fullUrl = null) {
     let httpParams: HttpParams = new HttpParams({});
     httpParams = httpParams.set('local', this.translate.currentLang);
     if (params) {
@@ -28,10 +28,10 @@ export class ApiProvider {
           httpParams = httpParams.set(param, params[param])
       }
     }
-    return this.http.get<any>(this.API_URL + endpoint, {params: httpParams})
+    return this.http.get<any>(fullUrl ? fullUrl : (this.API_URL + endpoint), {params: httpParams})
   }
 
-  post(endpoint: string, body?: any, params?: any, headers?: any) {
+  post(endpoint: string, body?: any, params?: any, headers?: any, withFullAPI = '') {
     let httpParams: HttpParams = new HttpParams({});
     let httpHeaders: HttpHeaders = new HttpHeaders({});
 
@@ -51,7 +51,7 @@ export class ApiProvider {
         }
       }
     }
-    return this.http.post<any>(this.API_URL + endpoint, body, {
+    return this.http.post<any>(withFullAPI ? withFullAPI: (this.API_URL + endpoint), body, {
       params: httpParams,
       headers: httpHeaders
     })

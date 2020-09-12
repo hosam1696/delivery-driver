@@ -1,0 +1,30 @@
+
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>الاشعارات</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content no-padding>
+
+  <p text-center *ngIf="notifications && !notifications.length">
+    لا يوجد اشعارات
+  </p>
+  <ion-refresher (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list no-lines>
+    <ion-item *ngFor="let n of notifications" (click)="openNotification(n)">
+      <ion-avatar>
+        <img src="{{n.data.order.company.logo}}" alt="">
+      </ion-avatar>
+      <div class="content">
+
+      <p>{{n.data.message}}</p> 
+      <p>
+        <span><ion-icon name="calendar"></ion-icon> &nbsp;{{n.created_at | date:'d/MM/yyyy'}}</span> &nbsp; &nbsp;
+        <span><ion-icon name="time"></ion-icon> &nbsp;{{(n.created_at | date: 'shortTime').replace('AM', 'ص').replace('PM', 'م')}}</span>
+      </p>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

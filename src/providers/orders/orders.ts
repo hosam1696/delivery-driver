@@ -22,5 +22,9 @@ export class OrdersProvider {
     reason && body.append('reason', reason);
     return this.api.post('order/'.concat(String(orderId), '/', orderStatus), body, {api_token: token})
   }
+  
+  getMoovLocation() {
+    return this.api.get('', null, 'https://developer.moovstore.com/public/api/setting/app-info/location')
+  }
 
 }

@@ -8,6 +8,12 @@ page-login {
     background-repeat: no-repeat
   }
 
+  .create-account {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+  }
+
   form {
     padding: 26px;
     .form-group {
@@ -21,9 +27,6 @@ page-login {
 
     .submit-button {
       margin-top: 40px;
-      button {
-        height: 40px !important;
-      }
     }
     @keyframes fill {
       from {

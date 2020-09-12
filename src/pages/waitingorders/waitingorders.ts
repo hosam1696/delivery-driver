@@ -112,13 +112,13 @@ export class WaitingordersPage {
     deliveryStatus$.subscribe(response => {
       if (response.success) {
         const availability = +response.data.driver.availability;
-        this.utils.showToast(response.message, {position: 'bottom'});
         this.appStorageProvider.setUserData({...this.userData, availability})
-          .then((data) => {
-            console.log({savedUserInWaitingOrders: data});
-            this.events.publish(EVENTS.UPDATE_STORAGE);
-          })
+        .then((data) => {
+          console.log({savedUserInWaitingOrders: data});
+          this.events.publish(EVENTS.UPDATE_STORAGE);
+        })
       }
+      response.message && this.utils.showToast(response.message, {position: 'bottom'});
     })
   }
 

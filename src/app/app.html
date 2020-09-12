@@ -10,17 +10,22 @@
     </div>
     <ion-list clear no-lines>
       <button clear no-border menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        <img [src]="'assets/icon/'+p.icon" alt="menu-icon">
-        <span>
-          {{p.title | translate}}
-        </span>
+        <div class="page-title">
+          <img [src]="'assets/icon/'+p.icon" alt="menu-icon">
+          <span>
+            {{p.title | translate}}
+          </span>
+        </div>
+        <ion-badge *ngIf="p.pageCount && p.pageCount > 0" color="light">{{p.pageCount}}</ion-badge>
       </button>
 
       <button menuClose ion-item (click)="logout()">
-        <img src="assets/icon/sign-out-option1.png" alt="signout-icon">
-        <span>
-            {{'Log Out' | translate}}
-        </span>
+        <div class="page-title">
+          <img src="assets/icon/sign-out-option1.png" alt="signout-icon">
+          <span>
+              {{'Log Out' | translate}}
+          </span>
+        </div>
       </button>
     </ion-list>
   </ion-content>

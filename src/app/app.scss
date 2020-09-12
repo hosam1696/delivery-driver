@@ -17,6 +17,12 @@
   font-family: "Cairo-Regular", Roboto, sans-serif;
 }
 
+.text-selectable {
+  -webkit-user-select: text;
+-moz-user-select: text;
+-ms-user-select: text;
+user-select: text;
+}
 
 $primary: color($colors, primary);
 $light: color($colors, light);
@@ -78,6 +84,10 @@ ion-menu {
         border-radius: 50%;
         width: 100px;
         height: 100px;
+        min-width: 100px;
+        min-height: 100px;
+        max-width: 100px;
+        max-height: 100px;
         overflow: hidden;
         background-color: $light;
         img {
@@ -93,7 +103,13 @@ ion-menu {
         background: transparent !important;
         color: $light !important;      
         ion-label {
+          justify-content: space-between;
           align-items: center;
+          .page-title {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start
+          }
         }
         img {
           width: 22px;
@@ -102,6 +118,14 @@ ion-menu {
         span {
           display: inline-block;
           margin: 0 10px;
+        }
+        ion-badge {
+          border-radius: 50% !important;
+          width: 22px;
+          height: 22px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
       }
     }
@@ -119,6 +143,10 @@ ion-menu {
   svg {
     fill: $light;
   }
+}
+
+.color-primary {
+  color: $primary
 }
 
 .svg-color-primary {
@@ -262,19 +290,22 @@ form {
     border-radius: 35px;
     display: flex;
     overflow: hidden;
-    //padding: 8px 16px;
+    height: 50px;
+    transform: scale(1.02);
     align-items: center;
     border: 2px solid $primary;
     transition: border 0.3s ease-in-out;
     .form-icon {
-      width: 40px;
-      min-width: 40px;
-      height: 38px;
-      transform: scale(1.05);
+      width: 50px;
+      min-width: 50px;
+      max-width: 50px;
+      height: 50px;
+      // transform: scale(1.05);
       @extend %flex-centered;
       margin: 0;
       border-radius: inherit;
       background-color: $primary;
+      overflow: hidden;
     }
 
     &.invalid {
@@ -300,11 +331,15 @@ form {
       }
     }
 
-    img {
+    & > img {
       width: 22px;
       height: 22px;
     }
   }
+}
+
+.app-height-btn {
+  height: 50px;
 }
 
 .middle-helper {

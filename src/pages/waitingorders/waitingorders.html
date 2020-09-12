@@ -6,6 +6,8 @@
         <span *ngSwitchCase="'completed'">{{'الطلبات المكتملة'| translate}}</span>
         <span *ngSwitchCase="'canceled'">{{'الطلبات المرفوضة'| translate}}</span>
         <span *ngSwitchCase="'returned'">{{'الطلبات المرتجعة'| translate}}</span>
+        <span *ngSwitchCase="'delayed'">{{'الطلبات المحولة'| translate}}</span>
+
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -27,12 +29,14 @@
         <span *ngSwitchCase="'completed'">{{'لا يوجد طلبات مكتملة' | translate}}</span>
         <span *ngSwitchCase="'canceled'">{{'لا يوجد طلبات مرفوضة' | translate}}</span>
         <span *ngSwitchCase="'returned'">{{'لا يوجد طلبات مرتجعة' | translate}}</span>
-
+        <span *ngSwitchCase="'delayed'">{{'لا يوجد طلبات محولة' | translate}}</span>
       </p>
     </div>
 
     <ion-list margin *ngFor="let request of allRequests">
-      <driver-request [request]="request" (click)="goToRequestPage(request)"></driver-request>
+      <ng-template [ngIf]="request.order.first_item"> <!-- Add Check to requests that does not have details  -->
+        <driver-request [request]="request" (click)="goToRequestPage(request)"></driver-request>
+      </ng-template>
     </ion-list>
     
   </ion-content>
